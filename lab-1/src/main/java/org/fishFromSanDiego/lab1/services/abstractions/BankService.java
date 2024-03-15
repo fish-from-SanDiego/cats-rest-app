@@ -11,9 +11,8 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface BankService extends Publisher<String> {
-    boolean tryRegisterNewClient(Client newClient);
+    void registerNewClient(Client newClient);
 
-    Optional<LoginService<ClientService>> findClientById(int id);
 
     void chargeAllPercents();
 

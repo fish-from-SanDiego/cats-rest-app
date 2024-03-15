@@ -15,7 +15,7 @@ public record Bank(@NonNull String name,
                    @NonNull BigDecimal creditCardCommission,
                    @NonNull DepositChargeStrategy depositChargeStrategy) {
 
-    Bank.BankBuilder directBuilder(Bank.BankBuilder builder) {
+    public Bank.BankBuilder directBuilder(Bank.BankBuilder builder) {
         return builder
                 .creditCardCommission(creditCardCommission)
                 .name(name)

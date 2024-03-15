@@ -9,6 +9,10 @@ import java.util.Optional;
 
 public record Client(@NonNull String name, @NonNull String surname, String address, Optional<Integer> passportId) {
 
+    public boolean isSuspicious() {
+        return address() == null || address.isEmpty() || passportId().isEmpty();
+    }
+
     public static NameBuilder builder() {
         return new ClientBuilder();
     }
@@ -46,7 +50,7 @@ public record Client(@NonNull String name, @NonNull String surname, String addre
         }
     }
 
-    ClientFinalBuilder directBuilder(NameBuilder builder) {
+    public ClientFinalBuilder directBuilder(NameBuilder builder) {
         return passportId.isPresent()
                 ? builder
                 .withFullName(name, surname)

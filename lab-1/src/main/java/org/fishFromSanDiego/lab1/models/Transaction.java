@@ -40,7 +40,7 @@ public abstract class Transaction {
         int senderId;
         int recipientId;
 
-        Transaction.Transfer.TransferBuilder directBuilder(Transaction.Transfer.TransferBuilder builder) {
+        public Transaction.Transfer.TransferBuilder directBuilder(Transaction.Transfer.TransferBuilder builder) {
             return builder
                     .isReverted(super.isReverted)
                     .sum(super.sum)
@@ -71,7 +71,7 @@ public abstract class Transaction {
         int recipientBankId;
         int recipientId;
 
-        Transaction.Deposit.DepositBuilder directBuilder(Transaction.Deposit.DepositBuilder builder) {
+        public Transaction.Deposit.DepositBuilder directBuilder(Transaction.Deposit.DepositBuilder builder) {
             return builder
                     .isReverted(super.isReverted)
                     .sum(super.sum)
@@ -90,21 +90,21 @@ public abstract class Transaction {
     @Value
     public static class Withdrawal extends Transaction {
         @Builder
-        public Withdrawal(BigDecimal sum, boolean isReverted, int bankId, int clientId) {
+        public Withdrawal(BigDecimal sum, boolean isReverted, int bankId, int accountId) {
             super(sum, isReverted);
             this.bankId = bankId;
-            this.clientId = clientId;
+            this.accountId = accountId;
         }
 
         int bankId;
-        int clientId;
+        int accountId;
 
-        Transaction.Withdrawal.WithdrawalBuilder directBuilder(Transaction.Withdrawal.WithdrawalBuilder builder) {
+        public Transaction.Withdrawal.WithdrawalBuilder directBuilder(Transaction.Withdrawal.WithdrawalBuilder builder) {
             return builder
                     .isReverted(super.isReverted)
                     .sum(super.sum)
                     .bankId(bankId)
-                    .clientId(clientId);
+                    .accountId(accountId);
 
         }
 

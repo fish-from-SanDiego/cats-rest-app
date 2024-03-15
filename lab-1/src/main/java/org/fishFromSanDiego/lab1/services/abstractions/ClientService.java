@@ -11,8 +11,6 @@ public interface ClientService {
 
     void setPassportInfo(int passportId);
 
-    Optional<AccountService> findAccountServiceById(int accountId);
-
     Collection<Account> getAllAccounts();
 
     void subscribeObserverToBankNotifications(Observer<String> observer);

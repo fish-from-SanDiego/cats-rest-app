@@ -28,4 +28,6 @@ public interface ClientRepository {
     int addNewClient(Client client, String password);
 
     void updateClientAddress(int clientId, String address);
+
+    Optional<String> findPasswordByClientId(int clientId);
 }

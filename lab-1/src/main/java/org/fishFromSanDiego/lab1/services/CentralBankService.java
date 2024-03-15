@@ -9,7 +9,7 @@ public interface CentralBankService {
 
     boolean tryRegisterNewBank(String name, String password);
 
-    Optional<LoginService<BankService>> findBankServiceByBankId(UUID bankId);
+    Optional<LoginService<BankService>> findBankServiceByBankId(int bankId);
 
     Collection<BankService> getAllBankServices();
 

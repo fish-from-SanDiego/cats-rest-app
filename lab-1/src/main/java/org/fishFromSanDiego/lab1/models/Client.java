@@ -4,14 +4,9 @@ import lombok.NonNull;
 import org.fishFromSanDiego.lab1.models.clientBuilders.ClientFinalBuilder;
 import org.fishFromSanDiego.lab1.models.clientBuilders.NameBuilder;
 
-import java.util.UUID;
+import java.util.Optional;
 
-public record Client(String name, String surname, String address, UUID passportId) {
-
-    public Client {
-        java.util.Objects.requireNonNull(name);
-        java.util.Objects.requireNonNull(surname);
-    }
+public record Client(@NonNull String name, @NonNull String surname, String address, Optional<Integer> passportId) {
 
     public static NameBuilder builder() {
         return new ClientBuilder();
@@ -21,7 +16,7 @@ public record Client(String name, String surname, String address, UUID passportI
         String _name;
         String _surname;
         String _address;
-        UUID _passportId;
+        int _passportId;
 
 
         @Override
@@ -38,14 +33,14 @@ public record Client(String name, String surname, String address, UUID passportI
         }
 
         @Override
-        public ClientFinalBuilder withPassport(@NonNull UUID passportId) {
+        public ClientFinalBuilder withPassport(int passportId) {
             _passportId = passportId;
             return this;
         }
 
         @Override
         public Client build() {
-            return new Client(_name, _surname, _address, _passportId);
+            return new Client(_name, _surname, _address, Optional.of(_passportId));
         }
     }
 }

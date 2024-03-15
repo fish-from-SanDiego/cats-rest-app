@@ -1,10 +1,31 @@
 package org.fishFromSanDiego.lab1.repositories;
 
 import org.fishFromSanDiego.lab1.models.Client;
+import org.fishFromSanDiego.lab1.models.FetchedModel;
 
 import java.util.Optional;
-import java.util.UUID;
 
+/**
+ * Client repository interface.
+ */
 public interface ClientRepository {
-    Optional<Client> findBankClientById(UUID clientId, UUID bankId);
+    /**
+     * Find bank client by id.
+     *
+     * @param clientId the client id
+     * @param bankId   the bank id
+     * @return the optional in which id is present if found
+     */
+    Optional<FetchedModel<Client>> findBankClientById(int clientId, int bankId);
+
+    /**
+     * Add new client.
+     *
+     * @param client   the client
+     * @param password the password
+     * @return the id of added client
+     */
+    int addNewClient(Client client, String password);
+
+    void updateClientAddress(int clientId, String address);
 }

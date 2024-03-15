@@ -8,7 +8,7 @@ import java.util.UUID;
 public interface ClientFinalBuilder {
     ClientFinalBuilder withAddress(@NonNull String address);
 
-    ClientFinalBuilder withPassport(@NonNull UUID passportId);
+    ClientFinalBuilder withPassport(@NonNull int passportId);
 
     Client build();
 }

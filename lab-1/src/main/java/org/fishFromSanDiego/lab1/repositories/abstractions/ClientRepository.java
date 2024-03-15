@@ -1,4 +1,4 @@
-package org.fishFromSanDiego.lab1.repositories;
+package org.fishFromSanDiego.lab1.repositories.abstractions;
 
 import org.fishFromSanDiego.lab1.models.Client;
 import org.fishFromSanDiego.lab1.models.FetchedModel;

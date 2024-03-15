@@ -1,8 +1,7 @@
-package org.fishFromSanDiego.lab1.services;
+package org.fishFromSanDiego.lab1.services.abstractions;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface CentralBankService {
     boolean tryLogin(String password);

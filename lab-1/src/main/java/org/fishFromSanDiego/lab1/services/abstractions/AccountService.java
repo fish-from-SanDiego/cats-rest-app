@@ -1,4 +1,4 @@
-package org.fishFromSanDiego.lab1.services;
+package org.fishFromSanDiego.lab1.services.abstractions;
 
 import org.fishFromSanDiego.lab1.abstractions.Observer;
 
@@ -11,6 +11,4 @@ public interface AccountService {
     void withdrawMoney(BigDecimal amount);
 
     void transferMoney(BigDecimal amount, int recipientId);
-
-    void subscribeObserverToBankNotifications(Observer<String> observer);
 }

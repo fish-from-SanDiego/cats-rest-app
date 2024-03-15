@@ -5,11 +5,11 @@ import lombok.*;
 import java.math.BigDecimal;
 
 @Getter
-public abstract class TransactionInfo {
+public abstract class Transaction {
     protected final BigDecimal sum;
     protected final boolean isReverted;
 
-    protected TransactionInfo(BigDecimal sum, boolean isReverted) {
+    protected Transaction(BigDecimal sum, boolean isReverted) {
         this.sum = sum;
         this.isReverted = isReverted;
     }
@@ -19,7 +19,7 @@ public abstract class TransactionInfo {
 
     @EqualsAndHashCode(callSuper = true)
     @Value
-    public static class Transfer extends TransactionInfo {
+    public static class Transfer extends Transaction {
         @Builder
         public Transfer(
                 BigDecimal sum,
@@ -40,15 +40,27 @@ public abstract class TransactionInfo {
         int senderId;
         int recipientId;
 
+        Transaction.Transfer.TransferBuilder directBuilder(Transaction.Transfer.TransferBuilder builder) {
+            return builder
+                    .isReverted(super.isReverted)
+                    .sum(super.sum)
+                    .recipientBankId(recipientBankId)
+                    .recipientId(recipientId)
+                    .senderBankId(senderBankId)
+                    .senderId(senderId);
+
+        }
+
         @Override
         public String getTransactionTypeName() {
             return "Transfer";
         }
+
     }
 
     @EqualsAndHashCode(callSuper = true)
     @Value
-    public static class Deposit extends TransactionInfo {
+    public static class Deposit extends Transaction {
         @Builder
         public Deposit(BigDecimal sum, boolean isReverted, int recipientBankId, int recipientId) {
             super(sum, isReverted);
@@ -59,6 +71,15 @@ public abstract class TransactionInfo {
         int recipientBankId;
         int recipientId;
 
+        Transaction.Deposit.DepositBuilder directBuilder(Transaction.Deposit.DepositBuilder builder) {
+            return builder
+                    .isReverted(super.isReverted)
+                    .sum(super.sum)
+                    .recipientBankId(recipientBankId)
+                    .recipientId(recipientId);
+
+        }
+
         @Override
         public String getTransactionTypeName() {
             return "Deposit";
@@ -67,7 +88,7 @@ public abstract class TransactionInfo {
 
     @EqualsAndHashCode(callSuper = true)
     @Value
-    public static class Withdrawal extends TransactionInfo {
+    public static class Withdrawal extends Transaction {
         @Builder
         public Withdrawal(BigDecimal sum, boolean isReverted, int bankId, int clientId) {
             super(sum, isReverted);
@@ -77,6 +98,15 @@ public abstract class TransactionInfo {
 
         int bankId;
         int clientId;
+
+        Transaction.Withdrawal.WithdrawalBuilder directBuilder(Transaction.Withdrawal.WithdrawalBuilder builder) {
+            return builder
+                    .isReverted(super.isReverted)
+                    .sum(super.sum)
+                    .bankId(bankId)
+                    .clientId(clientId);
+
+        }
 
         @Override
         public String getTransactionTypeName() {

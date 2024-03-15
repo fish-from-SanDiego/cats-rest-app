@@ -1,5 +1,6 @@
 package org.fishFromSanDiego.lab1.models;
 
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.fishFromSanDiego.lab1.models.clientBuilders.ClientFinalBuilder;
 import org.fishFromSanDiego.lab1.models.clientBuilders.NameBuilder;
@@ -12,11 +13,12 @@ public record Client(@NonNull String name, @NonNull String surname, String addre
         return new ClientBuilder();
     }
 
+    @NoArgsConstructor
     private static final class ClientBuilder implements NameBuilder, ClientFinalBuilder {
-        String _name;
-        String _surname;
-        String _address;
-        int _passportId;
+        private String _name;
+        private String _surname;
+        private String _address;
+        private Optional<Integer> _passportId;
 
 
         @Override
@@ -34,13 +36,24 @@ public record Client(@NonNull String name, @NonNull String surname, String addre
 
         @Override
         public ClientFinalBuilder withPassport(int passportId) {
-            _passportId = passportId;
+            _passportId = Optional.of(passportId);
             return this;
         }
 
         @Override
         public Client build() {
-            return new Client(_name, _surname, _address, Optional.of(_passportId));
+            return new Client(_name, _surname, _address, _passportId);
         }
+    }
+
+    ClientFinalBuilder directBuilder(NameBuilder builder) {
+        return passportId.isPresent()
+                ? builder
+                .withFullName(name, surname)
+                .withAddress(address)
+                .withPassport(passportId.get())
+                : builder
+                .withFullName(name, surname)
+                .withAddress(address);
     }
 }

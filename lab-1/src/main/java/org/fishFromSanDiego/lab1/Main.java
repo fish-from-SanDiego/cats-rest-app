@@ -1,10 +1,7 @@
 package org.fishFromSanDiego.lab1;
 
 import org.fishFromSanDiego.lab1.models.Client;
-import org.fishFromSanDiego.lab1.models.TransactionInfo;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
 

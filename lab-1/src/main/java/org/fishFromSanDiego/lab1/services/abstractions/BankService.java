@@ -1,10 +1,10 @@
-package org.fishFromSanDiego.lab1.services;
+package org.fishFromSanDiego.lab1.services.abstractions;
 
 import org.fishFromSanDiego.lab1.abstractions.DepositChargeStrategy;
 import org.fishFromSanDiego.lab1.abstractions.Publisher;
 import org.fishFromSanDiego.lab1.models.Client;
 import org.fishFromSanDiego.lab1.models.FetchedModel;
-import org.fishFromSanDiego.lab1.models.TransactionInfo;
+import org.fishFromSanDiego.lab1.models.Transaction;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -18,6 +18,8 @@ public interface BankService extends Publisher<String> {
     void chargeAllPercents();
 
     void payAllPercents();
+
+    void takeAllCommissions();
 
     void setSuspiciousClientDepositLimit(BigDecimal newLimit);
 
@@ -33,5 +35,5 @@ public interface BankService extends Publisher<String> {
 
     void revertTransaction(int transactionId);
 
-    Collection<FetchedModel<TransactionInfo>> getAllTransactions();
+    Collection<FetchedModel<Transaction>> getAllTransactions();
 }

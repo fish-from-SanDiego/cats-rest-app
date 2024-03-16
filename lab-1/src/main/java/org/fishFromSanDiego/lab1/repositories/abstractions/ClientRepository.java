@@ -25,7 +25,7 @@ public interface ClientRepository {
      * @param password the password
      * @return the id of added client
      */
-    int addNewClient(Client client, String password);
+    int addNewClient(int bankId, Client client, String password);
 
     void updateClientAddress(int clientId, String address);
 

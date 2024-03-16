@@ -2,6 +2,7 @@ package org.fishFromSanDiego.lab1.repositories.implementations;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Value;
 import org.fishFromSanDiego.lab1.exceptions.RepositoryException;
 import org.fishFromSanDiego.lab1.models.*;
 import org.fishFromSanDiego.lab1.repositories.abstractions.AccountRepository;
@@ -10,42 +11,47 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public class NonPersistentAccountRepository implements AccountRepository {
-    ArrayList<AccountInfo> _accountInfos;
+    Map<CompoundKey, Account> _accounts;
     ArrayList<FetchedModel<Transaction>> _transactions;
 
     public NonPersistentAccountRepository() {
-        _accountInfos = new ArrayList<AccountInfo>();
+        _accounts = new HashMap<>();
         _transactions = new ArrayList<FetchedModel<Transaction>>();
     }
 
     @Override
     public Optional<FetchedModel<Account>> findAccountById(int accountId, int clientId, int bankId) {
-        return _accountInfos.stream()
-                .filter(acc -> acc.accountId == accountId && acc.bankId == bankId && acc.account.clientId() == clientId)
-                .map(acc -> new FetchedModel<Account>(acc.account, acc.accountId))
-                .findFirst();
+        CompoundKey key = new CompoundKey(bankId, accountId);
+        if (!_accounts.containsKey(key)) return Optional.empty();
+        Account account = _accounts.get(key);
+        if (account.clientId() != clientId) return Optional.empty();
+        return Optional.of(new FetchedModel<>(account, key.accountId));
     }
 
     @Override
     public Collection<FetchedModel<Account>> getAllClientAccounts(int clientId, int bankId) {
-        return _accountInfos.stream()
-                .filter(acc -> acc.bankId == bankId && acc.account.clientId() == clientId)
-                .map(acc -> new FetchedModel<Account>(acc.account, acc.accountId))
+        return _accounts.entrySet().stream()
+                .filter(e -> e.getKey().bankId == bankId && e.getValue().clientId() == clientId)
+                .map(e -> new FetchedModel<>(e.getValue(), e.getKey().accountId))
                 .toList();
     }
 
     @Override
     public void depositMoney(int accountId, int bankId, BigDecimal amount) throws RepositoryException {
-        Optional<AccountInfo> infoOptional = _accountInfos.stream()
-                .filter(acc -> acc.accountId == accountId && acc.bankId == bankId)
+
+        Optional<Map.Entry<CompoundKey, Account>> accountEntry = _accounts.entrySet().stream()
+                .filter(e -> e.getKey().bankId == bankId && e.getKey().accountId == accountId)
                 .findFirst();
-        if (infoOptional.isEmpty()) {
+
+
+        if (accountEntry.isEmpty()) {
             throw new RepositoryException("Couldn't find an account");
         }
-        infoOptional.get().account =
-                infoOptional.get().account
-                        .directBuilder(Account.builder()).balance(infoOptional.get().account.balance().add(amount))
-                        .build();
+        _accounts.put(accountEntry.get().getKey(),
+                accountEntry.get().getValue()
+                        .directBuilder(
+                                Account.builder()).balance(accountEntry.get().getValue().balance().add(amount))
+                        .build());
         _transactions.add(new FetchedModel<Transaction>(
                 Transaction.Deposit.builder()
                         .recipientId(accountId)
@@ -58,16 +64,17 @@ public class NonPersistentAccountRepository implements AccountRepository {
 
     @Override
     public void withdrawMoney(int accountId, int bankId, BigDecimal amount) throws RepositoryException {
-        Optional<AccountInfo> infoOptional = _accountInfos.stream()
-                .filter(acc -> acc.accountId == accountId && acc.bankId == bankId)
+        Optional<Map.Entry<CompoundKey, Account>> accountEntry = _accounts.entrySet().stream()
+                .filter(e -> e.getKey().bankId == bankId && e.getKey().accountId == accountId)
                 .findFirst();
-        if (infoOptional.isEmpty()) {
+        if (accountEntry.isEmpty()) {
             throw new RepositoryException("Couldn't find an account");
         }
-        infoOptional.get().account =
-                infoOptional.get().account
-                        .directBuilder(Account.builder()).balance(infoOptional.get().account.balance().subtract(amount))
-                        .build();
+        _accounts.put(accountEntry.get().getKey(),
+                accountEntry.get().getValue()
+                        .directBuilder(
+                                Account.builder()).balance(accountEntry.get().getValue().balance().subtract(amount))
+                        .build());
         _transactions.add(new FetchedModel<Transaction>(
                 Transaction.Withdrawal.builder()
                         .accountId(accountId)
@@ -85,26 +92,28 @@ public class NonPersistentAccountRepository implements AccountRepository {
             int recipientAccountId,
             int recipientBankId,
             BigDecimal amount) throws RepositoryException {
-        Optional<AccountInfo> senderInfoOptional = _accountInfos.stream()
-                .filter(acc -> acc.accountId == senderAccountId && acc.bankId == senderBankId)
+        Optional<Map.Entry<CompoundKey, Account>> senderAccountEntry = _accounts.entrySet().stream()
+                .filter(e -> e.getKey().bankId == senderBankId && e.getKey().accountId == senderAccountId)
                 .findFirst();
-        if (senderInfoOptional.isEmpty()) {
+        if (senderAccountEntry.isEmpty()) {
             throw new RepositoryException("Couldn't find sender's account");
         }
-        Optional<AccountInfo> recipientInfoOptional = _accountInfos.stream()
-                .filter(acc -> acc.accountId == recipientAccountId && acc.bankId == recipientBankId)
+        Optional<Map.Entry<CompoundKey, Account>> recipientAccountEntry = _accounts.entrySet().stream()
+                .filter(e -> e.getKey().bankId == recipientBankId && e.getKey().accountId == recipientAccountId)
                 .findFirst();
-        if (recipientInfoOptional.isEmpty()) {
+        if (recipientAccountEntry.isEmpty()) {
             throw new RepositoryException("Couldn't find recipient's account");
         }
-        senderInfoOptional.get().account =
-                senderInfoOptional.get().account
-                        .directBuilder(Account.builder()).balance(senderInfoOptional.get().account.balance().subtract(amount))
-                        .build();
-        recipientInfoOptional.get().account =
-                recipientInfoOptional.get().account
-                        .directBuilder(Account.builder()).balance(recipientInfoOptional.get().account.balance().add(amount))
-                        .build();
+        _accounts.put(senderAccountEntry.get().getKey(),
+                senderAccountEntry.get().getValue()
+                        .directBuilder(
+                                Account.builder()).balance(senderAccountEntry.get().getValue().balance().subtract(amount))
+                        .build());
+        _accounts.put(recipientAccountEntry.get().getKey(),
+                recipientAccountEntry.get().getValue()
+                        .directBuilder(
+                                Account.builder()).balance(recipientAccountEntry.get().getValue().balance().add(amount))
+                        .build());
         _transactions.add(new FetchedModel<Transaction>(
                 Transaction.Transfer.builder()
                         .senderBankId(senderBankId)
@@ -132,14 +141,13 @@ public class NonPersistentAccountRepository implements AccountRepository {
 
     @Override
     public void addNewAccount(int bankId, Account account) throws RepositoryException {
-        _accountInfos.add(new AccountInfo(bankId, _accountInfos.size(), account));
+        _accounts.put(
+                new CompoundKey(bankId, ((int) _accounts.entrySet().stream().filter(e -> e.getKey().bankId == bankId).count()))
+                , account);
     }
 
-    @Data
-    @AllArgsConstructor
-    private static class AccountInfo {
-        int bankId;
-        int accountId;
-        Account account;
+
+    private record CompoundKey(int bankId, int accountId) {
     }
+
 }

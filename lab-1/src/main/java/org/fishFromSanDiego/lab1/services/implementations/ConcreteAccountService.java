@@ -39,7 +39,7 @@ public class ConcreteAccountService implements AccountService {
         if (client.isSuspicious() && amount.compareTo(bank.suspiciousClientWithdrawalLimit()) > 0) {
             throw new RepositoryException("Limit for suspicious clients deposit is exceeded");
         }
-        _repositoryContext.getAccountRepository().depositMoney(_accountId, _bankId, amount);
+        _repositoryContext.getAccountRepository().depositMoney(_accountId, _bankId, amount, true);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class ConcreteAccountService implements AccountService {
         if (client.isSuspicious() && amount.compareTo(bank.suspiciousClientWithdrawalLimit()) > 0) {
             throw new RepositoryException("Limit for suspicious clients withdrawal is exceeded");
         }
-        _repositoryContext.getAccountRepository().withdrawMoney(_accountId, _bankId, amount);
+        _repositoryContext.getAccountRepository().withdrawMoney(_accountId, _bankId, amount, true);
     }
 
     @Override
@@ -107,6 +107,7 @@ public class ConcreteAccountService implements AccountService {
         if (client.isSuspicious() && amount.compareTo(bank.suspiciousClientWithdrawalLimit()) > 0) {
             throw new RepositoryException("Limit for suspicious clients transfer is exceeded");
         }
-        _repositoryContext.getAccountRepository().transferMoney(_accountId, _bankId, recipientId, recipientBankId, amount);
+        _repositoryContext.getAccountRepository()
+                .transferMoney(_accountId, _bankId, recipientId, recipientBankId, amount, true);
     }
 }

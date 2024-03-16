@@ -7,11 +7,12 @@ import java.math.BigDecimal;
 @Getter
 public abstract class Transaction {
     protected final BigDecimal sum;
-    protected final boolean isReverted;
+    protected final boolean canBeReverted;
 
-    protected Transaction(BigDecimal sum, boolean isReverted) {
+
+    protected Transaction(BigDecimal sum, boolean canBeReverted) {
         this.sum = sum;
-        this.isReverted = isReverted;
+        this.canBeReverted = canBeReverted;
     }
 
     public abstract String getTransactionTypeName();
@@ -23,12 +24,12 @@ public abstract class Transaction {
         @Builder
         public Transfer(
                 BigDecimal sum,
-                boolean isReverted,
+                boolean canBeReverted,
                 int senderBankId,
                 int recipientBankId,
                 int senderId,
                 int recipientId) {
-            super(sum, isReverted);
+            super(sum, canBeReverted);
             this.senderBankId = senderBankId;
             this.recipientBankId = recipientBankId;
             this.senderId = senderId;
@@ -42,7 +43,7 @@ public abstract class Transaction {
 
         public Transaction.Transfer.TransferBuilder directBuilder(Transaction.Transfer.TransferBuilder builder) {
             return builder
-                    .isReverted(super.isReverted)
+                    .canBeReverted(super.canBeReverted)
                     .sum(super.sum)
                     .recipientBankId(recipientBankId)
                     .recipientId(recipientId)
@@ -62,8 +63,8 @@ public abstract class Transaction {
     @Value
     public static class Deposit extends Transaction {
         @Builder
-        public Deposit(BigDecimal sum, boolean isReverted, int recipientBankId, int recipientId) {
-            super(sum, isReverted);
+        public Deposit(BigDecimal sum, boolean canBeReverted, int recipientBankId, int recipientId) {
+            super(sum, canBeReverted);
             this.recipientBankId = recipientBankId;
             this.recipientId = recipientId;
         }
@@ -73,7 +74,7 @@ public abstract class Transaction {
 
         public Transaction.Deposit.DepositBuilder directBuilder(Transaction.Deposit.DepositBuilder builder) {
             return builder
-                    .isReverted(super.isReverted)
+                    .canBeReverted(super.canBeReverted)
                     .sum(super.sum)
                     .recipientBankId(recipientBankId)
                     .recipientId(recipientId);
@@ -90,8 +91,8 @@ public abstract class Transaction {
     @Value
     public static class Withdrawal extends Transaction {
         @Builder
-        public Withdrawal(BigDecimal sum, boolean isReverted, int bankId, int accountId) {
-            super(sum, isReverted);
+        public Withdrawal(BigDecimal sum, boolean canBeReverted, int bankId, int accountId) {
+            super(sum, canBeReverted);
             this.bankId = bankId;
             this.accountId = accountId;
         }
@@ -101,7 +102,7 @@ public abstract class Transaction {
 
         public Transaction.Withdrawal.WithdrawalBuilder directBuilder(Transaction.Withdrawal.WithdrawalBuilder builder) {
             return builder
-                    .isReverted(super.isReverted)
+                    .canBeReverted(super.canBeReverted)
                     .sum(super.sum)
                     .bankId(bankId)
                     .accountId(accountId);

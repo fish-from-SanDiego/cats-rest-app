@@ -13,13 +13,20 @@ public interface AccountRepository {
 
     Collection<FetchedModel<Account>> getAllClientAccounts(int clientId, int bankId);
 
-    void depositMoney(int accountId, int bankId, BigDecimal amount) throws RepositoryException;
+    void depositMoney(int accountId, int bankId, BigDecimal amount, boolean canBeReverted) throws RepositoryException;
 
-    void withdrawMoney(int accountId, int bankId, BigDecimal amount) throws RepositoryException;
+    void withdrawMoney(int accountId, int bankId, BigDecimal amount, boolean canBeReverted) throws RepositoryException;
 
-    void transferMoney(int senderAccountId, int senderBankId, int recipientAccountId, int recipientBankId, BigDecimal amount) throws RepositoryException;
+    void transferMoney(int senderAccountId,
+                       int senderBankId,
+                       int recipientAccountId,
+                       int recipientBankId,
+                       BigDecimal amount,
+                       boolean canBeReverted) throws RepositoryException;
 
     Collection<FetchedModel<Transaction>> getAllAccountTransactions(int accountId, int bankId);
+
+    boolean tryRevertTransaction(int transactionId) throws RepositoryException;
 
     void addNewAccount(int bankId, Account account) throws RepositoryException;
 

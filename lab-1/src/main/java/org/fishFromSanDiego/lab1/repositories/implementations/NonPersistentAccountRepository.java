@@ -37,7 +37,7 @@ public class NonPersistentAccountRepository implements AccountRepository {
     }
 
     @Override
-    public void depositMoney(int accountId, int bankId, BigDecimal amount) throws RepositoryException {
+    public void depositMoney(int accountId, int bankId, BigDecimal amount, boolean canBeReverted) throws RepositoryException {
 
         Optional<Map.Entry<CompoundKey, Account>> accountEntry = _accounts.entrySet().stream()
                 .filter(e -> e.getKey().bankId == bankId && e.getKey().accountId == accountId)
@@ -56,14 +56,14 @@ public class NonPersistentAccountRepository implements AccountRepository {
                 Transaction.Deposit.builder()
                         .recipientId(accountId)
                         .recipientBankId(bankId)
-                        .isReverted(false)
+                        .canBeReverted(canBeReverted)
                         .sum(amount)
                         .build(),
                 _transactions.size()));
     }
 
     @Override
-    public void withdrawMoney(int accountId, int bankId, BigDecimal amount) throws RepositoryException {
+    public void withdrawMoney(int accountId, int bankId, BigDecimal amount, boolean canBeReverted) throws RepositoryException {
         Optional<Map.Entry<CompoundKey, Account>> accountEntry = _accounts.entrySet().stream()
                 .filter(e -> e.getKey().bankId == bankId && e.getKey().accountId == accountId)
                 .findFirst();
@@ -79,7 +79,7 @@ public class NonPersistentAccountRepository implements AccountRepository {
                 Transaction.Withdrawal.builder()
                         .accountId(accountId)
                         .bankId(bankId)
-                        .isReverted(false)
+                        .canBeReverted(canBeReverted)
                         .sum(amount)
                         .build(),
                 _transactions.size()));
@@ -91,7 +91,8 @@ public class NonPersistentAccountRepository implements AccountRepository {
             int senderBankId,
             int recipientAccountId,
             int recipientBankId,
-            BigDecimal amount) throws RepositoryException {
+            BigDecimal amount,
+            boolean canBeReverted) throws RepositoryException {
         Optional<Map.Entry<CompoundKey, Account>> senderAccountEntry = _accounts.entrySet().stream()
                 .filter(e -> e.getKey().bankId == senderBankId && e.getKey().accountId == senderAccountId)
                 .findFirst();
@@ -120,7 +121,7 @@ public class NonPersistentAccountRepository implements AccountRepository {
                         .senderId(senderAccountId)
                         .recipientBankId(recipientBankId)
                         .recipientId(recipientAccountId)
-                        .isReverted(false)
+                        .canBeReverted(canBeReverted)
                         .sum(amount)
                         .build(),
                 _transactions.size()));
@@ -137,6 +138,28 @@ public class NonPersistentAccountRepository implements AccountRepository {
                         && tr.getRecipientBankId() == bankId || tr.getSenderId() == accountId
                         && tr.getSenderBankId() == bankId))
                 .toList();
+    }
+
+    @Override
+    public boolean tryRevertTransaction(int transactionId) throws RepositoryException {
+        Optional<FetchedModel<Transaction>> transactionOptional = _transactions.stream().filter(tr -> tr.id() == transactionId)
+                .findFirst();
+        if (transactionOptional.isEmpty()) {
+            throw new RepositoryException("Couldn't find transaction with such id");
+        }
+        var transaction = transactionOptional.get().value();
+        if (!transaction.isCanBeReverted())
+            return false;
+        if (transaction instanceof Transaction.Deposit dep)
+            withdrawMoney(dep.getRecipientId(), dep.getRecipientBankId(), dep.getSum(), false);
+        if (transaction instanceof Transaction.Withdrawal wth)
+            depositMoney(wth.getAccountId(), wth.getBankId(), wth.getSum(), false);
+        if (transaction instanceof Transaction.Transfer transfer)
+            transferMoney(
+                    transfer.getSenderId(), transfer.getSenderBankId(),
+                    transfer.getRecipientId(), transfer.getRecipientBankId(),
+                    transfer.getSum(), false);
+        return true;
     }
 
     @Override

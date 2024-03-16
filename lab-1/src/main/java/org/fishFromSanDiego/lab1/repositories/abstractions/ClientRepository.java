@@ -1,5 +1,6 @@
 package org.fishFromSanDiego.lab1.repositories.abstractions;
 
+import org.fishFromSanDiego.lab1.exceptions.RepositoryException;
 import org.fishFromSanDiego.lab1.models.Client;
 import org.fishFromSanDiego.lab1.models.FetchedModel;
 
@@ -18,16 +19,11 @@ public interface ClientRepository {
      */
     Optional<FetchedModel<Client>> findBankClientById(int clientId, int bankId);
 
-    /**
-     * Add new client.
-     *
-     * @param client   the client
-     * @param password the password
-     * @return the id of added client
-     */
-    int addNewClient(int bankId, Client client, String password);
 
-    void updateClientAddress(int clientId, String address);
+    void addNewClient(int bankId, Client client, String password);
 
-    Optional<String> findPasswordByClientId(int clientId);
+    void updateClientAddress(int clientId, int bankId, String address) throws RepositoryException;
+    void updateClientPassportId(int clientId, int bankId, int passportId) throws RepositoryException;
+
+    Optional<String> findPasswordByClientId(int clientId, int bankId);
 }

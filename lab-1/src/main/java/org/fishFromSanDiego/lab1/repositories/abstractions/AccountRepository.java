@@ -1,5 +1,6 @@
 package org.fishFromSanDiego.lab1.repositories.abstractions;
 
+import org.fishFromSanDiego.lab1.abstractions.DepositChargeStrategy;
 import org.fishFromSanDiego.lab1.exceptions.RepositoryException;
 import org.fishFromSanDiego.lab1.models.*;
 
@@ -26,8 +27,16 @@ public interface AccountRepository {
 
     Collection<FetchedModel<Transaction>> getAllAccountTransactions(int accountId, int bankId);
 
+    Collection<FetchedModel<Transaction>> getAllBankTransactions(int bankId);
+
     boolean tryRevertTransaction(int transactionId) throws RepositoryException;
 
     void addNewAccount(int bankId, Account account) throws RepositoryException;
+
+    void chargeAllPercents(int bankId, BigDecimal debitCardPercent, DepositChargeStrategy depositChargeStrategy);
+
+    void payAllPercents(int bankId);
+
+    void takeCommissions(int bankId, BigDecimal commissionSum);
 
 }

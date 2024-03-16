@@ -1,17 +1,18 @@
 package org.fishFromSanDiego.lab1.services.abstractions;
 
 import org.fishFromSanDiego.lab1.abstractions.Observer;
+import org.fishFromSanDiego.lab1.exceptions.ServiceException;
 import org.fishFromSanDiego.lab1.models.Account;
+import org.fishFromSanDiego.lab1.models.FetchedModel;
 
 import java.util.Collection;
 import java.util.Optional;
 
 public interface ClientService {
-    void setAddressInfo(String address);
+    void setAddressInfo(String address) throws ServiceException;
 
-    void setPassportInfo(int passportId);
+    void setPassportInfo(int passportId) throws ServiceException;
 
-    Collection<Account> getAllAccounts();
+    Collection<FetchedModel<Account>> getAllAccounts();
 
-    void subscribeObserverToBankNotifications(Observer<String> observer);
 }

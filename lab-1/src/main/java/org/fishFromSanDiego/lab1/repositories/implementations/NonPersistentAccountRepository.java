@@ -3,6 +3,7 @@ package org.fishFromSanDiego.lab1.repositories.implementations;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Value;
+import org.fishFromSanDiego.lab1.abstractions.DepositChargeStrategy;
 import org.fishFromSanDiego.lab1.exceptions.RepositoryException;
 import org.fishFromSanDiego.lab1.models.*;
 import org.fishFromSanDiego.lab1.repositories.abstractions.AccountRepository;
@@ -12,6 +13,7 @@ import java.util.*;
 
 public class NonPersistentAccountRepository implements AccountRepository {
     Map<CompoundKey, Account> _accounts;
+    Map<CompoundKey, BigDecimal> _percents;
     ArrayList<FetchedModel<Transaction>> _transactions;
 
     public NonPersistentAccountRepository() {
@@ -141,6 +143,20 @@ public class NonPersistentAccountRepository implements AccountRepository {
     }
 
     @Override
+    public Collection<FetchedModel<Transaction>> getAllBankTransactions(int bankId) {
+        return _transactions.stream()
+                .filter(transaction -> transaction.value() instanceof Transaction.Deposit dep
+                        && dep.getRecipientBankId() == bankId
+                        || transaction.value() instanceof Transaction.Withdrawal wth
+                        && wth.getBankId() == bankId
+                        || transaction.value() instanceof Transaction.Transfer tr
+                        && (tr.getRecipientBankId() == bankId
+                        || tr.getSenderBankId() == bankId))
+                .toList();
+
+    }
+
+    @Override
     public boolean tryRevertTransaction(int transactionId) throws RepositoryException {
         Optional<FetchedModel<Transaction>> transactionOptional = _transactions.stream().filter(tr -> tr.id() == transactionId)
                 .findFirst();
@@ -167,6 +183,44 @@ public class NonPersistentAccountRepository implements AccountRepository {
         _accounts.put(
                 new CompoundKey(bankId, ((int) _accounts.entrySet().stream().filter(e -> e.getKey().bankId == bankId).count()))
                 , account);
+    }
+
+    @Override
+    public void chargeAllPercents(int bankId, BigDecimal debitCardPercent, DepositChargeStrategy depositChargeStrategy) {
+        for (var entry : _accounts.entrySet()) {
+            var accountBalance = entry.getValue().balance();
+            _percents.putIfAbsent(entry.getKey(), BigDecimal.ZERO);
+            if (entry.getValue().accountType() instanceof AccountType.Debit)
+                _percents.
+                        put(entry.getKey(),
+                                accountBalance.multiply(BigDecimal.ONE.add(debitCardPercent)).add(_percents.get(entry.getKey())));
+            if (entry.getValue().accountType() instanceof AccountType.Deposit) {
+                _percents
+                        .put(entry.getKey(),
+                                accountBalance.multiply(BigDecimal.ONE.add(depositChargeStrategy.getPercentByBalance(accountBalance))).add(_percents.get(entry.getKey())));
+
+            }
+        }
+    }
+
+    @Override
+    public void payAllPercents(int bankId) {
+        for (var entry : _percents.entrySet()) {
+            var account = _accounts.get(entry.getKey());
+            _accounts.put(entry.getKey(), account.directBuilder(Account.builder()).balance(account.balance().add(entry.getValue())).build());
+        }
+    }
+
+    @Override
+    public void takeCommissions(int bankId, BigDecimal commissionSum) {
+        var creditCardAccountEntrySets = _accounts.entrySet().stream()
+                .filter(e -> e.getValue().accountType() instanceof AccountType.Credit)
+                .toList();
+        for (var entry : creditCardAccountEntrySets) {
+            _accounts.
+                    put(entry.getKey(),
+                            entry.getValue().directBuilder(Account.builder()).balance(entry.getValue().balance().subtract(commissionSum)).build());
+        }
     }
 
 

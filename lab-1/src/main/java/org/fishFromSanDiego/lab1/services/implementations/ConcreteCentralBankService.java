@@ -8,14 +8,16 @@ import org.fishFromSanDiego.lab1.services.abstractions.BankService;
 import org.fishFromSanDiego.lab1.services.abstractions.CentralBankService;
 import org.fishFromSanDiego.lab1.services.abstractions.LoginService;
 
-import java.util.Collection;
-import java.util.Optional;
+import java.util.*;
 
 public class ConcreteCentralBankService implements CentralBankService {
     private final RepositoryContext _repositoryContext;
+    Collection<BankService> _subscribers;
 
     public ConcreteCentralBankService(RepositoryContext repositoryContext) {
+
         _repositoryContext = repositoryContext;
+        _subscribers = new ArrayList<>();
     }
 
     @Override
@@ -28,27 +30,28 @@ public class ConcreteCentralBankService implements CentralBankService {
     }
 
     @Override
-    public Collection<BankService> getAllBankServices() {
-        return null;
-    }
-
-    @Override
     public void subscribeBankService(BankService bankService) {
-
+        _subscribers.add(bankService);
     }
 
     @Override
-    public void notifyBanksAboutCommission() {
-
+    public void notifyBanksAboutCommission() throws ServiceException {
+        for (var s : _subscribers) {
+            s.takeAllCommissions();
+        }
     }
 
     @Override
-    public void notifyBanksAboutPercentPayment() {
-
+    public void notifyBanksAboutPercentPayment() throws ServiceException {
+        for (var s : _subscribers) {
+            s.payAllPercents();
+        }
     }
 
     @Override
-    public void notifyBanksAboutPercentCharge() {
-
+    public void notifyBanksAboutPercentCharge() throws ServiceException {
+        for (var s : _subscribers) {
+            s.chargeAllPercents();
+        }
     }
 }

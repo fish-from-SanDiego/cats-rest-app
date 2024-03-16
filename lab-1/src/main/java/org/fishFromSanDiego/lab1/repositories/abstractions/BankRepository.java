@@ -1,10 +1,13 @@
 package org.fishFromSanDiego.lab1.repositories.abstractions;
 
+import org.fishFromSanDiego.lab1.abstractions.DepositChargeStrategy;
+import org.fishFromSanDiego.lab1.abstractions.Observer;
 import org.fishFromSanDiego.lab1.exceptions.RepositoryException;
-import org.fishFromSanDiego.lab1.models.Account;
-import org.fishFromSanDiego.lab1.models.Bank;
-import org.fishFromSanDiego.lab1.models.FetchedModel;
+import org.fishFromSanDiego.lab1.exceptions.ServiceException;
+import org.fishFromSanDiego.lab1.models.*;
 
+import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Optional;
 
 public interface BankRepository {
@@ -15,4 +18,16 @@ public interface BankRepository {
     Optional<FetchedModel<Bank>> findBankById(int bankId);
 
     void addNewBank(Bank bank, String password) throws RepositoryException;
+
+    void setSuspiciousClientDepositLimit(BigDecimal newLimit, int bankId) throws RepositoryException;
+
+    void setSuspiciousClientWithdrawalLimit(BigDecimal newLimit, int bankId) throws RepositoryException;
+
+    void setCreditCardLimit(BigDecimal newLimit, int bankId) throws RepositoryException;
+
+    void setCreditCardCommission(BigDecimal newCommission, int bankId) throws RepositoryException;
+
+    void setDebitCardPercent(BigDecimal newPercent, int bankId) throws RepositoryException;
+
+    void setDepositChargeStrategy(DepositChargeStrategy strategy, int bankId) throws RepositoryException;
 }

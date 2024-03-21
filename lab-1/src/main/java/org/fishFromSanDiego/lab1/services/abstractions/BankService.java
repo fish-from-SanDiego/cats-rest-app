@@ -3,6 +3,7 @@ package org.fishFromSanDiego.lab1.services.abstractions;
 import org.fishFromSanDiego.lab1.abstractions.DepositChargeStrategy;
 import org.fishFromSanDiego.lab1.abstractions.Publisher;
 import org.fishFromSanDiego.lab1.exceptions.ServiceException;
+import org.fishFromSanDiego.lab1.models.Bank;
 import org.fishFromSanDiego.lab1.models.Client;
 import org.fishFromSanDiego.lab1.models.FetchedModel;
 import org.fishFromSanDiego.lab1.models.Transaction;
@@ -14,6 +15,7 @@ import java.util.Optional;
 public interface BankService extends Publisher<String> {
     void registerNewClient(Client newClient, String password);
 
+    FetchedModel<Bank> getBank() throws ServiceException;
 
     void chargeAllPercents() throws ServiceException;
 

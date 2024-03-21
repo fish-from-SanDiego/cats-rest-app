@@ -18,6 +18,7 @@ public class NonPersistentAccountRepository implements AccountRepository {
 
     public NonPersistentAccountRepository() {
         _accounts = new HashMap<>();
+        _percents = new HashMap<>();
         _transactions = new ArrayList<FetchedModel<Transaction>>();
     }
 

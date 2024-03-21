@@ -4,10 +4,7 @@ import org.fishFromSanDiego.lab1.abstractions.DepositChargeStrategy;
 import org.fishFromSanDiego.lab1.abstractions.Observer;
 import org.fishFromSanDiego.lab1.exceptions.RepositoryException;
 import org.fishFromSanDiego.lab1.exceptions.ServiceException;
-import org.fishFromSanDiego.lab1.models.Client;
-import org.fishFromSanDiego.lab1.models.FetchedModel;
-import org.fishFromSanDiego.lab1.models.RepositoryContext;
-import org.fishFromSanDiego.lab1.models.Transaction;
+import org.fishFromSanDiego.lab1.models.*;
 import org.fishFromSanDiego.lab1.repositories.abstractions.BankRepository;
 import org.fishFromSanDiego.lab1.services.abstractions.BankService;
 
@@ -42,6 +39,11 @@ public class ConcreteBankService implements BankService {
     @Override
     public void registerNewClient(Client newClient, String password) {
         _repositoryContext.getClientRepository().addNewClient(_bankId, newClient, password);
+    }
+
+    @Override
+    public FetchedModel<Bank> getBank() throws ServiceException {
+        return _repositoryContext.getBankRepository().findBankById(_bankId).orElseThrow(ServiceException::new);
     }
 
 

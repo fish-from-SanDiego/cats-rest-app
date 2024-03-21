@@ -9,16 +9,21 @@ import org.fishFromSanDiego.lab1.models.FetchedModel;
 import org.fishFromSanDiego.lab1.repositories.abstractions.BankRepository;
 
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 public class NonPersistentBankRepository implements BankRepository {
+
     Map<Integer, Bank> _banks;
     Map<Integer, String> _bankPasswords;
     String _centralBankPassword;
 
     public NonPersistentBankRepository(String centralBankPassword) {
         this._centralBankPassword = centralBankPassword;
+        _banks = new HashMap<>();
+        _bankPasswords = new HashMap<>();
     }
 
     @Override
@@ -38,6 +43,11 @@ public class NonPersistentBankRepository implements BankRepository {
         return _banks.containsKey(bankId) ?
                 Optional.of(new FetchedModel<>(_banks.get(bankId), bankId))
                 : Optional.empty();
+    }
+
+    @Override
+    public Collection<FetchedModel<Bank>> getAllBanks() {
+        return _banks.entrySet().stream().map(e -> new FetchedModel<>(e.getValue(), e.getKey())).toList();
     }
 
     @Override

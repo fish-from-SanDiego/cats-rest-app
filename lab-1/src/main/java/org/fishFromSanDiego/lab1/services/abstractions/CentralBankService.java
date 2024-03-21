@@ -10,8 +10,6 @@ public interface CentralBankService {
 
     void registerNewBank(Bank bank, String password) throws ServiceException;
 
-    void subscribeBankService(BankService bankService);
-
     void notifyBanksAboutCommission() throws ServiceException;
 
     void notifyBanksAboutPercentPayment() throws ServiceException;

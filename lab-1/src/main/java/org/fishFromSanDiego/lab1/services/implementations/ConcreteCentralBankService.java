@@ -12,12 +12,10 @@ import java.util.*;
 
 public class ConcreteCentralBankService implements CentralBankService {
     private final RepositoryContext _repositoryContext;
-    Collection<BankService> _subscribers;
 
     public ConcreteCentralBankService(RepositoryContext repositoryContext) {
 
         _repositoryContext = repositoryContext;
-        _subscribers = new ArrayList<>();
     }
 
     @Override
@@ -30,28 +28,23 @@ public class ConcreteCentralBankService implements CentralBankService {
     }
 
     @Override
-    public void subscribeBankService(BankService bankService) {
-        _subscribers.add(bankService);
-    }
-
-    @Override
     public void notifyBanksAboutCommission() throws ServiceException {
-        for (var s : _subscribers) {
-            s.takeAllCommissions();
+        for (var bf : _repositoryContext.getBankRepository().getAllBanks()) {
+            new ConcreteBankService(_repositoryContext, bf.id()).takeAllCommissions();
         }
     }
 
     @Override
     public void notifyBanksAboutPercentPayment() throws ServiceException {
-        for (var s : _subscribers) {
-            s.payAllPercents();
+        for (var bf : _repositoryContext.getBankRepository().getAllBanks()) {
+            new ConcreteBankService(_repositoryContext, bf.id()).payAllPercents();
         }
     }
 
     @Override
     public void notifyBanksAboutPercentCharge() throws ServiceException {
-        for (var s : _subscribers) {
-            s.chargeAllPercents();
+        for (var bf : _repositoryContext.getBankRepository().getAllBanks()) {
+            new ConcreteBankService(_repositoryContext, bf.id()).chargeAllPercents();
         }
     }
 }

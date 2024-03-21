@@ -15,7 +15,8 @@ public class NonPersistentClientRepository implements ClientRepository {
     Map<CompoundKey, String> _clientPasswords;
 
     public NonPersistentClientRepository() {
-        this._clients = new HashMap<>();
+        _clients = new HashMap<>();
+        _clientPasswords = new HashMap<>();
     }
 
     @Override

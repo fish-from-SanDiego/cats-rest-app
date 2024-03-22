@@ -10,7 +10,7 @@ import java.util.Optional;
 public record Client(@NonNull String name, @NonNull String surname, String address, Optional<Integer> passportId) {
 
     public boolean isSuspicious() {
-        return address() == null || address.isEmpty() || passportId().isEmpty();
+        return address == null || address.isEmpty() || passportId().isEmpty();
     }
 
     public static NameBuilder builder() {
@@ -22,7 +22,7 @@ public record Client(@NonNull String name, @NonNull String surname, String addre
         private String _name;
         private String _surname;
         private String _address;
-        private Optional<Integer> _passportId;
+        private Optional<Integer> _passportId = Optional.empty();
 
 
         @Override
@@ -58,6 +58,6 @@ public record Client(@NonNull String name, @NonNull String surname, String addre
                 .withPassport(passportId.get())
                 : builder
                 .withFullName(name, surname)
-                .withAddress(address);
+                .withAddress(address != null ? address : "");
     }
 }

@@ -1,6 +1,7 @@
 package org.fishFromSanDiego.lab1.services.implementations;
 
 import org.fishFromSanDiego.lab1.exceptions.RepositoryException;
+import org.fishFromSanDiego.lab1.exceptions.ServiceException;
 import org.fishFromSanDiego.lab1.models.*;
 import org.fishFromSanDiego.lab1.services.abstractions.AccountService;
 
@@ -18,6 +19,11 @@ public class ConcreteAccountService implements AccountService {
         _bankId = bankId;
         _clientId = clientId;
         _accountId = accountId;
+    }
+
+    @Override
+    public FetchedModel<Account> getAccount() throws ServiceException {
+        return _repositoryContext.getAccountRepository().findAccountById(_accountId, _clientId, _bankId).orElseThrow(ServiceException::new);
     }
 
     @Override

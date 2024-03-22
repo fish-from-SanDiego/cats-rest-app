@@ -4,6 +4,7 @@ import org.fishFromSanDiego.lab1.abstractions.Observer;
 import org.fishFromSanDiego.lab1.exceptions.RepositoryException;
 import org.fishFromSanDiego.lab1.exceptions.ServiceException;
 import org.fishFromSanDiego.lab1.models.Account;
+import org.fishFromSanDiego.lab1.models.Client;
 import org.fishFromSanDiego.lab1.models.FetchedModel;
 import org.fishFromSanDiego.lab1.models.RepositoryContext;
 import org.fishFromSanDiego.lab1.services.abstractions.ClientService;
@@ -20,6 +21,11 @@ public class ConcreteClientService implements ClientService {
         this.repositoryContext = repositoryContext;
         this.clientId = clientId;
         this.bankId = bankId;
+    }
+
+    @Override
+    public FetchedModel<Client> getClient() throws ServiceException {
+        return repositoryContext.getClientRepository().findBankClientById(clientId, bankId).orElseThrow(ServiceException::new);
     }
 
     @Override

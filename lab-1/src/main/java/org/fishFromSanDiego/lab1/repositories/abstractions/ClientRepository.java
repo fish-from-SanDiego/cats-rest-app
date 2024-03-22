@@ -23,6 +23,7 @@ public interface ClientRepository {
     void addNewClient(int bankId, Client client, String password);
 
     void updateClientAddress(int clientId, int bankId, String address) throws RepositoryException;
+
     void updateClientPassportId(int clientId, int bankId, int passportId) throws RepositoryException;
 
     Optional<String> findPasswordByClientId(int clientId, int bankId);

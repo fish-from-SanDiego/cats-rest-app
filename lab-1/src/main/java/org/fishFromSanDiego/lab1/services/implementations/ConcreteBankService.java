@@ -5,7 +5,6 @@ import org.fishFromSanDiego.lab1.abstractions.Observer;
 import org.fishFromSanDiego.lab1.exceptions.RepositoryException;
 import org.fishFromSanDiego.lab1.exceptions.ServiceException;
 import org.fishFromSanDiego.lab1.models.*;
-import org.fishFromSanDiego.lab1.repositories.abstractions.BankRepository;
 import org.fishFromSanDiego.lab1.services.abstractions.BankService;
 
 import java.math.BigDecimal;

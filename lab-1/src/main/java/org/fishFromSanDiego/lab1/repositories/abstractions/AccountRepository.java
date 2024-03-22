@@ -2,7 +2,9 @@ package org.fishFromSanDiego.lab1.repositories.abstractions;
 
 import org.fishFromSanDiego.lab1.abstractions.DepositChargeStrategy;
 import org.fishFromSanDiego.lab1.exceptions.RepositoryException;
-import org.fishFromSanDiego.lab1.models.*;
+import org.fishFromSanDiego.lab1.models.Account;
+import org.fishFromSanDiego.lab1.models.FetchedModel;
+import org.fishFromSanDiego.lab1.models.Transaction;
 
 import java.math.BigDecimal;
 import java.util.Collection;

@@ -1,13 +1,11 @@
 package org.fishFromSanDiego.lab1.services.abstractions;
 
-import org.fishFromSanDiego.lab1.abstractions.Observer;
 import org.fishFromSanDiego.lab1.exceptions.RepositoryException;
 import org.fishFromSanDiego.lab1.exceptions.ServiceException;
 import org.fishFromSanDiego.lab1.models.Account;
 import org.fishFromSanDiego.lab1.models.FetchedModel;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 public interface AccountService {
     FetchedModel<Account> getAccount() throws ServiceException;

@@ -1,5 +1,7 @@
 package org.fishFromSanDiego.lab1.presentation.abstractions.input;
 
+import java.util.Optional;
+
 public interface InputAsker<T> {
-    T Ask(String prompt);
+    Optional<T> Ask(String prompt);
 }

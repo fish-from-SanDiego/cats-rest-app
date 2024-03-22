@@ -1,11 +1,11 @@
 package org.fishFromSanDiego.lab1.repositories.implementations;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Value;
 import org.fishFromSanDiego.lab1.abstractions.DepositChargeStrategy;
 import org.fishFromSanDiego.lab1.exceptions.RepositoryException;
-import org.fishFromSanDiego.lab1.models.*;
+import org.fishFromSanDiego.lab1.models.Account;
+import org.fishFromSanDiego.lab1.models.AccountType;
+import org.fishFromSanDiego.lab1.models.FetchedModel;
+import org.fishFromSanDiego.lab1.models.Transaction;
 import org.fishFromSanDiego.lab1.repositories.abstractions.AccountRepository;
 
 import java.math.BigDecimal;

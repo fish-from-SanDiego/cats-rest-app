@@ -10,7 +10,6 @@ import org.fishFromSanDiego.lab1.models.Transaction;
 
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.Optional;
 
 public interface BankService extends Publisher<String> {
     void registerNewClient(Client newClient, String password);

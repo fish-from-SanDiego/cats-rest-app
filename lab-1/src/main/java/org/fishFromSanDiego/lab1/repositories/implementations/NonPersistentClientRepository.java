@@ -1,6 +1,5 @@
 package org.fishFromSanDiego.lab1.repositories.implementations;
 
-import lombok.EqualsAndHashCode;
 import org.fishFromSanDiego.lab1.exceptions.RepositoryException;
 import org.fishFromSanDiego.lab1.models.Client;
 import org.fishFromSanDiego.lab1.models.FetchedModel;

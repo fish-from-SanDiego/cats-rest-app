@@ -1,6 +1,5 @@
 package org.fishFromSanDiego.lab1.services.implementations;
 
-import org.fishFromSanDiego.lab1.abstractions.Observer;
 import org.fishFromSanDiego.lab1.exceptions.RepositoryException;
 import org.fishFromSanDiego.lab1.exceptions.ServiceException;
 import org.fishFromSanDiego.lab1.models.Account;
@@ -9,7 +8,6 @@ import org.fishFromSanDiego.lab1.models.FetchedModel;
 import org.fishFromSanDiego.lab1.models.RepositoryContext;
 import org.fishFromSanDiego.lab1.services.abstractions.ClientService;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class ConcreteClientService implements ClientService {

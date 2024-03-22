@@ -1,13 +1,11 @@
 package org.fishFromSanDiego.lab1.services.abstractions;
 
-import org.fishFromSanDiego.lab1.abstractions.Observer;
 import org.fishFromSanDiego.lab1.exceptions.ServiceException;
 import org.fishFromSanDiego.lab1.models.Account;
 import org.fishFromSanDiego.lab1.models.Client;
 import org.fishFromSanDiego.lab1.models.FetchedModel;
 
 import java.util.Collection;
-import java.util.Optional;
 
 public interface ClientService {
     FetchedModel<Client> getClient() throws ServiceException;

@@ -1,10 +1,8 @@
 package org.fishFromSanDiego.lab1.repositories.implementations;
 
 import org.fishFromSanDiego.lab1.abstractions.DepositChargeStrategy;
-import org.fishFromSanDiego.lab1.abstractions.Observer;
 import org.fishFromSanDiego.lab1.exceptions.RepositoryException;
 import org.fishFromSanDiego.lab1.models.Bank;
-import org.fishFromSanDiego.lab1.models.Client;
 import org.fishFromSanDiego.lab1.models.FetchedModel;
 import org.fishFromSanDiego.lab1.repositories.abstractions.BankRepository;
 

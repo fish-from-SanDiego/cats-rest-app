@@ -2,7 +2,7 @@ package org.fishFromSanDiego.lab1.presentation.implementations.input;
 
 import org.fishFromSanDiego.lab1.presentation.abstractions.input.InputAsker;
 
-import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class ScannerStringInputAsker implements InputAsker<String> {
@@ -13,8 +13,12 @@ public class ScannerStringInputAsker implements InputAsker<String> {
     }
 
     @Override
-    public String Ask(String prompt) {
+    public Optional<String> Ask(String prompt) {
         System.out.print(prompt);
-        return scanner.nextLine();
+        try {
+            return Optional.of(scanner.nextLine());
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 }

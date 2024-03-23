@@ -1,21 +1,34 @@
 package org.fishFromSanDiego.lab1;
 
-import java.io.FileNotFoundException;
+import org.fishFromSanDiego.lab1.models.RepositoryContext;
+import org.fishFromSanDiego.lab1.presentation.implementations.scenarios.*;
+import org.fishFromSanDiego.lab1.repositories.implementations.NonPersistentAccountRepository;
+import org.fishFromSanDiego.lab1.repositories.implementations.NonPersistentBankRepository;
+import org.fishFromSanDiego.lab1.repositories.implementations.NonPersistentClientRepository;
+
+import java.util.ArrayList;
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
-//        var scanner = new Scanner(System.in);
-//        var a = scanner.nextLine();
-//        var opt = Optional.of(12);
-//        opt.ifPresent(System.out::println);
-//        var builder = Client.builder();
-//        var builder1 = builder
-//                .withFullName("A", "a");
-//        var client2 = Client.builder().withFullName("b", "b")
-//                .build();
-//        var client1 = builder1.build();
-//        System.out.println(client1.toString());
-//        System.out.println(client2.toString());
-
+    public static void main(String[] args) {
+        var repositoryContext = new RepositoryContext(
+                new NonPersistentAccountRepository(),
+                new NonPersistentBankRepository("12345"),
+                new NonPersistentClientRepository()
+        );
+        ChoiceScenario initialScenario = new ChoiceScenario(
+                null,
+                "",
+                "Choose login option",
+                repositoryContext,
+                new ArrayList<>(),
+                true
+        );
+        initialScenario
+                .AddScenario(new CentralBankLoginScenario(initialScenario, repositoryContext))
+                .AddScenario(new BankLoginScenario(initialScenario, repositoryContext))
+                .AddScenario(new ClientLoginScenario(initialScenario, repositoryContext))
+                .AddScenario(new QuitScenario());
+        var runner = new ScenarioRunnerImpl(initialScenario);
+        runner.RunScenarios();
     }
 }

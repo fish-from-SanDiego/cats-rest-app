@@ -16,8 +16,11 @@ public class ScannerIntInputAsker implements InputAsker<Integer> {
     public Optional<Integer> Ask(String prompt) {
         System.out.print(prompt);
         try {
-            return Optional.of(scanner.nextInt());
+            var integer = scanner.nextInt();
+            scanner.nextLine();
+            return Optional.of(integer);
         } catch (Exception e) {
+            scanner.nextLine();
             return Optional.empty();
         }
     }

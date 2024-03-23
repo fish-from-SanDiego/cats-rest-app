@@ -49,9 +49,10 @@ public class NonPersistentBankRepository implements BankRepository {
     }
 
     @Override
-    public void addNewBank(Bank bank, String password) throws RepositoryException {
+    public int addNewBank(Bank bank, String password) throws RepositoryException {
         _banks.put(_banks.size(), bank);
         _bankPasswords.put(_bankPasswords.size(), password);
+        return _banks.size() - 1;
     }
 
     @Override

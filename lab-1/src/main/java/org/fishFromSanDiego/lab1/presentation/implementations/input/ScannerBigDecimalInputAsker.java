@@ -17,8 +17,11 @@ public class ScannerBigDecimalInputAsker implements InputAsker<BigDecimal> {
     public Optional<BigDecimal> Ask(String prompt) {
         System.out.print(prompt);
         try {
-            return Optional.of(scanner.nextBigDecimal());
+            var bigDecimal = scanner.nextBigDecimal();
+            scanner.nextLine();
+            return Optional.of(bigDecimal);
         } catch (Exception e) {
+            scanner.nextLine();
             return Optional.empty();
         }
     }

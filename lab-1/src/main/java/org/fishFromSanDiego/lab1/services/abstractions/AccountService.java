@@ -10,9 +10,9 @@ import java.math.BigDecimal;
 public interface AccountService {
     FetchedModel<Account> getAccount() throws ServiceException;
 
-    void depositMoney(BigDecimal amount) throws RepositoryException;
+    void depositMoney(BigDecimal amount) throws ServiceException;
 
-    void withdrawMoney(BigDecimal amount) throws RepositoryException;
+    void withdrawMoney(BigDecimal amount) throws ServiceException;
 
-    void transferMoney(BigDecimal amount, int recipientBankId, int recipientId) throws RepositoryException;
+    void transferMoney(BigDecimal amount, int recipientBankId, int recipientId) throws ServiceException;
 }

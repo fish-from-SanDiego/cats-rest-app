@@ -6,6 +6,8 @@ import org.fishFromSanDiego.lab1.models.Bank;
 import org.fishFromSanDiego.lab1.models.RepositoryContext;
 import org.fishFromSanDiego.lab1.services.abstractions.CentralBankService;
 
+import java.math.BigDecimal;
+
 public class ConcreteCentralBankService implements CentralBankService {
     private final RepositoryContext _repositoryContext;
 
@@ -15,9 +17,13 @@ public class ConcreteCentralBankService implements CentralBankService {
     }
 
     @Override
-    public void registerNewBank(Bank bank, String password) throws ServiceException {
+    public int registerNewBank(Bank bank, String password) throws ServiceException {
+        if (bank.creditCardLimit().compareTo(BigDecimal.ZERO) <= 0 ||
+                bank.creditCardCommission().compareTo(BigDecimal.ZERO) <= 0 ||
+                bank.debitCardPercent().compareTo(BigDecimal.ZERO) <= 0)
+            throw new ServiceException("Incorrect bank info");
         try {
-            _repositoryContext.getBankRepository().addNewBank(bank, password);
+            return _repositoryContext.getBankRepository().addNewBank(bank, password);
         } catch (RepositoryException ex) {
             throw new ServiceException(ex);
         }

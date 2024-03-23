@@ -27,31 +27,35 @@ public class ConcreteAccountService implements AccountService {
     }
 
     @Override
-    public void depositMoney(BigDecimal amount) throws RepositoryException {
+    public void depositMoney(BigDecimal amount) throws ServiceException {
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new RepositoryException("Value can't be non-positive");
+            throw new ServiceException("Value can't be non-positive");
         }
         Optional<FetchedModel<Bank>> bankOptional = _repositoryContext.getBankRepository().findBankById(_bankId);
         Optional<FetchedModel<Client>> clientOptional =
                 _repositoryContext.getClientRepository().findBankClientById(_clientId, _bankId);
         if (bankOptional.isEmpty()) {
-            throw new RepositoryException("Couldn't load bank info");
+            throw new ServiceException("Couldn't load bank info");
         }
         if (clientOptional.isEmpty()) {
-            throw new RepositoryException("Couldn't load client info");
+            throw new ServiceException("Couldn't load client info");
         }
         Bank bank = bankOptional.get().value();
         Client client = clientOptional.get().value();
         if (client.isSuspicious() && amount.compareTo(bank.suspiciousClientWithdrawalLimit()) > 0) {
-            throw new RepositoryException("Limit for suspicious clients deposit is exceeded");
+            throw new ServiceException("Limit for suspicious clients deposit is exceeded");
         }
-        _repositoryContext.getAccountRepository().depositMoney(_accountId, _bankId, amount, true);
+        try {
+            _repositoryContext.getAccountRepository().depositMoney(_accountId, _bankId, amount, true);
+        } catch (RepositoryException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
     }
 
     @Override
-    public void withdrawMoney(BigDecimal amount) throws RepositoryException {
+    public void withdrawMoney(BigDecimal amount) throws ServiceException {
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new RepositoryException("Value can't be non-positive");
+            throw new ServiceException("Value can't be non-positive");
         }
         Optional<FetchedModel<Bank>> bankOptional = _repositoryContext.getBankRepository().findBankById(_bankId);
         Optional<FetchedModel<Account>> accountOptional =
@@ -59,13 +63,13 @@ public class ConcreteAccountService implements AccountService {
         Optional<FetchedModel<Client>> clientOptional =
                 _repositoryContext.getClientRepository().findBankClientById(_clientId, _bankId);
         if (bankOptional.isEmpty()) {
-            throw new RepositoryException("Couldn't load bank info");
+            throw new ServiceException("Couldn't load bank info");
         }
         if (accountOptional.isEmpty()) {
-            throw new RepositoryException("Couldn't load account info");
+            throw new ServiceException("Couldn't load account info");
         }
         if (clientOptional.isEmpty()) {
-            throw new RepositoryException("Couldn't load client info");
+            throw new ServiceException("Couldn't load client info");
         }
         Bank bank = bankOptional.get().value();
         Client client = clientOptional.get().value();
@@ -73,19 +77,23 @@ public class ConcreteAccountService implements AccountService {
         if (account.balance().compareTo(amount) < 0
                 && !(account.accountType() instanceof AccountType.Credit)
                 || account.balance().add(bank.creditCardLimit()).compareTo(amount) < 0) {
-            throw new RepositoryException("Not enough money to withdraw");
+            throw new ServiceException("Not enough money to withdraw");
         }
 
         if (client.isSuspicious() && amount.compareTo(bank.suspiciousClientWithdrawalLimit()) > 0) {
-            throw new RepositoryException("Limit for suspicious clients withdrawal is exceeded");
+            throw new ServiceException("Limit for suspicious clients withdrawal is exceeded");
         }
-        _repositoryContext.getAccountRepository().withdrawMoney(_accountId, _bankId, amount, true);
+        try {
+            _repositoryContext.getAccountRepository().withdrawMoney(_accountId, _bankId, amount, true);
+        } catch (RepositoryException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
     }
 
     @Override
-    public void transferMoney(BigDecimal amount, int recipientBankId, int recipientId) throws RepositoryException {
+    public void transferMoney(BigDecimal amount, int recipientBankId, int recipientId) throws ServiceException {
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new RepositoryException("Value can't be non-positive");
+            throw new ServiceException("Value can't be non-positive");
         }
         Optional<FetchedModel<Bank>> bankOptional = _repositoryContext.getBankRepository().findBankById(_bankId);
         Optional<FetchedModel<Account>> accountOptional =
@@ -93,13 +101,13 @@ public class ConcreteAccountService implements AccountService {
         Optional<FetchedModel<Client>> clientOptional =
                 _repositoryContext.getClientRepository().findBankClientById(_clientId, _bankId);
         if (bankOptional.isEmpty()) {
-            throw new RepositoryException("Couldn't load bank info");
+            throw new ServiceException("Couldn't load bank info");
         }
         if (accountOptional.isEmpty()) {
-            throw new RepositoryException("Couldn't load account info");
+            throw new ServiceException("Couldn't load account info");
         }
         if (clientOptional.isEmpty()) {
-            throw new RepositoryException("Couldn't load client info");
+            throw new ServiceException("Couldn't load client info");
         }
         Bank bank = bankOptional.get().value();
         Client client = clientOptional.get().value();
@@ -107,13 +115,17 @@ public class ConcreteAccountService implements AccountService {
         if (account.balance().compareTo(amount) < 0
                 && !(account.accountType() instanceof AccountType.Credit)
                 || account.balance().add(bank.creditCardLimit()).compareTo(amount) < 0) {
-            throw new RepositoryException("Not enough money to transfer");
+            throw new ServiceException("Not enough money to transfer");
         }
 
         if (client.isSuspicious() && amount.compareTo(bank.suspiciousClientWithdrawalLimit()) > 0) {
-            throw new RepositoryException("Limit for suspicious clients transfer is exceeded");
+            throw new ServiceException("Limit for suspicious clients transfer is exceeded");
         }
-        _repositoryContext.getAccountRepository()
-                .transferMoney(_accountId, _bankId, recipientId, recipientBankId, amount, true);
+        try {
+            _repositoryContext.getAccountRepository()
+                    .transferMoney(_accountId, _bankId, recipientId, recipientBankId, amount, true);
+        } catch (RepositoryException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
     }
 }

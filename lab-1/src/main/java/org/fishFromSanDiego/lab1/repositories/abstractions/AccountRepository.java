@@ -33,7 +33,7 @@ public interface AccountRepository {
 
     boolean tryRevertTransaction(int transactionId) throws RepositoryException;
 
-    void addNewAccount(int bankId, Account account) throws RepositoryException;
+    int addNewAccount(int bankId, Account account) throws RepositoryException;
 
     void chargeAllPercents(int bankId, BigDecimal debitCardPercent, DepositChargeStrategy depositChargeStrategy);
 

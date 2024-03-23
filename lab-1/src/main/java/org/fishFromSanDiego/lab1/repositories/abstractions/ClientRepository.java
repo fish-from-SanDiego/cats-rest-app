@@ -20,7 +20,7 @@ public interface ClientRepository {
     Optional<FetchedModel<Client>> findBankClientById(int clientId, int bankId);
 
 
-    void addNewClient(int bankId, Client client, String password);
+    int addNewClient(int bankId, Client client, String password);
 
     void updateClientAddress(int clientId, int bankId, String address) throws RepositoryException;
 

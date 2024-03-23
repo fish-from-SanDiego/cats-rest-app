@@ -2,6 +2,7 @@ package org.fishFromSanDiego.lab1.models;
 
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.ToString;
 import org.fishFromSanDiego.lab1.models.clientBuilders.ClientFinalBuilder;
 import org.fishFromSanDiego.lab1.models.clientBuilders.NameBuilder;
 

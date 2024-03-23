@@ -36,8 +36,8 @@ public class ConcreteBankService implements BankService {
     }
 
     @Override
-    public void registerNewClient(Client newClient, String password) {
-        _repositoryContext.getClientRepository().addNewClient(_bankId, newClient, password);
+    public int registerNewClient(Client newClient, String password) throws ServiceException {
+        return _repositoryContext.getClientRepository().addNewClient(_bankId, newClient, password);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class ConcreteBankService implements BankService {
         try {
             _repositoryContext.getBankRepository().setSuspiciousClientDepositLimit(newLimit, _bankId);
         } catch (RepositoryException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage(),e);
         }
     }
 
@@ -83,7 +83,7 @@ public class ConcreteBankService implements BankService {
         try {
             _repositoryContext.getBankRepository().setSuspiciousClientWithdrawalLimit(newLimit, _bankId);
         } catch (RepositoryException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage(),e);
         }
     }
 
@@ -93,7 +93,7 @@ public class ConcreteBankService implements BankService {
         try {
             _repositoryContext.getBankRepository().setCreditCardLimit(newLimit, _bankId);
         } catch (RepositoryException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage(),e);
         }
     }
 
@@ -103,7 +103,7 @@ public class ConcreteBankService implements BankService {
         try {
             _repositoryContext.getBankRepository().setCreditCardCommission(newCommission, _bankId);
         } catch (RepositoryException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage(),e);
         }
     }
 
@@ -113,7 +113,7 @@ public class ConcreteBankService implements BankService {
         try {
             _repositoryContext.getBankRepository().setDebitCardPercent(newPercent, _bankId);
         } catch (RepositoryException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage(),e);
         }
     }
 
@@ -123,7 +123,7 @@ public class ConcreteBankService implements BankService {
         try {
             _repositoryContext.getBankRepository().setDepositChargeStrategy(strategy, _bankId);
         } catch (RepositoryException e) {
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage(),e);
         }
     }
 

@@ -6,9 +6,8 @@ import org.fishFromSanDiego.lab1.presentation.implementations.input.Input;
 import org.fishFromSanDiego.lab1.services.abstractions.CentralBankService;
 import org.fishFromSanDiego.lab1.services.implementations.CentralBankLoginService;
 
+import java.util.ArrayList;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class CentralBankLoginScenario extends ScenarioBase {
     public CentralBankLoginScenario(Scenario previousScenario,
@@ -27,17 +26,20 @@ public class CentralBankLoginScenario extends ScenarioBase {
             passwordOptional = Input.AskString("Enter central bank password: ");
             if (passwordOptional.isPresent())
                 bsOptional = loginService.tryLogin(passwordOptional.get());
-        } while (passwordOptional.isEmpty() || bsOptional.isEmpty());
-        return Optional.of(
-                new ChoiceScenario(this, "", "Choose option", repositoryContext,
-                        Stream.of(
-                                new RegisterBankScenario(this, repositoryContext, bsOptional.get()),
-                                new NotifyAboutCommissionScenario(this, repositoryContext, bsOptional.get()),
-                                new NotifyAboutPercentChargeScenario(this, repositoryContext, bsOptional.get()),
-                                new NotifyAboutPercentPaymentScenario(this, repositoryContext, bsOptional.get()),
-                                new BackScenario(this)
-                        ).collect(Collectors.toList()),
-                        true));
+        } while (passwordOptional.isEmpty());
+        if (bsOptional.isEmpty())
+            return Optional.of(new BackScenario(this));
+
+        ChoiceScenario result = new ChoiceScenario(this, "", "Choose option", repositoryContext,
+                new ArrayList<>(),
+                true);
+        result
+                .AddScenario(new RegisterBankScenario(result, repositoryContext, bsOptional.get()))
+                .AddScenario(new NotifyAboutCommissionScenario(result, repositoryContext, bsOptional.get()))
+                .AddScenario(new NotifyAboutPercentChargeScenario(result, repositoryContext, bsOptional.get()))
+                .AddScenario(new NotifyAboutPercentPaymentScenario(result, repositoryContext, bsOptional.get()))
+                .AddScenario(new BackScenario(this));
+        return Optional.of(result);
     }
 
     @Override

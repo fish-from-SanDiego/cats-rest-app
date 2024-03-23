@@ -180,10 +180,12 @@ public class NonPersistentAccountRepository implements AccountRepository {
     }
 
     @Override
-    public void addNewAccount(int bankId, Account account) throws RepositoryException {
+    public int addNewAccount(int bankId, Account account) throws RepositoryException {
+        var key = new CompoundKey(bankId, ((int) _accounts.entrySet().stream().filter(e -> e.getKey().bankId == bankId).count()));
         _accounts.put(
-                new CompoundKey(bankId, ((int) _accounts.entrySet().stream().filter(e -> e.getKey().bankId == bankId).count()))
+                key
                 , account);
+        return key.accountId;
     }
 
     @Override

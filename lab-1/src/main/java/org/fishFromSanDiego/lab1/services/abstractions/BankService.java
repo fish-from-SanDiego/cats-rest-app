@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 
 public interface BankService extends Publisher<String> {
-    void registerNewClient(Client newClient, String password);
+    int registerNewClient(Client newClient, String password) throws ServiceException;
 
     FetchedModel<Bank> getBank() throws ServiceException;
 
@@ -36,5 +36,5 @@ public interface BankService extends Publisher<String> {
 
     boolean tryRevertTransaction(int transactionId) throws ServiceException;
 
-    Collection<FetchedModel<Transaction>> getAllTransactions();
+    Collection<FetchedModel<Transaction>> getAllTransactions() throws ServiceException;
 }

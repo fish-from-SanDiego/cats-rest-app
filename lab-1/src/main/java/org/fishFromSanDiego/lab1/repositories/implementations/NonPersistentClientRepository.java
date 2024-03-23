@@ -26,13 +26,13 @@ public class NonPersistentClientRepository implements ClientRepository {
     }
 
     @Override
-    public void addNewClient(int bankId, Client client, String password) {
+    public int addNewClient(int bankId, Client client, String password) {
+        var key = new CompoundKey(bankId, ((int) _clients.entrySet().stream().filter(e -> e.getKey().bankId == bankId).count()));
         _clients.put(
-                new CompoundKey(bankId, ((int) _clients.entrySet().stream().filter(e -> e.getKey().bankId == bankId).count()))
-                , client);
+                key, client);
         _clientPasswords.put(
-                new CompoundKey(bankId, ((int) _clientPasswords.entrySet().stream().filter(e -> e.getKey().bankId == bankId).count()))
-                , password);
+                key, password);
+        return key.clientId;
     }
 
     @Override

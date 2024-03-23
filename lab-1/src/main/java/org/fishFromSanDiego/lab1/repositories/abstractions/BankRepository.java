@@ -18,7 +18,7 @@ public interface BankRepository {
 
     Collection<FetchedModel<Bank>> getAllBanks();
 
-    void addNewBank(Bank bank, String password) throws RepositoryException;
+    int addNewBank(Bank bank, String password) throws RepositoryException;
 
     void setSuspiciousClientDepositLimit(BigDecimal newLimit, int bankId) throws RepositoryException;
 

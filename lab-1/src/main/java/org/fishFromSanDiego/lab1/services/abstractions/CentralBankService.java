@@ -5,7 +5,7 @@ import org.fishFromSanDiego.lab1.models.Bank;
 
 public interface CentralBankService {
 
-    void registerNewBank(Bank bank, String password) throws ServiceException;
+    int registerNewBank(Bank bank, String password) throws ServiceException;
 
     void notifyBanksAboutCommission() throws ServiceException;
 

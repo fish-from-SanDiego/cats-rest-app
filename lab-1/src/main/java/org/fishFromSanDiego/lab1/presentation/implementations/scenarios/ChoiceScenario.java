@@ -4,6 +4,7 @@ import org.fishFromSanDiego.lab1.models.RepositoryContext;
 import org.fishFromSanDiego.lab1.presentation.abstractions.scenarios.Scenario;
 import org.fishFromSanDiego.lab1.presentation.implementations.input.Input;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -20,8 +21,13 @@ public class ChoiceScenario extends ScenarioBase {
                           Collection<Scenario> scenarios,
                           boolean isRepeatable) {
         super(previousScenario, name, title, repositoryContext);
-        this.scenarios = scenarios.stream().toList();
+        this.scenarios = new ArrayList<>(scenarios.stream().toList());
         this.repeatable = isRepeatable;
+    }
+
+    public ChoiceScenario AddScenario(Scenario scenario) {
+        scenarios.add(scenario);
+        return this;
     }
 
     @Override

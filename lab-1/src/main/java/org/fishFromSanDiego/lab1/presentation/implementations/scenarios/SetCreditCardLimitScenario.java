@@ -12,7 +12,7 @@ import java.util.Optional;
 /**
  * The type Set credit card limit scenario.
  */
-public class SetCreditCardLimitScenario extends ScenarioBase{
+public class SetCreditCardLimitScenario extends ScenarioBase {
     private final BankService bankService;
 
     /**
@@ -23,8 +23,8 @@ public class SetCreditCardLimitScenario extends ScenarioBase{
      * @param bankService       the bank service
      */
     public SetCreditCardLimitScenario(Scenario previousScenario,
-                                              RepositoryContext repositoryContext,
-                                              BankService bankService) {
+                                      RepositoryContext repositoryContext,
+                                      BankService bankService) {
         super(previousScenario,
                 "Set credit card limit",
                 "Setting credit card limit",

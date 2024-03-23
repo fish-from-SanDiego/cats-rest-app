@@ -82,7 +82,7 @@ public class ConcreteBankService implements BankService {
         try {
             _repositoryContext.getBankRepository().setSuspiciousClientDepositLimit(newLimit, _bankId);
         } catch (RepositoryException e) {
-            throw new ServiceException(e.getMessage(),e);
+            throw new ServiceException(e.getMessage(), e);
         }
     }
 
@@ -92,7 +92,7 @@ public class ConcreteBankService implements BankService {
         try {
             _repositoryContext.getBankRepository().setSuspiciousClientWithdrawalLimit(newLimit, _bankId);
         } catch (RepositoryException e) {
-            throw new ServiceException(e.getMessage(),e);
+            throw new ServiceException(e.getMessage(), e);
         }
     }
 
@@ -102,7 +102,7 @@ public class ConcreteBankService implements BankService {
         try {
             _repositoryContext.getBankRepository().setCreditCardLimit(newLimit, _bankId);
         } catch (RepositoryException e) {
-            throw new ServiceException(e.getMessage(),e);
+            throw new ServiceException(e.getMessage(), e);
         }
     }
 
@@ -112,7 +112,7 @@ public class ConcreteBankService implements BankService {
         try {
             _repositoryContext.getBankRepository().setCreditCardCommission(newCommission, _bankId);
         } catch (RepositoryException e) {
-            throw new ServiceException(e.getMessage(),e);
+            throw new ServiceException(e.getMessage(), e);
         }
     }
 
@@ -122,7 +122,7 @@ public class ConcreteBankService implements BankService {
         try {
             _repositoryContext.getBankRepository().setDebitCardPercent(newPercent, _bankId);
         } catch (RepositoryException e) {
-            throw new ServiceException(e.getMessage(),e);
+            throw new ServiceException(e.getMessage(), e);
         }
     }
 
@@ -132,7 +132,7 @@ public class ConcreteBankService implements BankService {
         try {
             _repositoryContext.getBankRepository().setDepositChargeStrategy(strategy, _bankId);
         } catch (RepositoryException e) {
-            throw new ServiceException(e.getMessage(),e);
+            throw new ServiceException(e.getMessage(), e);
         }
     }
 

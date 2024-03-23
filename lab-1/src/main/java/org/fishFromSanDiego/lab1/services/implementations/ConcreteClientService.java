@@ -51,7 +51,7 @@ public class ConcreteClientService implements ClientService {
         try {
             repositoryContext.getClientRepository().updateClientAddress(clientId, bankId, address);
         } catch (RepositoryException e) {
-            throw new ServiceException(e.getMessage(),e);
+            throw new ServiceException(e.getMessage(), e);
         }
     }
 
@@ -60,7 +60,7 @@ public class ConcreteClientService implements ClientService {
         try {
             repositoryContext.getClientRepository().updateClientPassportId(clientId, bankId, passportId);
         } catch (RepositoryException e) {
-            throw new ServiceException(e.getMessage(),e);
+            throw new ServiceException(e.getMessage(), e);
         }
     }
 

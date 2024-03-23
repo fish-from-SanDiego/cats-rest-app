@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         var repositoryContext = new RepositoryContext(
                 new NonPersistentAccountRepository(),
-                new NonPersistentBankRepository("12345"),
+                new NonPersistentBankRepository("1"),
                 new NonPersistentClientRepository()
         );
         ChoiceScenario initialScenario = new ChoiceScenario(

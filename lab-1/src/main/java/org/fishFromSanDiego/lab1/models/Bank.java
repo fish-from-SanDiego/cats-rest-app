@@ -2,7 +2,6 @@ package org.fishFromSanDiego.lab1.models;
 
 import lombok.Builder;
 import lombok.NonNull;
-import lombok.ToString;
 import org.fishFromSanDiego.lab1.abstractions.DepositChargeStrategy;
 
 import java.math.BigDecimal;
@@ -34,5 +33,11 @@ public record Bank(@NonNull String name,
                 .depositChargeStrategy(depositChargeStrategy)
                 .suspiciousClientDepositLimit(suspiciousClientDepositLimit)
                 .suspiciousClientWithdrawalLimit(suspiciousClientWithdrawalLimit);
+    }
+
+    /**
+     * The type Bank builder.
+     */
+    public static class BankBuilder {
     }
 }

@@ -21,4 +21,10 @@ public record Account(BigDecimal balance, AccountType accountType, int clientId)
                 .accountType(accountType)
                 .clientId(clientId);
     }
+
+    /**
+     * The type Account builder.
+     */
+    public static class AccountBuilder {
+    }
 }

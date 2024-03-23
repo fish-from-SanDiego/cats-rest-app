@@ -14,6 +14,10 @@ tasks.withType<Jar> {
     }
 }
 
+tasks.javadoc {
+    source = project.the<SourceSetContainer>()["main"].allJava
+}
+
 tasks.test {
     useJUnitPlatform()
 }

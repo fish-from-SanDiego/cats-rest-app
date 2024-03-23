@@ -47,6 +47,16 @@ public abstract class Transaction {
     @EqualsAndHashCode(callSuper = true)
     @Value
     public static class Transfer extends Transaction {
+        /**
+         * Instantiates a new Transfer.
+         *
+         * @param sum             the sum
+         * @param canBeReverted   the can be reverted
+         * @param senderBankId    the sender bank id
+         * @param recipientBankId the recipient bank id
+         * @param senderId        the sender id
+         * @param recipientId     the recipient id
+         */
         @Builder
         public Transfer(
                 BigDecimal sum,
@@ -67,6 +77,12 @@ public abstract class Transaction {
         int senderId;
         int recipientId;
 
+        /**
+         * Direct builder transaction . transfer . transfer builder.
+         *
+         * @param builder the builder
+         * @return the transaction . transfer . transfer builder
+         */
         public Transaction.Transfer.TransferBuilder directBuilder(Transaction.Transfer.TransferBuilder builder) {
             return builder
                     .canBeReverted(super.canBeReverted)
@@ -76,6 +92,12 @@ public abstract class Transaction {
                     .senderBankId(senderBankId)
                     .senderId(senderId);
 
+        }
+
+        /**
+         * The type Transfer builder.
+         */
+        public static class TransferBuilder {
         }
 
         @Override
@@ -91,6 +113,14 @@ public abstract class Transaction {
     @EqualsAndHashCode(callSuper = true)
     @Value
     public static class Deposit extends Transaction {
+        /**
+         * Instantiates a new Deposit.
+         *
+         * @param sum             the sum
+         * @param canBeReverted   the can be reverted
+         * @param recipientBankId the recipient bank id
+         * @param recipientId     the recipient id
+         */
         @Builder
         public Deposit(BigDecimal sum, boolean canBeReverted, int recipientBankId, int recipientId) {
             super(sum, canBeReverted);
@@ -101,6 +131,12 @@ public abstract class Transaction {
         int recipientBankId;
         int recipientId;
 
+        /**
+         * Direct builder transaction . deposit . deposit builder.
+         *
+         * @param builder the builder
+         * @return the transaction . deposit . deposit builder
+         */
         public Transaction.Deposit.DepositBuilder directBuilder(Transaction.Deposit.DepositBuilder builder) {
             return builder
                     .canBeReverted(super.canBeReverted)
@@ -108,6 +144,12 @@ public abstract class Transaction {
                     .recipientBankId(recipientBankId)
                     .recipientId(recipientId);
 
+        }
+
+        /**
+         * The type Deposit builder.
+         */
+        public static class DepositBuilder {
         }
 
         @Override
@@ -122,6 +164,14 @@ public abstract class Transaction {
     @EqualsAndHashCode(callSuper = true)
     @Value
     public static class Withdrawal extends Transaction {
+        /**
+         * Instantiates a new Withdrawal.
+         *
+         * @param sum           the sum
+         * @param canBeReverted the can be reverted
+         * @param bankId        the bank id
+         * @param accountId     the account id
+         */
         @Builder
         public Withdrawal(BigDecimal sum, boolean canBeReverted, int bankId, int accountId) {
             super(sum, canBeReverted);
@@ -132,6 +182,12 @@ public abstract class Transaction {
         int bankId;
         int accountId;
 
+        /**
+         * Direct builder transaction . withdrawal . withdrawal builder.
+         *
+         * @param builder the builder
+         * @return the transaction . withdrawal . withdrawal builder
+         */
         public Transaction.Withdrawal.WithdrawalBuilder directBuilder(Transaction.Withdrawal.WithdrawalBuilder builder) {
             return builder
                     .canBeReverted(super.canBeReverted)
@@ -139,6 +195,12 @@ public abstract class Transaction {
                     .bankId(bankId)
                     .accountId(accountId);
 
+        }
+
+        /**
+         * The type Withdrawal builder.
+         */
+        public static class WithdrawalBuilder {
         }
 
         @Override

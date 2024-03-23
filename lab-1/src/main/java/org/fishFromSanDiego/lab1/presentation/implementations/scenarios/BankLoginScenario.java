@@ -9,7 +9,16 @@ import org.fishFromSanDiego.lab1.services.implementations.BankLoginService;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * The type Bank login scenario.
+ */
 public class BankLoginScenario extends ScenarioBase {
+    /**
+     * Instantiates a new Bank login scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param repositoryContext the repository context
+     */
     public BankLoginScenario(Scenario previousScenario,
                              RepositoryContext repositoryContext) {
         super(previousScenario, "Login as bank", "Bank login page", repositoryContext);

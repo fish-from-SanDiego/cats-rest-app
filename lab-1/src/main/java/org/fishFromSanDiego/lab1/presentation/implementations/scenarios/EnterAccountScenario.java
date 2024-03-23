@@ -9,9 +9,19 @@ import org.fishFromSanDiego.lab1.services.abstractions.ClientService;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * The type Enter account scenario.
+ */
 public class EnterAccountScenario extends ScenarioBase {
     private final ClientService clientService;
 
+    /**
+     * Instantiates a new Enter account scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param repositoryContext the repository context
+     * @param clientService     the client service
+     */
     public EnterAccountScenario(Scenario previousScenario,
                                 RepositoryContext repositoryContext,
                                 ClientService clientService) {

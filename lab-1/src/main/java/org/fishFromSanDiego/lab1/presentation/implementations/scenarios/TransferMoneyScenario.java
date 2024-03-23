@@ -9,9 +9,19 @@ import org.fishFromSanDiego.lab1.services.abstractions.AccountService;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+/**
+ * The type Transfer money scenario.
+ */
 public class TransferMoneyScenario extends ScenarioBase {
     private final AccountService accountService;
 
+    /**
+     * Instantiates a new Transfer money scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param repositoryContext the repository context
+     * @param accountService    the account service
+     */
     public TransferMoneyScenario(Scenario previousScenario,
                                  RepositoryContext repositoryContext,
                                  AccountService accountService) {

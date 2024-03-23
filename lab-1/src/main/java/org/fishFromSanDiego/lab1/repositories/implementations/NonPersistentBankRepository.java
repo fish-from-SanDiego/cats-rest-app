@@ -12,12 +12,29 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * The type Non persistent bank repository.
+ */
 public class NonPersistentBankRepository implements BankRepository {
 
+    /**
+     * The Banks.
+     */
     Map<Integer, Bank> _banks;
+    /**
+     * The Bank passwords.
+     */
     Map<Integer, String> _bankPasswords;
+    /**
+     * The Central bank password.
+     */
     String _centralBankPassword;
 
+    /**
+     * Instantiates a new Non persistent bank repository.
+     *
+     * @param centralBankPassword the central bank password
+     */
     public NonPersistentBankRepository(String centralBankPassword) {
         this._centralBankPassword = centralBankPassword;
         _banks = new HashMap<>();

@@ -9,9 +9,19 @@ import org.fishFromSanDiego.lab1.services.abstractions.AccountService;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+/**
+ * The type Withdraw money scenario.
+ */
 public class WithdrawMoneyScenario extends ScenarioBase {
     private final AccountService accountService;
 
+    /**
+     * Instantiates a new Withdraw money scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param repositoryContext the repository context
+     * @param accountService    the account service
+     */
     public WithdrawMoneyScenario(Scenario previousScenario,
                                  RepositoryContext repositoryContext,
                                  AccountService accountService) {

@@ -5,10 +5,21 @@ import org.fishFromSanDiego.lab1.presentation.abstractions.scenarios.Scenario;
 
 import java.util.Optional;
 
+/**
+ * The type Scenario base.
+ */
 public abstract class ScenarioBase implements Scenario {
     private final String name;
     private final String title;
 
+    /**
+     * Instantiates a new Scenario base.
+     *
+     * @param previousScenario  the previous scenario
+     * @param name              the name
+     * @param title             the title
+     * @param repositoryContext the repository context
+     */
     public ScenarioBase(Scenario previousScenario, String name, String title, RepositoryContext repositoryContext) {
         this.name = name;
         this.title = title;
@@ -16,7 +27,13 @@ public abstract class ScenarioBase implements Scenario {
         this.repositoryContext = repositoryContext;
     }
 
+    /**
+     * The Previous scenario.
+     */
     protected final Scenario previousScenario;
+    /**
+     * The Repository context.
+     */
     protected final RepositoryContext repositoryContext;
 
     @Override

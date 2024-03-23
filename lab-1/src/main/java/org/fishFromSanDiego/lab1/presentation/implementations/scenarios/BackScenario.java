@@ -4,11 +4,22 @@ import org.fishFromSanDiego.lab1.presentation.abstractions.scenarios.Scenario;
 
 import java.util.Optional;
 
+/**
+ * The type Back scenario.
+ */
 public class BackScenario implements Scenario {
+    /**
+     * Instantiates a new Back scenario.
+     *
+     * @param previousScenario the previous scenario
+     */
     public BackScenario(Scenario previousScenario) {
         this.previousScenario = previousScenario;
     }
 
+    /**
+     * The Previous scenario.
+     */
     Scenario previousScenario;
 
     @Override

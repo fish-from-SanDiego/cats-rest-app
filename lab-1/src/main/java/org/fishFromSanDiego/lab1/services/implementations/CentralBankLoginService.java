@@ -6,9 +6,17 @@ import org.fishFromSanDiego.lab1.services.abstractions.LoginService;
 
 import java.util.Optional;
 
+/**
+ * The type Central bank login service.
+ */
 public class CentralBankLoginService implements LoginService<CentralBankService> {
     private RepositoryContext _repositoryContext;
 
+    /**
+     * Instantiates a new Central bank login service.
+     *
+     * @param repositoryContext the repository context
+     */
     public CentralBankLoginService(RepositoryContext repositoryContext) {
         _repositoryContext = repositoryContext;
     }

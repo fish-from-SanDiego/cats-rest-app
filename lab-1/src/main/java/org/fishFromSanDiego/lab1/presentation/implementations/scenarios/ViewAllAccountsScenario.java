@@ -11,9 +11,19 @@ import org.fishFromSanDiego.lab1.services.abstractions.ClientService;
 import java.util.Collection;
 import java.util.Optional;
 
+/**
+ * The type View all accounts scenario.
+ */
 public class ViewAllAccountsScenario extends ScenarioBase {
     private final ClientService clientService;
 
+    /**
+     * Instantiates a new View all accounts scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param repositoryContext the repository context
+     * @param clientService     the client service
+     */
     public ViewAllAccountsScenario(Scenario previousScenario,
                                    RepositoryContext repositoryContext,
                                    ClientService clientService) {

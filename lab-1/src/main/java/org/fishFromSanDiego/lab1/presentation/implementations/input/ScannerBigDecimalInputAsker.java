@@ -6,9 +6,17 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.Scanner;
 
+/**
+ * The type Scanner big decimal input asker.
+ */
 public class ScannerBigDecimalInputAsker implements InputAsker<BigDecimal> {
     private final Scanner scanner;
 
+    /**
+     * Instantiates a new Scanner big decimal input asker.
+     *
+     * @param scanner the scanner
+     */
     public ScannerBigDecimalInputAsker(Scanner scanner) {
         this.scanner = scanner;
     }

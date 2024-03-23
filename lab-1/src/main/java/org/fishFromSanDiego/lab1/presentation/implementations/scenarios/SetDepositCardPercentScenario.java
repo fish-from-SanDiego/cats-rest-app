@@ -10,9 +10,19 @@ import org.fishFromSanDiego.lab1.services.implementations.DepositChargeStrategyC
 import java.math.BigDecimal;
 import java.util.Optional;
 
+/**
+ * The type Set deposit card percent scenario.
+ */
 public class SetDepositCardPercentScenario extends ScenarioBase {
     private final BankService bankService;
 
+    /**
+     * Instantiates a new Set deposit card percent scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param repositoryContext the repository context
+     * @param bankService       the bank service
+     */
     public SetDepositCardPercentScenario(Scenario previousScenario,
                                          RepositoryContext repositoryContext,
                                          BankService bankService) {

@@ -8,9 +8,19 @@ import org.fishFromSanDiego.lab1.services.abstractions.CentralBankService;
 
 import java.util.Optional;
 
+/**
+ * The type Notify about percent charge scenario.
+ */
 public class NotifyAboutPercentChargeScenario extends ScenarioBase {
     private final CentralBankService centralBankService;
 
+    /**
+     * Instantiates a new Notify about percent charge scenario.
+     *
+     * @param previousScenario   the previous scenario
+     * @param repositoryContext  the repository context
+     * @param centralBankService the central bank service
+     */
     public NotifyAboutPercentChargeScenario(
             Scenario previousScenario,
             RepositoryContext repositoryContext,

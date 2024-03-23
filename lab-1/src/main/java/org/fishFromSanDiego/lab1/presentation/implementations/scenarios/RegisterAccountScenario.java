@@ -9,9 +9,19 @@ import org.fishFromSanDiego.lab1.services.abstractions.ClientService;
 
 import java.util.Optional;
 
+/**
+ * The type Register account scenario.
+ */
 public class RegisterAccountScenario extends ScenarioBase {
     private final ClientService clientService;
 
+    /**
+     * Instantiates a new Register account scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param repositoryContext the repository context
+     * @param clientService     the client service
+     */
     public RegisterAccountScenario(Scenario previousScenario,
                                    RepositoryContext repositoryContext,
                                    ClientService clientService) {

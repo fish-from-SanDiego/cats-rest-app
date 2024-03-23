@@ -8,12 +8,23 @@ import org.fishFromSanDiego.lab1.services.abstractions.AccountService;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+/**
+ * The type Concrete account service.
+ */
 public class ConcreteAccountService implements AccountService {
     private final RepositoryContext _repositoryContext;
     private final int _bankId;
     private final int _clientId;
     private final int _accountId;
 
+    /**
+     * Instantiates a new Concrete account service.
+     *
+     * @param repositoryContext the repository context
+     * @param bankId            the bank id
+     * @param clientId          the client id
+     * @param accountId         the account id
+     */
     public ConcreteAccountService(RepositoryContext repositoryContext, int bankId, int clientId, int accountId) {
         _repositoryContext = repositoryContext;
         _bankId = bankId;

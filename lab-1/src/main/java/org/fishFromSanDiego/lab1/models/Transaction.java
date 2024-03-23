@@ -7,20 +7,43 @@ import lombok.Value;
 
 import java.math.BigDecimal;
 
+/**
+ * The type Transaction.
+ */
 @Getter
 public abstract class Transaction {
+    /**
+     * The Sum.
+     */
     protected final BigDecimal sum;
+    /**
+     * The Can be reverted.
+     */
     protected final boolean canBeReverted;
 
 
+    /**
+     * Instantiates a new Transaction.
+     *
+     * @param sum           the sum
+     * @param canBeReverted the can be reverted
+     */
     protected Transaction(BigDecimal sum, boolean canBeReverted) {
         this.sum = sum;
         this.canBeReverted = canBeReverted;
     }
 
+    /**
+     * Gets transaction type name.
+     *
+     * @return the transaction type name
+     */
     public abstract String getTransactionTypeName();
 
 
+    /**
+     * The type Transfer.
+     */
     @EqualsAndHashCode(callSuper = true)
     @Value
     public static class Transfer extends Transaction {
@@ -62,6 +85,9 @@ public abstract class Transaction {
 
     }
 
+    /**
+     * The type Deposit.
+     */
     @EqualsAndHashCode(callSuper = true)
     @Value
     public static class Deposit extends Transaction {
@@ -90,6 +116,9 @@ public abstract class Transaction {
         }
     }
 
+    /**
+     * The type Withdrawal.
+     */
     @EqualsAndHashCode(callSuper = true)
     @Value
     public static class Withdrawal extends Transaction {

@@ -5,9 +5,17 @@ import org.fishFromSanDiego.lab1.presentation.abstractions.scenarios.ScenarioRun
 
 import java.util.Optional;
 
+/**
+ * The type Scenario runner.
+ */
 public class ScenarioRunnerImpl implements ScenarioRunner {
     private final Scenario initialScenario;
 
+    /**
+     * Instantiates a new Scenario runner.
+     *
+     * @param initialScenario the initial scenario
+     */
     public ScenarioRunnerImpl(Scenario initialScenario) {
         this.initialScenario = initialScenario;
     }

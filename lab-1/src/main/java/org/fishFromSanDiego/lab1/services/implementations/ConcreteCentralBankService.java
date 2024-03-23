@@ -8,9 +8,17 @@ import org.fishFromSanDiego.lab1.services.abstractions.CentralBankService;
 
 import java.math.BigDecimal;
 
+/**
+ * The type Concrete central bank service.
+ */
 public class ConcreteCentralBankService implements CentralBankService {
     private final RepositoryContext _repositoryContext;
 
+    /**
+     * Instantiates a new Concrete central bank service.
+     *
+     * @param repositoryContext the repository context
+     */
     public ConcreteCentralBankService(RepositoryContext repositoryContext) {
 
         _repositoryContext = repositoryContext;

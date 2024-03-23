@@ -10,9 +10,19 @@ import org.fishFromSanDiego.lab1.services.abstractions.AccountService;
 
 import java.util.Optional;
 
+/**
+ * The type View account info scenario.
+ */
 public class ViewAccountInfoScenario extends ScenarioBase {
     private final AccountService accountService;
 
+    /**
+     * Instantiates a new View account info scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param repositoryContext the repository context
+     * @param accountService    the account service
+     */
     public ViewAccountInfoScenario(Scenario previousScenario,
                                    RepositoryContext repositoryContext,
                                    AccountService accountService) {

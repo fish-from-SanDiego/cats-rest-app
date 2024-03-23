@@ -10,9 +10,19 @@ import org.fishFromSanDiego.lab1.services.abstractions.BankService;
 
 import java.util.Optional;
 
+/**
+ * The type Register bank client scenario.
+ */
 public class RegisterBankClientScenario extends ScenarioBase {
     private final BankService bankService;
 
+    /**
+     * Instantiates a new Register bank client scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param repositoryContext the repository context
+     * @param bankService       the bank service
+     */
     public RegisterBankClientScenario(Scenario previousScenario,
                                       RepositoryContext repositoryContext,
                                       BankService bankService) {

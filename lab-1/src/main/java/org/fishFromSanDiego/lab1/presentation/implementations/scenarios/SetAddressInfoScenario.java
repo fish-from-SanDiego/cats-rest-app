@@ -8,9 +8,19 @@ import org.fishFromSanDiego.lab1.services.abstractions.ClientService;
 
 import java.util.Optional;
 
+/**
+ * The type Set address info scenario.
+ */
 public class SetAddressInfoScenario extends ScenarioBase {
     private final ClientService clientService;
 
+    /**
+     * Instantiates a new Set address info scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param repositoryContext the repository context
+     * @param clientService     the client service
+     */
     public SetAddressInfoScenario(Scenario previousScenario,
                                   RepositoryContext repositoryContext,
                                   ClientService clientService) {

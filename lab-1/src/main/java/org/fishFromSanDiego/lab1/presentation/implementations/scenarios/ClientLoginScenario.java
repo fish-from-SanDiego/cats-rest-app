@@ -9,7 +9,16 @@ import org.fishFromSanDiego.lab1.services.implementations.ClientLoginService;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * The type Client login scenario.
+ */
 public class ClientLoginScenario extends ScenarioBase {
+    /**
+     * Instantiates a new Client login scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param repositoryContext the repository context
+     */
     public ClientLoginScenario(Scenario previousScenario,
                                RepositoryContext repositoryContext) {
         super(previousScenario, "Login as client", "Client login page", repositoryContext);

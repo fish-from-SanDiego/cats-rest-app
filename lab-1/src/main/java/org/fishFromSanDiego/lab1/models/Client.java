@@ -7,12 +7,25 @@ import org.fishFromSanDiego.lab1.models.clientBuilders.NameBuilder;
 
 import java.util.Optional;
 
+/**
+ * The type Client.
+ */
 public record Client(@NonNull String name, @NonNull String surname, String address, Optional<Integer> passportId) {
 
+    /**
+     * Is suspicious boolean.
+     *
+     * @return the boolean
+     */
     public boolean isSuspicious() {
         return address == null || address.isEmpty() || passportId().isEmpty();
     }
 
+    /**
+     * Builder name builder.
+     *
+     * @return the name builder
+     */
     public static NameBuilder builder() {
         return new ClientBuilder();
     }
@@ -50,6 +63,12 @@ public record Client(@NonNull String name, @NonNull String surname, String addre
         }
     }
 
+    /**
+     * Direct builder client final builder.
+     *
+     * @param builder the builder
+     * @return the client final builder
+     */
     public ClientFinalBuilder directBuilder(NameBuilder builder) {
         return passportId.isPresent()
                 ? builder

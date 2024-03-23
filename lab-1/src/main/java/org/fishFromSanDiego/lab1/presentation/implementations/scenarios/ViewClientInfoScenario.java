@@ -10,9 +10,19 @@ import org.fishFromSanDiego.lab1.services.abstractions.ClientService;
 
 import java.util.Optional;
 
+/**
+ * The type View client info scenario.
+ */
 public class ViewClientInfoScenario extends ScenarioBase {
     private final ClientService clientService;
 
+    /**
+     * Instantiates a new View client info scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param repositoryContext the repository context
+     * @param clientService     the client service
+     */
     public ViewClientInfoScenario(Scenario previousScenario,
                                   RepositoryContext repositoryContext,
                                   ClientService clientService) {

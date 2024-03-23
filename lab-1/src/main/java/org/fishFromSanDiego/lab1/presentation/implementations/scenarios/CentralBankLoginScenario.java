@@ -9,7 +9,16 @@ import org.fishFromSanDiego.lab1.services.implementations.CentralBankLoginServic
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * The type Central bank login scenario.
+ */
 public class CentralBankLoginScenario extends ScenarioBase {
+    /**
+     * Instantiates a new Central bank login scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param repositoryContext the repository context
+     */
     public CentralBankLoginScenario(Scenario previousScenario,
                                     RepositoryContext repositoryContext) {
         super(previousScenario, "Login as central bank", "Central bank login page", repositoryContext);

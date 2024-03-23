@@ -11,9 +11,19 @@ import org.fishFromSanDiego.lab1.services.abstractions.BankService;
 import java.util.Collection;
 import java.util.Optional;
 
+/**
+ * The type View all transactions scenario.
+ */
 public class ViewAllTransactionsScenario extends ScenarioBase {
     private final BankService bankService;
 
+    /**
+     * Instantiates a new View all transactions scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param repositoryContext the repository context
+     * @param bankService       the bank service
+     */
     public ViewAllTransactionsScenario(Scenario previousScenario,
                                        RepositoryContext repositoryContext,
                                        BankService bankService) {

@@ -5,9 +5,17 @@ import org.fishFromSanDiego.lab1.presentation.abstractions.input.InputAsker;
 import java.util.Optional;
 import java.util.Scanner;
 
+/**
+ * The type Scanner int input asker.
+ */
 public class ScannerIntInputAsker implements InputAsker<Integer> {
     private final Scanner scanner;
 
+    /**
+     * Instantiates a new Scanner int input asker.
+     *
+     * @param scanner the scanner
+     */
     public ScannerIntInputAsker(Scanner scanner) {
         this.scanner = scanner;
     }

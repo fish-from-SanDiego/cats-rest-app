@@ -9,9 +9,19 @@ import org.fishFromSanDiego.lab1.services.abstractions.BankService;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+/**
+ * The type Set suspicious deposit sum scenario.
+ */
 public class SetSuspiciousDepositSumScenario extends ScenarioBase {
     private final BankService bankService;
 
+    /**
+     * Instantiates a new Set suspicious deposit sum scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param repositoryContext the repository context
+     * @param bankService       the bank service
+     */
     public SetSuspiciousDepositSumScenario(Scenario previousScenario,
                                            RepositoryContext repositoryContext,
                                            BankService bankService) {

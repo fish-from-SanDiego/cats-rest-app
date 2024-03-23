@@ -9,9 +9,19 @@ import org.fishFromSanDiego.lab1.services.abstractions.BankService;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+/**
+ * The type Set credit card limit scenario.
+ */
 public class SetCreditCardLimitScenario extends ScenarioBase{
     private final BankService bankService;
 
+    /**
+     * Instantiates a new Set credit card limit scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param repositoryContext the repository context
+     * @param bankService       the bank service
+     */
     public SetCreditCardLimitScenario(Scenario previousScenario,
                                               RepositoryContext repositoryContext,
                                               BankService bankService) {

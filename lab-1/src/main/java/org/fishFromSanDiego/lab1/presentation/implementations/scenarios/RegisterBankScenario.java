@@ -11,9 +11,19 @@ import org.fishFromSanDiego.lab1.services.implementations.DepositChargeStrategyC
 import java.math.BigDecimal;
 import java.util.Optional;
 
+/**
+ * The type Register bank scenario.
+ */
 public class RegisterBankScenario extends ScenarioBase {
     private final CentralBankService centralBankService;
 
+    /**
+     * Instantiates a new Register bank scenario.
+     *
+     * @param previousScenario   the previous scenario
+     * @param repositoryContext  the repository context
+     * @param centralBankService the central bank service
+     */
     public RegisterBankScenario(Scenario previousScenario,
                                 RepositoryContext repositoryContext,
                                 CentralBankService centralBankService) {

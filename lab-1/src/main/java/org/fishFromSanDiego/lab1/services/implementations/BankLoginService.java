@@ -6,11 +6,20 @@ import org.fishFromSanDiego.lab1.services.abstractions.LoginService;
 
 import java.util.Optional;
 
+/**
+ * The type Bank login service.
+ */
 public class BankLoginService implements LoginService<BankService> {
 
     private final RepositoryContext _repositoryContext;
     private final int _bankId;
 
+    /**
+     * Instantiates a new Bank login service.
+     *
+     * @param repositoryContext the repository context
+     * @param bankId            the bank id
+     */
     public BankLoginService(RepositoryContext repositoryContext, int bankId) {
         _repositoryContext = repositoryContext;
         _bankId = bankId;

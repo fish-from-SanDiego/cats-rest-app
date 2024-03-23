@@ -7,6 +7,9 @@ import org.fishFromSanDiego.lab1.abstractions.DepositChargeStrategy;
 
 import java.math.BigDecimal;
 
+/**
+ * The type Bank.
+ */
 @Builder
 public record Bank(@NonNull String name,
                    @NonNull BigDecimal suspiciousClientDepositLimit,
@@ -16,6 +19,12 @@ public record Bank(@NonNull String name,
                    @NonNull BigDecimal creditCardCommission,
                    @NonNull DepositChargeStrategy depositChargeStrategy) {
 
+    /**
+     * Direct builder bank . bank builder.
+     *
+     * @param builder the builder
+     * @return the bank . bank builder
+     */
     public Bank.BankBuilder directBuilder(Bank.BankBuilder builder) {
         return builder
                 .creditCardCommission(creditCardCommission)

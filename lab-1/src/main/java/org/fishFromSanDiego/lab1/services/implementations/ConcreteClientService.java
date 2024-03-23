@@ -10,11 +10,21 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Optional;
 
+/**
+ * The type Concrete client service.
+ */
 public class ConcreteClientService implements ClientService {
     private final RepositoryContext repositoryContext;
     private final int clientId;
     private final int bankId;
 
+    /**
+     * Instantiates a new Concrete client service.
+     *
+     * @param repositoryContext the repository context
+     * @param clientId          the client id
+     * @param bankId            the bank id
+     */
     public ConcreteClientService(RepositoryContext repositoryContext, int clientId, int bankId) {
         this.repositoryContext = repositoryContext;
         this.clientId = clientId;

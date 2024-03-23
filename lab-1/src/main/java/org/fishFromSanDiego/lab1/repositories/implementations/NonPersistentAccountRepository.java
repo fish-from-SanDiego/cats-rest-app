@@ -11,11 +11,26 @@ import org.fishFromSanDiego.lab1.repositories.abstractions.AccountRepository;
 import java.math.BigDecimal;
 import java.util.*;
 
+/**
+ * The type Non persistent account repository.
+ */
 public class NonPersistentAccountRepository implements AccountRepository {
+    /**
+     * The Accounts.
+     */
     Map<CompoundKey, Account> _accounts;
+    /**
+     * The Percents.
+     */
     Map<CompoundKey, BigDecimal> _percents;
+    /**
+     * The Transactions.
+     */
     ArrayList<FetchedModel<Transaction>> _transactions;
 
+    /**
+     * Instantiates a new Non persistent account repository.
+     */
     public NonPersistentAccountRepository() {
         _accounts = new HashMap<>();
         _percents = new HashMap<>();

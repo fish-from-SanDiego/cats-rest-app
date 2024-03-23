@@ -9,10 +9,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * The type Non persistent client repository.
+ */
 public class NonPersistentClientRepository implements ClientRepository {
+    /**
+     * The Clients.
+     */
     Map<CompoundKey, Client> _clients;
+    /**
+     * The Client passwords.
+     */
     Map<CompoundKey, String> _clientPasswords;
 
+    /**
+     * Instantiates a new Non persistent client repository.
+     */
     public NonPersistentClientRepository() {
         _clients = new HashMap<>();
         _clientPasswords = new HashMap<>();

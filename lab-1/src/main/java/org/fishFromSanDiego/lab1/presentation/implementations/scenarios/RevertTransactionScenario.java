@@ -8,9 +8,19 @@ import org.fishFromSanDiego.lab1.services.abstractions.BankService;
 
 import java.util.Optional;
 
+/**
+ * The type Revert transaction scenario.
+ */
 public class RevertTransactionScenario extends ScenarioBase {
     private final BankService bankService;
 
+    /**
+     * Instantiates a new Revert transaction scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param repositoryContext the repository context
+     * @param bankService       the bank service
+     */
     public RevertTransactionScenario(Scenario previousScenario,
                                      RepositoryContext repositoryContext,
                                      BankService bankService) {

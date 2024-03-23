@@ -11,12 +11,21 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * The type Concrete bank service.
+ */
 public class ConcreteBankService implements BankService {
     private final RepositoryContext _repositoryContext;
     private final int _bankId;
 
     private final Collection<Observer<String>> _subscribers;
 
+    /**
+     * Instantiates a new Concrete bank service.
+     *
+     * @param repositoryContext the repository context
+     * @param bankId            the bank id
+     */
     public ConcreteBankService(RepositoryContext repositoryContext, int bankId) {
         _repositoryContext = repositoryContext;
         _bankId = bankId;

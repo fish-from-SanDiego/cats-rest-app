@@ -4,6 +4,9 @@ import org.fishFromSanDiego.lab1.presentation.abstractions.scenarios.Scenario;
 
 import java.util.Optional;
 
+/**
+ * The type Quit scenario.
+ */
 public class QuitScenario implements Scenario {
     @Override
     public String getName() {

@@ -10,11 +10,30 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
+/**
+ * The type Choice scenario.
+ */
 public class ChoiceScenario extends ScenarioBase {
 
+    /**
+     * The Scenarios.
+     */
     List<Scenario> scenarios;
+    /**
+     * The Repeatable.
+     */
     boolean repeatable;
 
+    /**
+     * Instantiates a new Choice scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param name              the name
+     * @param title             the title
+     * @param repositoryContext the repository context
+     * @param scenarios         the scenarios
+     * @param isRepeatable      the is repeatable
+     */
     public ChoiceScenario(Scenario previousScenario,
                           String name, String title,
                           RepositoryContext repositoryContext,
@@ -25,6 +44,12 @@ public class ChoiceScenario extends ScenarioBase {
         this.repeatable = isRepeatable;
     }
 
+    /**
+     * Add scenario choice scenario.
+     *
+     * @param scenario the scenario
+     * @return the choice scenario
+     */
     public ChoiceScenario AddScenario(Scenario scenario) {
         scenarios.add(scenario);
         return this;

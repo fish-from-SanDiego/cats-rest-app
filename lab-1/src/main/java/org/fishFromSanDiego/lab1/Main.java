@@ -8,7 +8,15 @@ import org.fishFromSanDiego.lab1.repositories.implementations.NonPersistentClien
 
 import java.util.ArrayList;
 
+/**
+ * The type Main.
+ */
 public class Main {
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         var repositoryContext = new RepositoryContext(
                 new NonPersistentAccountRepository(),

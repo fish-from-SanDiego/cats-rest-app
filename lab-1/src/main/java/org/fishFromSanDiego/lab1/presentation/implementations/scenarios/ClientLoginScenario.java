@@ -27,10 +27,10 @@ public class ClientLoginScenario extends ScenarioBase {
             bankId = Input.AskInt("Enter bank id: ");
             if (bankId.isEmpty())
                 continue;
-            clientId = Input.AskInt("Enter client id: ");
+            clientId = Input.AskInt("Enter your id: ");
             if (clientId.isEmpty())
                 continue;
-            passwordOptional = Input.AskString("Enter bank password: ");
+            passwordOptional = Input.AskString("Enter your password: ");
             if (passwordOptional.isPresent())
                 clientService =
                         new ClientLoginService(repositoryContext, bankId.get(), clientId.get()).tryLogin(passwordOptional.get());

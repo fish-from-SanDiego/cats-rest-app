@@ -34,6 +34,8 @@ public class ViewAllTransactionsScenario extends ScenarioBase {
             Input.WaitTillEnterPress();
             return Optional.of(new BackScenario(this));
         }
+        System.out.flush();
+        System.out.println(this.getTitle());
         transactions.forEach(
                 transaction ->
                         System.out.printf(

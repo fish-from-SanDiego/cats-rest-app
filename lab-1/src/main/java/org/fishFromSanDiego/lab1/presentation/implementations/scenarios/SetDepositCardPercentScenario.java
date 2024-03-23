@@ -38,7 +38,7 @@ public class SetDepositCardPercentScenario extends ScenarioBase {
             Input.WaitTillEnterPress();
             return Optional.of(new BackScenario(this));
         }
-        System.out.printf("Deposit card percent is set to%s%n", value.get());
+        System.out.printf("Deposit card percent is set to %s%n", value.get());
         Input.WaitTillEnterPress();
         return Optional.of(new BackScenario(this));
     }

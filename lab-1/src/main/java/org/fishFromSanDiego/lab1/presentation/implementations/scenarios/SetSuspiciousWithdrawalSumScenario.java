@@ -37,7 +37,7 @@ public class SetSuspiciousWithdrawalSumScenario extends ScenarioBase {
             Input.WaitTillEnterPress();
             return Optional.of(new BackScenario(this));
         }
-        System.out.printf("Suspicious client withdrawal sum is set to%s%n", value.get());
+        System.out.printf("Suspicious client withdrawal sum is set to %s%n", value.get());
         Input.WaitTillEnterPress();
         return Optional.of(new BackScenario(this));
     }

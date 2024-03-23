@@ -183,8 +183,8 @@ public class NonPersistentAccountRepository implements AccountRepository {
     public int addNewAccount(int bankId, Account account) throws RepositoryException {
         var key = new CompoundKey(bankId, ((int) _accounts.entrySet().stream().filter(e -> e.getKey().bankId == bankId).count()));
         _accounts.put(
-                key
-                , account);
+                key,
+                account);
         return key.accountId;
     }
 
@@ -196,11 +196,12 @@ public class NonPersistentAccountRepository implements AccountRepository {
             if (entry.getValue().accountType() instanceof AccountType.Debit)
                 _percents.
                         put(entry.getKey(),
-                                accountBalance.multiply(BigDecimal.ONE.add(debitCardPercent)).add(_percents.get(entry.getKey())));
+                                (accountBalance.multiply(debitCardPercent)).add(_percents.get(entry.getKey())));
             if (entry.getValue().accountType() instanceof AccountType.Deposit) {
                 _percents
                         .put(entry.getKey(),
-                                accountBalance.multiply(BigDecimal.ONE.add(depositChargeStrategy.getPercentByBalance(accountBalance))).add(_percents.get(entry.getKey())));
+                                (accountBalance.multiply(depositChargeStrategy.getPercentByBalance(accountBalance)))
+                                        .add(_percents.get(entry.getKey())));
 
             }
         }
@@ -210,7 +211,9 @@ public class NonPersistentAccountRepository implements AccountRepository {
     public void payAllPercents(int bankId) {
         for (var entry : _percents.entrySet()) {
             var account = _accounts.get(entry.getKey());
-            _accounts.put(entry.getKey(), account.directBuilder(Account.builder()).balance(account.balance().add(entry.getValue())).build());
+            _accounts.put(entry.getKey(),
+                    account.directBuilder(Account.builder()).balance(account.balance().add(entry.getValue())).build());
+            _percents.clear();
         }
     }
 

@@ -37,7 +37,7 @@ public class SetSuspiciousDepositSumScenario extends ScenarioBase {
             Input.WaitTillEnterPress();
             return Optional.of(new BackScenario(this));
         }
-        System.out.printf("Suspicious client deposit sum is set to%s%n", value.get());
+        System.out.printf("Suspicious client deposit sum is set to %s%n", value.get());
         Input.WaitTillEnterPress();
         return Optional.of(new BackScenario(this));
     }

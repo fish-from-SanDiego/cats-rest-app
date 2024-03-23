@@ -40,7 +40,7 @@ public class RegisterBankClientScenario extends ScenarioBase {
             address = Input.AskString("Enter client address (press Enter to omit): ");
             if (address.isEmpty())
                 continue;
-            passportId = Input.AskInt("Enter client address (enter -1 to omit): ");
+            passportId = Input.AskInt("Enter client passport id (enter -1 to omit): ");
             password = Input.AskString("Enter client password: ");
         } while (name.isEmpty() || name.get().isEmpty() || surname.isEmpty() || surname.get().isEmpty()
                 || address.isEmpty() || passportId.isEmpty() || password.isEmpty() || password.get().isEmpty());

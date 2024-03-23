@@ -37,7 +37,7 @@ public class SetCreditCardCommissionScenario extends ScenarioBase {
             Input.WaitTillEnterPress();
             return Optional.of(new BackScenario(this));
         }
-        System.out.printf("Credit card commission is set to%s%n", value.get());
+        System.out.printf("Credit card commission is set to %s%n", value.get());
         Input.WaitTillEnterPress();
         return Optional.of(new BackScenario(this));
     }

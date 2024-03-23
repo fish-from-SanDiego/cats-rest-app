@@ -33,6 +33,8 @@ public class ViewAccountInfoScenario extends ScenarioBase {
             Input.WaitTillEnterPress();
             return Optional.of(new BackScenario(this));
         }
+        System.out.flush();
+        System.out.println(this.getTitle());
         System.out.printf(
                 "%d\t%s\t%s%n",
                 account.id(),

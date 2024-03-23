@@ -2,7 +2,6 @@ package org.fishFromSanDiego.lab1.models;
 
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.ToString;
 import org.fishFromSanDiego.lab1.models.clientBuilders.ClientFinalBuilder;
 import org.fishFromSanDiego.lab1.models.clientBuilders.NameBuilder;
 
@@ -34,7 +33,7 @@ public record Client(@NonNull String name, @NonNull String surname, String addre
         }
 
         @Override
-        public ClientFinalBuilder withAddress(@NonNull String address) {
+        public ClientFinalBuilder withAddress(String address) {
             _address = address;
             return this;
         }

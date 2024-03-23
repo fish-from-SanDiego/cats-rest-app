@@ -34,6 +34,8 @@ public class ViewAllAccountsScenario extends ScenarioBase {
             Input.WaitTillEnterPress();
             return Optional.of(new BackScenario(this));
         }
+        System.out.flush();
+        System.out.println(this.getTitle());
         accounts.forEach(
                 account ->
                         System.out.printf(

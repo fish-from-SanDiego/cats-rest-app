@@ -1,0 +1,60 @@
+package org.fishFromSanDiego.lab1.presentation.implementations.scenarios;
+
+import org.fishFromSanDiego.lab1.exceptions.ServiceException;
+import org.fishFromSanDiego.lab1.models.RepositoryContext;
+import org.fishFromSanDiego.lab1.presentation.abstractions.scenarios.Scenario;
+import org.fishFromSanDiego.lab1.presentation.implementations.input.Input;
+import org.fishFromSanDiego.lab1.services.abstractions.AccountService;
+
+import java.math.BigDecimal;
+import java.util.Optional;
+
+/**
+ * The type Deposit money scenario.
+ */
+public class DepositMoneyScenario extends ScenarioBase {
+    private final AccountService accountService;
+
+    /**
+     * Instantiates a new Deposit money scenario.
+     *
+     * @param previousScenario  the previous scenario
+     * @param repositoryContext the repository context
+     * @param accountService    the account service
+     */
+    public DepositMoneyScenario(Scenario previousScenario,
+                                RepositoryContext repositoryContext,
+                                AccountService accountService) {
+        super(previousScenario,
+                "Deposit money",
+                "Deposit money",
+                repositoryContext);
+        this.accountService = accountService;
+    }
+
+    @Override
+    public Optional<Scenario> execute() {
+        Optional<BigDecimal> value;
+        do {
+            System.out.flush();
+            System.out.println(this.getTitle());
+            value = Input.AskBigDecimal("Enter money amount to deposit: ");
+        } while (value.isEmpty());
+        try {
+            accountService.depositMoney(value.get());
+        } catch (ServiceException e) {
+            System.out.println("Error: " + e.getMessage());
+            Input.WaitTillEnterPress();
+            return Optional.of(new BackScenario(this));
+        }
+        System.out.println("Money deposit was successful");
+        Input.WaitTillEnterPress();
+        return Optional.of(new BackScenario(this));
+    }
+
+    @Override
+    public boolean isRepeatable() {
+        return false;
+    }
+}
+

@@ -1,0 +1,17 @@
+version: '3.9'
+name: "cats_project"
+
+services:
+  postgres:
+    container_name: "cats_db"
+    image: postgres:latest
+    env_file:
+      - dao/src/main/resources/.env
+    ports:
+      - "2732:5432"
+    volumes:
+      - cats-db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  cats-db-data:

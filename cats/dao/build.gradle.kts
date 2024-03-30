@@ -1,18 +1,8 @@
-plugins {
-    id("java")
-}
-
-group = "org.fishFromSanDiego"
-version = "1.0-SNAPSHOT"
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 
+    implementation(project(":catsCommon"))
     implementation(platform("org.hibernate.orm:hibernate-platform:6.4.4.Final"))
 
     // use the versions from the platform

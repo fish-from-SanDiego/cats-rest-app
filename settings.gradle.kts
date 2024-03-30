@@ -1,11 +1,12 @@
 rootProject.name = "tech-labs"
 include("lab-1")
 include("cats")
-include("cats:common")
-findProject(":cats:common")?.name = "catsCommon"
-include("cats:services")
-findProject(":cats:services")?.name = "catsServices"
-include("cats:dao")
-findProject(":cats:dao")?.name = "catsDao"
-include("cats:presentation")
-findProject(":cats:presentation")?.name = "catsPresentation"
+include("catsCommon")
+include("catsServices")
+include("catsDao")
+include("catsPresentation")
+
+project(":catsDao").projectDir = File("cats/dao")
+project(":catsCommon").projectDir = File("cats/common")
+project(":catsServices").projectDir = File("cats/services")
+project(":catsPresentation").projectDir = File("cats/presentation")

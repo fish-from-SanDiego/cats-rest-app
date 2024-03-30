@@ -3,7 +3,7 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
              version="2.0">
 
-    <persistence-unit name="org.hibernate.tutorial.jpa">
+    <persistence-unit name="cats-db">
         <description>
             Persistence unit for the Jakarta Persistence tutorial of the Hibernate Getting Started Guide
         </description>
@@ -14,12 +14,12 @@
         <properties>
             <!-- Database connection settings -->
             <property name="jakarta.persistence.jdbc.url"
-                      value="jdbc:sqlserver://localhost:2732;database=cats_db;integratedSecurity=false;;encrypt=false;"/>
+                      value="jdbc:postgresql://localhost:2732/cats_db"/>
             <property name="jakarta.persistence.jdbc.user" value="cats_db_admin"/>
             <property name="jakarta.persistence.jdbc.password" value="cats123"/>
 
             <!-- Automatically export the schema -->
-            <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
+            <property name="jakarta.persistence.schema-generation.database.action" value="update"/>
 
             <!-- Echo all executed SQL to console -->
             <property name="hibernate.show_sql" value="true"/>

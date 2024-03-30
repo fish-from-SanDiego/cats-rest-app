@@ -1,9 +1,10 @@
 package org.fishFromSanDiego.cats;
 
 
+import jakarta.persistence.Persistence;
+import org.FishFromSanDiego.cats.dao.CatDaoImpl;
 import org.FishFromSanDiego.cats.dao.DaoContext;
-import org.FishFromSanDiego.cats.dao.PostgresCatDao;
-import org.FishFromSanDiego.cats.dao.PostgresUserDao;
+import org.FishFromSanDiego.cats.dao.UserDaoImpl;
 import org.FishFromSanDiego.cats.scenarios.impl.*;
 import org.FishFromSanDiego.cats.services.UserManagementServiceImpl;
 
@@ -12,7 +13,8 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        var daoContext = new DaoContext(new PostgresCatDao(), new PostgresUserDao());
+        var emf = Persistence.createEntityManagerFactory("cats-db");
+        var daoContext = new DaoContext(new CatDaoImpl(emf), new UserDaoImpl(emf));
         ChoiceScenario initialScenario = new ChoiceScenario(null,
                 "",
                 "Choose login option",

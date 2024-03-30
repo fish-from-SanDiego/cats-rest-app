@@ -8,12 +8,6 @@ import jakarta.persistence.Persistence;
 import java.util.function.Consumer;
 
 public class Helper {
-    private static final EntityManagerFactory entityManagerFactory =
-            Persistence.createEntityManagerFactory("cats-db");
-
-    public static EntityManagerFactory postgresEntityManagerFactory() {
-        return entityManagerFactory;
-    }
 
     public static void inTransaction(EntityManagerFactory entityManagerFactory, Consumer<EntityManager> work) {
         EntityManager em = entityManagerFactory.createEntityManager();

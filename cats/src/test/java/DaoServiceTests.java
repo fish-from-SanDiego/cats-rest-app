@@ -1,5 +1,6 @@
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.PersistenceContext;
 import org.FishFromSanDiego.cats.dao.CatDaoImpl;
 import org.FishFromSanDiego.cats.dao.DaoContext;
 import org.FishFromSanDiego.cats.dao.UserDaoImpl;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
+@PersistenceContext(unitName = "cats-test-db")
 public class DaoServiceTests {
     private EntityManagerFactory emf;
     private DaoContext dc;

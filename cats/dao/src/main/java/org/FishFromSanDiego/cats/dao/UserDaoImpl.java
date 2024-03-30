@@ -2,7 +2,7 @@ package org.FishFromSanDiego.cats.dao;
 
 import jakarta.persistence.EntityManagerFactory;
 import org.FishFromSanDiego.cats.dto.UserDto;
-import org.FishFromSanDiego.cats.exceptions.DaoException;
+import org.FishFromSanDiego.cats.exceptions.DatabaseSideException;
 import org.FishFromSanDiego.cats.exceptions.NoUserWithSuchIdException;
 import org.FishFromSanDiego.cats.models.User;
 import org.FishFromSanDiego.cats.util.Helper;
@@ -18,24 +18,24 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User addNewUser(UserDto user) throws DaoException {
+    public User addNewUser(UserDto user) throws DatabaseSideException {
         var newUser = User.fromDto(user);
         try {
             Helper.inTransaction(entityManagerFactory, em -> em.persist(newUser));
         } catch (Exception e) {
-            throw new DaoException();
+            throw new DatabaseSideException();
         }
         return newUser;
     }
 
     @Override
-    public User getUserById(long userId) throws NoUserWithSuchIdException, DaoException {
+    public User getUserById(long userId) throws NoUserWithSuchIdException, DatabaseSideException {
         User user;
         try {
             var em = entityManagerFactory.createEntityManager();
             user = em.find(User.class, userId);
         } catch (Exception e) {
-            throw new DaoException();
+            throw new DatabaseSideException();
         }
         if (user == null)
             throw new NoUserWithSuchIdException();
@@ -43,7 +43,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void updateUserInfo(UserDto newInfo, long userId) throws DaoException, NoUserWithSuchIdException {
+    public void updateUserInfo(UserDto newInfo, long userId) throws DatabaseSideException, NoUserWithSuchIdException {
         try {
             Helper.inTransaction(entityManagerFactory, em -> {
                 var user = em.find(User.class, userId);
@@ -55,12 +55,13 @@ public class UserDaoImpl implements UserDao {
         } catch (Exception e) {
             if (e.getCause() != null && e.getCause().getClass().equals(NoUserWithSuchIdException.class))
                 throw new NoUserWithSuchIdException();
-            throw new DaoException();
+            throw new DatabaseSideException();
         }
     }
 
     @Override
-    public void updateUserFirstName(String newName, long userId) throws NoUserWithSuchIdException, DaoException {
+    public void updateUserFirstName(String newName, long userId) throws NoUserWithSuchIdException,
+            DatabaseSideException {
         try {
             Helper.inTransaction(entityManagerFactory, em -> {
                 var user = em.find(User.class, userId);
@@ -72,12 +73,13 @@ public class UserDaoImpl implements UserDao {
         } catch (Exception e) {
             if (e.getCause() != null && e.getCause().getClass().equals(NoUserWithSuchIdException.class))
                 throw new NoUserWithSuchIdException();
-            throw new DaoException();
+            throw new DatabaseSideException();
         }
     }
 
     @Override
-    public void updateUserSecondName(String newName, long userId) throws NoUserWithSuchIdException, DaoException {
+    public void updateUserSecondName(String newName, long userId) throws NoUserWithSuchIdException,
+            DatabaseSideException {
         try {
             Helper.inTransaction(entityManagerFactory, em -> {
                 var user = em.find(User.class, userId);
@@ -89,13 +91,13 @@ public class UserDaoImpl implements UserDao {
         } catch (Exception e) {
             if (e.getCause() != null && e.getCause().getClass().equals(NoUserWithSuchIdException.class))
                 throw new NoUserWithSuchIdException();
-            throw new DaoException();
+            throw new DatabaseSideException();
         }
     }
 
     @Override
     public void updateUserBirthDate(LocalDate newBirthDate, long userId)
-            throws NoUserWithSuchIdException, DaoException {
+            throws NoUserWithSuchIdException, DatabaseSideException {
         try {
             Helper.inTransaction(entityManagerFactory, em -> {
                 var user = em.find(User.class, userId);
@@ -107,12 +109,12 @@ public class UserDaoImpl implements UserDao {
         } catch (Exception e) {
             if (e.getCause() != null && e.getCause().getClass().equals(NoUserWithSuchIdException.class))
                 throw new NoUserWithSuchIdException();
-            throw new DaoException();
+            throw new DatabaseSideException();
         }
     }
 
     @Override
-    public void removeUserById(long userId) throws DaoException, NoUserWithSuchIdException {
+    public void removeUserById(long userId) throws DatabaseSideException, NoUserWithSuchIdException {
         try {
             Helper.inTransaction(entityManagerFactory, em -> {
                 var user = em.find(User.class, userId);
@@ -123,17 +125,17 @@ public class UserDaoImpl implements UserDao {
         } catch (Exception e) {
             if (e.getCause() != null && e.getCause().getClass().equals(NoUserWithSuchIdException.class))
                 throw new NoUserWithSuchIdException();
-            throw new DaoException();
+            throw new DatabaseSideException();
         }
     }
 
     @Override
-    public Collection<User> getAllUsers() throws DaoException {
+    public Collection<User> getAllUsers() throws DatabaseSideException {
         try {
             var em = entityManagerFactory.createEntityManager();
             return em.createQuery("FROM User", User.class).getResultList();
         } catch (Exception e) {
-            throw new DaoException();
+            throw new DatabaseSideException();
         }
     }
 }

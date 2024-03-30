@@ -13,11 +13,14 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
+@ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "cats")
 public class Cat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private long id;
 
     @Column(name = "name", nullable = false)
@@ -32,9 +35,7 @@ public class Cat {
     @ToString.Exclude
     private User owner;
     @ManyToMany(targetEntity = Cat.class, cascade = CascadeType.ALL)
-    @JoinTable(name = "cats_catfriends",
-            joinColumns = @JoinColumn(name = "cat_id"),
-            inverseJoinColumns = @JoinColumn(name = "friend_id"))
+    @JoinTable(name = "cats_catfriends", joinColumns = @JoinColumn(name = "cat_id"), inverseJoinColumns = @JoinColumn(name = "friend_id"))
     @Builder.Default
     @ToString.Exclude
     private List<Cat> friends = new ArrayList<>();
@@ -62,6 +63,7 @@ public class Cat {
                 .colour(getColour())
                 .breed(getBreed())
                 .ownerId(owner.getId())
+                .id(id)
                 .build();
     }
 }

@@ -19,7 +19,7 @@ public class CatDaoImpl implements CatDao {
     }
 
     @Override
-    public Cat addNewCat(CatDto cat, long ownerId) throws NoUserWithSuchIdException, DaoException {
+    public Cat addNewCat(CatDto cat, long ownerId) throws NoUserWithSuchIdException, DatabaseSideException {
         var newCat = Cat.fromDto(cat);
         try {
             Helper.inTransaction(entityManagerFactory, em -> {
@@ -33,21 +33,38 @@ public class CatDaoImpl implements CatDao {
             if (e.getCause() != null && e.getCause().getClass().equals(NoUserWithSuchIdException.class))
                 throw new NoUserWithSuchIdException();
             else
-                throw new DaoException();
+                throw new DatabaseSideException();
         }
 
         return newCat;
     }
 
     @Override
-    public void updateCatInfo(CatDto newInfo, long userId, long catId)
-            throws NoCatWithSuchIdException, CatBelongsToOtherUserException, DaoException {
+    public Cat getCatById(long catId, long ownerId)
+            throws DatabaseSideException, NoCatWithSuchIdException, CatBelongsToOtherUserException {
+        Cat cat;
+        try {
+            var em = entityManagerFactory.createEntityManager();
+            cat = em.find(Cat.class, catId);
+        } catch (Exception e) {
+            throw new DatabaseSideException();
+        }
+        if (cat == null)
+            throw new NoCatWithSuchIdException();
+        if (cat.getOwner().getId() != ownerId)
+            throw new CatBelongsToOtherUserException();
+        return cat;
+    }
+
+    @Override
+    public void updateCatInfo(CatDto newInfo, long ownerId, long catId)
+            throws NoCatWithSuchIdException, CatBelongsToOtherUserException, DatabaseSideException {
         try {
             Helper.inTransaction(entityManagerFactory, em -> {
                 Cat cat = em.find(Cat.class, catId);
                 if (cat == null)
                     throw new RuntimeException(new NoCatWithSuchIdException());
-                if (cat.getOwner().getId() != userId)
+                if (cat.getOwner().getId() != ownerId)
                     throw new RuntimeException(new CatBelongsToOtherUserException());
                 cat.copyFromDto(newInfo);
             });
@@ -59,20 +76,20 @@ public class CatDaoImpl implements CatDao {
                 if (clazz.equals(CatBelongsToOtherUserException.class))
                     throw new CatBelongsToOtherUserException();
             }
-            throw new DaoException();
+            throw new DatabaseSideException();
         }
     }
 
     @Override
-    public void updateCatName(String newName, long userId, long catId)
-            throws NoCatWithSuchIdException, CatBelongsToOtherUserException, DaoException {
+    public void updateCatName(String newName, long ownerId, long catId)
+            throws NoCatWithSuchIdException, CatBelongsToOtherUserException, DatabaseSideException {
         try {
 
             Helper.inTransaction(entityManagerFactory, em -> {
                 Cat cat = em.find(Cat.class, catId);
                 if (cat == null)
                     throw new RuntimeException(new NoCatWithSuchIdException());
-                if (cat.getOwner().getId() != userId)
+                if (cat.getOwner().getId() != ownerId)
                     throw new RuntimeException(new CatBelongsToOtherUserException());
                 cat.setName(newName);
             });
@@ -84,20 +101,20 @@ public class CatDaoImpl implements CatDao {
                 if (clazz.equals(CatBelongsToOtherUserException.class))
                     throw new CatBelongsToOtherUserException();
             }
-            throw new DaoException();
+            throw new DatabaseSideException();
         }
     }
 
     @Override
-    public void updateCatBirthDate(LocalDate newBirthDate, long userId, long catId)
-            throws NoCatWithSuchIdException, CatBelongsToOtherUserException, DaoException {
+    public void updateCatBirthDate(LocalDate newBirthDate, long ownerId, long catId)
+            throws NoCatWithSuchIdException, CatBelongsToOtherUserException, DatabaseSideException {
         try {
 
             Helper.inTransaction(entityManagerFactory, em -> {
                 Cat cat = em.find(Cat.class, catId);
                 if (cat == null)
                     throw new RuntimeException(new NoCatWithSuchIdException());
-                if (cat.getOwner().getId() != userId)
+                if (cat.getOwner().getId() != ownerId)
                     throw new RuntimeException(new CatBelongsToOtherUserException());
                 cat.setBirthDate(newBirthDate);
             });
@@ -109,20 +126,20 @@ public class CatDaoImpl implements CatDao {
                 if (clazz.equals(CatBelongsToOtherUserException.class))
                     throw new CatBelongsToOtherUserException();
             }
-            throw new DaoException();
+            throw new DatabaseSideException();
         }
     }
 
     @Override
-    public void updateCatBreed(String newBreed, long userId, long catId)
-            throws NoCatWithSuchIdException, CatBelongsToOtherUserException, DaoException {
+    public void updateCatBreed(String newBreed, long ownerId, long catId)
+            throws NoCatWithSuchIdException, CatBelongsToOtherUserException, DatabaseSideException {
         try {
 
             Helper.inTransaction(entityManagerFactory, em -> {
                 Cat cat = em.find(Cat.class, catId);
                 if (cat == null)
                     throw new RuntimeException(new NoCatWithSuchIdException());
-                if (cat.getOwner().getId() != userId)
+                if (cat.getOwner().getId() != ownerId)
                     throw new RuntimeException(new CatBelongsToOtherUserException());
                 cat.setBreed(newBreed);
             });
@@ -134,20 +151,20 @@ public class CatDaoImpl implements CatDao {
                 if (clazz.equals(CatBelongsToOtherUserException.class))
                     throw new CatBelongsToOtherUserException();
             }
-            throw new DaoException();
+            throw new DatabaseSideException();
         }
     }
 
     @Override
-    public void updateCatColour(Colour newColour, long userId, long catId)
-            throws NoCatWithSuchIdException, CatBelongsToOtherUserException, DaoException {
+    public void updateCatColour(Colour newColour, long ownerId, long catId)
+            throws NoCatWithSuchIdException, CatBelongsToOtherUserException, DatabaseSideException {
         try {
 
             Helper.inTransaction(entityManagerFactory, em -> {
                 Cat cat = em.find(Cat.class, catId);
                 if (cat == null)
                     throw new RuntimeException(new NoCatWithSuchIdException());
-                if (cat.getOwner().getId() != userId)
+                if (cat.getOwner().getId() != ownerId)
                     throw new RuntimeException(new CatBelongsToOtherUserException());
                 cat.setColour(newColour);
             });
@@ -159,20 +176,20 @@ public class CatDaoImpl implements CatDao {
                 if (clazz.equals(CatBelongsToOtherUserException.class))
                     throw new CatBelongsToOtherUserException();
             }
-            throw new DaoException();
+            throw new DatabaseSideException();
         }
     }
 
     @Override
-    public void removeCatById(long catId, long userId)
-            throws NoCatWithSuchIdException, CatBelongsToOtherUserException, DaoException {
+    public void removeCatById(long catId, long ownerId)
+            throws NoCatWithSuchIdException, CatBelongsToOtherUserException, DatabaseSideException {
         try {
 
             Helper.inTransaction(entityManagerFactory, em -> {
                 Cat cat = em.find(Cat.class, catId);
                 if (cat == null)
                     throw new RuntimeException(new NoCatWithSuchIdException());
-                if (cat.getOwner().getId() != userId)
+                if (cat.getOwner().getId() != ownerId)
                     throw new RuntimeException(new CatBelongsToOtherUserException());
                 em.remove(cat);
             });
@@ -184,16 +201,16 @@ public class CatDaoImpl implements CatDao {
                 if (clazz.equals(CatBelongsToOtherUserException.class))
                     throw new CatBelongsToOtherUserException();
             }
-            throw new DaoException();
+            throw new DatabaseSideException();
         }
     }
 
     @Override
-    public void friendOtherCat(long catId, long userId, long friendId) throws
+    public void friendOtherCat(long catId, long ownerId, long friendId) throws
             NoCatFriendWithSuchIdException,
             CatBelongsToOtherUserException,
             NoCatWithSuchIdException,
-            DaoException,
+            DatabaseSideException,
             OtherCatIsAlreadyThisCatFriendException {
         try {
 
@@ -204,7 +221,7 @@ public class CatDaoImpl implements CatDao {
                     throw new RuntimeException(new NoCatWithSuchIdException());
                 if (friend == null)
                     throw new RuntimeException(new NoCatFriendWithSuchIdException());
-                if (cat.getOwner().getId() != userId)
+                if (cat.getOwner().getId() != ownerId)
                     throw new RuntimeException(new CatBelongsToOtherUserException());
                 if (cat.getFriends().contains(friend))
                     throw new RuntimeException(new OtherCatIsAlreadyThisCatFriendException());
@@ -224,17 +241,17 @@ public class CatDaoImpl implements CatDao {
                 if (clazz.equals(OtherCatIsAlreadyThisCatFriendException.class))
                     throw new OtherCatIsAlreadyThisCatFriendException();
             }
-            throw new DaoException();
+            throw new DatabaseSideException();
         }
     }
 
     @Override
-    public void unfriendOtherCat(long catId, long userId, long friendId) throws
+    public void unfriendOtherCat(long catId, long ownerID, long friendId) throws
             NoCatWithSuchIdException,
             CatBelongsToOtherUserException,
             NoCatFriendWithSuchIdException,
             OtherCatIsNotThisCatFriendException,
-            DaoException {
+            DatabaseSideException {
         try {
 
             Helper.inTransaction(entityManagerFactory, em -> {
@@ -244,12 +261,12 @@ public class CatDaoImpl implements CatDao {
                     throw new RuntimeException(new NoCatWithSuchIdException());
                 if (friend == null)
                     throw new RuntimeException(new NoCatFriendWithSuchIdException());
-                if (cat.getOwner().getId() != userId)
+                if (cat.getOwner().getId() != ownerID)
                     throw new RuntimeException(new CatBelongsToOtherUserException());
                 if (!cat.getFriends().contains(friend))
                     throw new RuntimeException(new OtherCatIsNotThisCatFriendException());
                 cat.getFriends().remove(friend);
-                if (cat.getOwner().getId() == friend.getOwner().getId() && friend.getFriends().contains(cat))
+                if (cat.getOwner().getId() == friend.getOwner().getId())
                     friend.getFriends().remove(cat);
             });
         } catch (Exception e) {
@@ -264,27 +281,41 @@ public class CatDaoImpl implements CatDao {
                 if (clazz.equals(OtherCatIsNotThisCatFriendException.class))
                     throw new OtherCatIsNotThisCatFriendException();
             }
-            throw new DaoException();
+            throw new DatabaseSideException();
         }
     }
 
     @Override
-    public Collection<Cat> getAllCats() throws DaoException {
+    public Collection<Cat> getAllCats() throws DatabaseSideException {
         try {
             var em = entityManagerFactory.createEntityManager();
             return em.createQuery("FROM Cat", Cat.class).getResultList();
         } catch (Exception e) {
-            throw new DaoException();
+            throw new DatabaseSideException();
         }
     }
 
     @Override
-    public Collection<Cat> getAllCatsByUserId(long userId) throws DaoException {
+    public Collection<Cat> getAllCatsByUserId(long userId) throws DatabaseSideException {
         try {
             var em = entityManagerFactory.createEntityManager();
             return em.createQuery("FROM Cat WHERE id = :arg", Cat.class).setParameter("arg", userId).getResultList();
         } catch (Exception e) {
-            throw new DaoException();
+            throw new DatabaseSideException();
+        }
+    }
+
+    @Override
+    public Collection<Cat> getCatsForWhomThisIsFriend(long catId, long ownerID)
+            throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException {
+        var cat = getCatById(catId, ownerID);
+        try {
+            var em = entityManagerFactory.createEntityManager();
+            return em.createNativeQuery("SELECT * FROM cats WHERE id IN (SELECT cat_id WHERE friend_id = :catId)",
+                    Cat.class).setParameter("catId", cat.getId()).getResultList();
+            // вернёт котов, отвечаю
+        } catch (Exception e) {
+            throw new DatabaseSideException();
         }
     }
 }

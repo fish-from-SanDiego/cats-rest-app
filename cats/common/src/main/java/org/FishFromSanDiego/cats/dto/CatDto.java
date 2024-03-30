@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @Builder
 @ToString
 public class CatDto {
+    private long id;
     @NonNull
     private String name;
     private LocalDate birthDate;

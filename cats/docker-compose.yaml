@@ -6,7 +6,7 @@ services:
     container_name: "cats_db"
     image: postgres:latest
     env_file:
-      - src/main/resources/.env
+      - dao/src/main/resources/.env
     ports:
       - "2732:5432"
     volumes:

@@ -8,7 +8,6 @@ dependencies {
     // use the versions from the platform
     implementation("org.hibernate.orm:hibernate-core")
     implementation("jakarta.transaction:jakarta.transaction-api")
-
     implementation("org.postgresql:postgresql:42.6.2")
 
 }

@@ -14,10 +14,12 @@ import java.util.List;
 @Data
 @Builder
 @ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private long id;
 
     @Column(name = "first_name", nullable = false)
@@ -27,11 +29,7 @@ public class User {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @OneToMany(
-            targetEntity = Cat.class,
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            mappedBy = "owner")
+    @OneToMany(targetEntity = Cat.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
     @Builder.Default
     @ToString.Exclude
     private List<Cat> cats = new ArrayList<>();
@@ -51,10 +49,6 @@ public class User {
     }
 
     public UserDto getDto() {
-        return UserDto.builder()
-                .birthDate(birthDate)
-                .firstName(firstName)
-                .secondName(secondName)
-                .build();
+        return UserDto.builder().birthDate(birthDate).firstName(firstName).secondName(secondName).id(id).build();
     }
 }

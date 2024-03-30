@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Builder
 @ToString
 public class UserDto {
+    private long id;
     @NonNull
     private String firstName;
     private String secondName;

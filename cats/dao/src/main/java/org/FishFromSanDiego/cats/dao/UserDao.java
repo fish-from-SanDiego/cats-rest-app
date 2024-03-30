@@ -6,7 +6,7 @@ import org.FishFromSanDiego.cats.exceptions.NoUserWithSuchIdException;
 import org.FishFromSanDiego.cats.models.User;
 
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.List;
 
 public interface UserDao {
     User addNewUser(UserDto user) throws DatabaseSideException;
@@ -24,5 +24,5 @@ public interface UserDao {
 
     void removeUserById(long userId) throws DatabaseSideException, NoUserWithSuchIdException;
 
-    Collection<User> getAllUsers() throws DatabaseSideException;
+    List<User> getAllUsers() throws DatabaseSideException;
 }

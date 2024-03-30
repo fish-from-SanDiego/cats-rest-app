@@ -7,8 +7,8 @@ import org.FishFromSanDiego.cats.models.Cat;
 import org.FishFromSanDiego.cats.models.Colour;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 public class CatServiceImpl implements CatService {
     private final DaoContext daoContext;
@@ -58,7 +58,8 @@ public class CatServiceImpl implements CatService {
             DatabaseSideException,
             OtherCatIsAlreadyThisCatFriendException,
             CatBelongsToOtherUserException,
-            NoCatWithSuchIdException {
+            NoCatWithSuchIdException,
+            CantFriendSelfException {
         daoContext.getCatDao().friendOtherCat(this.catId, ownerId, catId);
     }
 
@@ -74,7 +75,7 @@ public class CatServiceImpl implements CatService {
     }
 
     @Override
-    public Collection<CatDto> getCatFriends()
+    public List<CatDto> getCatFriends()
             throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException {
         var dao = daoContext.getCatDao();
         var intersection = new HashSet<>(dao.getCatsForWhomThisIsFriend(catId, ownerId));
@@ -83,7 +84,7 @@ public class CatServiceImpl implements CatService {
     }
 
     @Override
-    public Collection<CatDto> getCatFriendIncomingInvites()
+    public List<CatDto> getCatFriendIncomingInvites()
             throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException {
         var dao = daoContext.getCatDao();
         var difference = new HashSet<>(dao.getCatsForWhomThisIsFriend(catId, ownerId));
@@ -92,7 +93,7 @@ public class CatServiceImpl implements CatService {
     }
 
     @Override
-    public Collection<CatDto> getCatFriendOutgoingInvites()
+    public List<CatDto> getCatFriendOutgoingInvites()
             throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException {
         var dao = daoContext.getCatDao();
         var difference = new HashSet<>(dao.getCatById(catId, ownerId).getFriends());

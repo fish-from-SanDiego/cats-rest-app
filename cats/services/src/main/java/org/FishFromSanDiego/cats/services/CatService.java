@@ -5,7 +5,7 @@ import org.FishFromSanDiego.cats.exceptions.*;
 import org.FishFromSanDiego.cats.models.Colour;
 
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.List;
 
 public interface CatService {
     CatDto getCatInfo() throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException;
@@ -27,7 +27,7 @@ public interface CatService {
             DatabaseSideException,
             OtherCatIsAlreadyThisCatFriendException,
             CatBelongsToOtherUserException,
-            NoCatWithSuchIdException;
+            NoCatWithSuchIdException, CantFriendSelfException;
 
     void unfriendCat(long catId) throws
             NoCatFriendWithSuchIdException,
@@ -36,12 +36,11 @@ public interface CatService {
             CatBelongsToOtherUserException,
             NoCatWithSuchIdException;
 
-    Collection<CatDto> getCatFriends()
+    List<CatDto> getCatFriends() throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException;
+
+    List<CatDto> getCatFriendIncomingInvites()
             throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException;
 
-    Collection<CatDto> getCatFriendIncomingInvites()
-            throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException;
-
-    Collection<CatDto> getCatFriendOutgoingInvites()
+    List<CatDto> getCatFriendOutgoingInvites()
             throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException;
 }

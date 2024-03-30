@@ -9,6 +9,7 @@ import org.FishFromSanDiego.cats.models.Colour;
 import org.FishFromSanDiego.cats.models.User;
 
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class Main {
 
@@ -18,7 +19,7 @@ public class Main {
         var cRepo = new PostgresCatDao();
         var userDto = UserDto.builder().firstName("555").secondName("bbb").build();
         User user;
-        var catDto = CatDto.builder().name("catty").build();
+        var catDto = CatDto.builder().name("kitty").build();
         try {
             uRepo.addNewUser(userDto);
         } catch (Exception e) {

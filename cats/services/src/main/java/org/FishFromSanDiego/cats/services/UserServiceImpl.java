@@ -10,7 +10,7 @@ import org.FishFromSanDiego.cats.exceptions.NoUserWithSuchIdException;
 import org.FishFromSanDiego.cats.models.Cat;
 
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.List;
 
 public class UserServiceImpl implements UserService {
     private final long userId;
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Collection<CatDto> getAllCatInfos() throws DatabaseSideException {
+    public List<CatDto> getAllCatInfos() throws DatabaseSideException {
         return daoContext.getCatDao().getAllCatsByUserId(userId).stream().map(Cat::getDto).toList();
     }
 

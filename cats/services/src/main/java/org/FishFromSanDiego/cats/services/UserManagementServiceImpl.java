@@ -6,7 +6,7 @@ import org.FishFromSanDiego.cats.exceptions.DatabaseSideException;
 import org.FishFromSanDiego.cats.exceptions.NoUserWithSuchIdException;
 import org.FishFromSanDiego.cats.models.User;
 
-import java.util.Collection;
+import java.util.List;
 
 public class UserManagementServiceImpl implements UserManagementService {
     private final DaoContext daoContext;
@@ -21,7 +21,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     }
 
     @Override
-    public Collection<UserDto> getAllUserInfos() throws DatabaseSideException {
+    public List<UserDto> getAllUserInfos() throws DatabaseSideException {
         return daoContext.getUserDao().getAllUsers().stream().map(User::getDto).toList();
     }
 

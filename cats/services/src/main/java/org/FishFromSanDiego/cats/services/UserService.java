@@ -8,7 +8,7 @@ import org.FishFromSanDiego.cats.exceptions.NoCatWithSuchIdException;
 import org.FishFromSanDiego.cats.exceptions.NoUserWithSuchIdException;
 
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.List;
 
 public interface UserService {
     UserDto getUserInfo() throws DatabaseSideException, NoUserWithSuchIdException;
@@ -19,7 +19,7 @@ public interface UserService {
 
     void setUserBirthDate(LocalDate newBirthdate) throws DatabaseSideException, NoUserWithSuchIdException;
 
-    Collection<CatDto> getAllCatInfos() throws DatabaseSideException;
+    List<CatDto> getAllCatInfos() throws DatabaseSideException;
 
     CatDto registerNewCat(CatDto cat) throws DatabaseSideException, NoUserWithSuchIdException;
 

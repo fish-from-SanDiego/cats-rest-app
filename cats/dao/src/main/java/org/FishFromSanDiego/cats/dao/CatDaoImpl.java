@@ -9,7 +9,7 @@ import org.FishFromSanDiego.cats.models.User;
 import org.FishFromSanDiego.cats.util.Helper;
 
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.List;
 
 public class CatDaoImpl implements CatDao {
     private final EntityManagerFactory entityManagerFactory;
@@ -211,7 +211,10 @@ public class CatDaoImpl implements CatDao {
             CatBelongsToOtherUserException,
             NoCatWithSuchIdException,
             DatabaseSideException,
-            OtherCatIsAlreadyThisCatFriendException {
+            OtherCatIsAlreadyThisCatFriendException,
+            CantFriendSelfException {
+        if (catId == friendId)
+            throw new CantFriendSelfException();
         try {
 
             Helper.inTransaction(entityManagerFactory, em -> {
@@ -286,7 +289,7 @@ public class CatDaoImpl implements CatDao {
     }
 
     @Override
-    public Collection<Cat> getAllCats() throws DatabaseSideException {
+    public List<Cat> getAllCats() throws DatabaseSideException {
         try {
             var em = entityManagerFactory.createEntityManager();
             return em.createQuery("FROM Cat", Cat.class).getResultList();
@@ -296,22 +299,25 @@ public class CatDaoImpl implements CatDao {
     }
 
     @Override
-    public Collection<Cat> getAllCatsByUserId(long userId) throws DatabaseSideException {
+    public List<Cat> getAllCatsByUserId(long userId) throws DatabaseSideException {
         try {
             var em = entityManagerFactory.createEntityManager();
-            return em.createQuery("FROM Cat WHERE id = :arg", Cat.class).setParameter("arg", userId).getResultList();
+            return em.createQuery("FROM Cat WHERE owner.id = :arg", Cat.class)
+                    .setParameter("arg", userId)
+                    .getResultList();
         } catch (Exception e) {
             throw new DatabaseSideException();
         }
     }
 
     @Override
-    public Collection<Cat> getCatsForWhomThisIsFriend(long catId, long ownerID)
+    public List<Cat> getCatsForWhomThisIsFriend(long catId, long ownerID)
             throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException {
         var cat = getCatById(catId, ownerID);
         try {
             var em = entityManagerFactory.createEntityManager();
-            return em.createNativeQuery("SELECT * FROM cats WHERE id IN (SELECT cat_id WHERE friend_id = :catId)",
+            return em.createNativeQuery(
+                    "SELECT * FROM cats WHERE id IN (SELECT cat_id FROM cats_catfriends WHERE friend_id = :catId)",
                     Cat.class).setParameter("catId", cat.getId()).getResultList();
             // вернёт котов, отвечаю
         } catch (Exception e) {

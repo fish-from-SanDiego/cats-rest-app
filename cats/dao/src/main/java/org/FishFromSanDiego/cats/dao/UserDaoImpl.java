@@ -8,7 +8,7 @@ import org.FishFromSanDiego.cats.models.User;
 import org.FishFromSanDiego.cats.util.Helper;
 
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.List;
 
 public class UserDaoImpl implements UserDao {
     private final EntityManagerFactory entityManagerFactory;
@@ -130,7 +130,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Collection<User> getAllUsers() throws DatabaseSideException {
+    public List<User> getAllUsers() throws DatabaseSideException {
         try {
             var em = entityManagerFactory.createEntityManager();
             return em.createQuery("FROM User", User.class).getResultList();

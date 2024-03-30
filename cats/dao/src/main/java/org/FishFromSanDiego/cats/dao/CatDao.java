@@ -6,7 +6,7 @@ import org.FishFromSanDiego.cats.models.Cat;
 import org.FishFromSanDiego.cats.models.Colour;
 
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.List;
 
 public interface CatDao {
     Cat addNewCat(CatDto cat, long ownerId) throws NoUserWithSuchIdException, DatabaseSideException;
@@ -37,7 +37,7 @@ public interface CatDao {
             CatBelongsToOtherUserException,
             NoCatWithSuchIdException,
             DatabaseSideException,
-            OtherCatIsAlreadyThisCatFriendException;
+            OtherCatIsAlreadyThisCatFriendException, CantFriendSelfException;
 
     void unfriendOtherCat(long catId, long ownerID, long friendId) throws
             NoCatWithSuchIdException,
@@ -46,10 +46,10 @@ public interface CatDao {
             OtherCatIsNotThisCatFriendException,
             DatabaseSideException;
 
-    Collection<Cat> getAllCats() throws DatabaseSideException;
+    List<Cat> getAllCats() throws DatabaseSideException;
 
-    Collection<Cat> getAllCatsByUserId(long userId) throws DatabaseSideException;
+    List<Cat> getAllCatsByUserId(long userId) throws DatabaseSideException;
 
-    Collection<Cat> getCatsForWhomThisIsFriend(long catId, long ownerID)
+    List<Cat> getCatsForWhomThisIsFriend(long catId, long ownerID)
             throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException;
 }

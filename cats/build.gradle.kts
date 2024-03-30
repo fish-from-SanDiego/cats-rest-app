@@ -6,6 +6,7 @@ dependencies {
     implementation(project(":catsDao"))
     implementation(project(":catsCommon"))
     implementation(project(":catsServices"))
+    implementation(project(":catsPresentation"))
 
     // https://mvnrepository.com/artifact/jakarta.persistence/jakarta.persistence-api
     implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")

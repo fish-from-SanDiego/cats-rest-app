@@ -33,6 +33,7 @@ public class User {
             cascade = CascadeType.ALL,
             mappedBy = "owner")
     @Builder.Default
+    @ToString.Exclude
     private List<Cat> cats = new ArrayList<>();
 
     public static User fromDto(UserDto userDto) {
@@ -41,6 +42,12 @@ public class User {
                 .firstName(userDto.getFirstName())
                 .secondName(userDto.getSecondName())
                 .build();
+    }
+
+    public void copyFromDto(UserDto userDto) {
+        birthDate = userDto.getBirthDate();
+        firstName = userDto.getFirstName();
+        secondName = userDto.getSecondName();
     }
 
     public UserDto getDto() {

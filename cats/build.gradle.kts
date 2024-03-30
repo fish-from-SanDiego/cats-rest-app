@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     implementation(project(":catsDao"))
+    implementation(project(":catsCommon"))
 
     implementation(platform("org.hibernate.orm:hibernate-platform:6.4.4.Final"))
 

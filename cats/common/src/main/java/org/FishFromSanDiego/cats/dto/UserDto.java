@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Builder
 @ToString
 public class UserDto {
+    @NonNull
     private String firstName;
     private String secondName;
     private LocalDate birthDate;

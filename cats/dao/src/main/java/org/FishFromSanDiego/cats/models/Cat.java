@@ -1,10 +1,7 @@
 package org.FishFromSanDiego.cats.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.FishFromSanDiego.cats.dto.CatDto;
 
 import java.time.LocalDate;
@@ -32,12 +29,14 @@ public class Cat {
     @Column(name = "colour")
     private Colour colour;
     @ManyToOne(targetEntity = User.class, optional = false)
+    @ToString.Exclude
     private User owner;
     @ManyToMany(targetEntity = Cat.class, cascade = CascadeType.ALL)
     @JoinTable(name = "cats_catfriends",
             joinColumns = @JoinColumn(name = "cat_id"),
             inverseJoinColumns = @JoinColumn(name = "friend_id"))
     @Builder.Default
+    @ToString.Exclude
     private List<Cat> friends = new ArrayList<>();
 
     public static Cat fromDto(CatDto catDto) {
@@ -47,6 +46,13 @@ public class Cat {
                 .colour(catDto.getColour())
                 .breed(catDto.getBreed())
                 .build();
+    }
+
+    public void copyFromDto(CatDto catDto) {
+        birthDate = catDto.getBirthDate();
+        colour = catDto.getColour();
+        name = catDto.getName();
+        breed = catDto.getBreed();
     }
 
     public CatDto getDto() {

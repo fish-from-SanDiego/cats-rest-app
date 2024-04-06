@@ -3,6 +3,11 @@ subprojects {
     repositories {
         mavenCentral()
     }
+
+    dependencies {
+        "compileOnly"("org.projectlombok:lombok:1.18.24")
+        "annotationProcessor"("org.projectlombok:lombok:1.18.32")
+    }
 }
 
 allprojects {
@@ -10,5 +15,12 @@ allprojects {
     version = "1.0-SNAPSHOT"
     repositories {
         mavenCentral()
+    }
+    tasks.withType<JavaCompile> {
+        options.encoding = "UTF-8"
+    }
+
+    tasks.withType<Javadoc> {
+        options.encoding = "UTF-8"
     }
 }

@@ -1,18 +1,12 @@
-subprojects {
-    apply(plugin = "java")
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        "compileOnly"("org.projectlombok:lombok:1.18.24")
-        "annotationProcessor"("org.projectlombok:lombok:1.18.32")
-    }
+plugins {
+    id("java")
+    id("org.springframework.boot") version "3.2.5"
+    id("io.spring.dependency-management") version "1.1.4"
 }
 
 allprojects {
     group = "org.fish-from-SanDiego"
-    version = "1.0-SNAPSHOT"
+    version = "1.0.0-SNAPSHOT"
     repositories {
         mavenCentral()
     }
@@ -24,3 +18,60 @@ allprojects {
         options.encoding = "UTF-8"
     }
 }
+
+subprojects {
+    val currentProject = this
+    apply {
+        plugin("java")
+        if (currentProject.name != "lab-1") {
+            plugin("org.springframework.boot")
+            plugin("io.spring.dependency-management")
+        }
+    }
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom(configurations.annotationProcessor.get())
+        }
+    }
+    dependencies {
+        if (currentProject.name != "lab-1") {
+            if (currentProject.name == "cats") {
+                currentProject.tasks.bootJar {
+                    enabled = true
+                }
+            } else {
+                currentProject.tasks.bootJar {
+                    enabled = false
+                }
+            }
+            currentProject.tasks.jar {
+                enabled = true
+            }
+            implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+            implementation("org.springframework.boot:spring-boot-starter-web")
+            compileOnly("org.projectlombok:lombok")
+            developmentOnly("org.springframework.boot:spring-boot-devtools")
+            runtimeOnly("com.h2database:h2")
+            runtimeOnly("org.postgresql:postgresql")
+            annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+            annotationProcessor("org.projectlombok:lombok")
+            testImplementation("org.springframework.boot:spring-boot-starter-test")
+        }
+    }
+}
+
+tasks.bootJar {
+    enabled = false
+}
+
+tasks.register("checkSubProjectNames") {
+    group = "checkInfo"
+    for (pr in subprojects) {
+        println(pr.name)
+    }
+}
+

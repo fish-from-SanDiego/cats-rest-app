@@ -1,8 +1,11 @@
 plugins {
     id("com.avast.gradle.docker-compose") version "0.17.6"
+//    id("org.springframework.boot") version "3.2.5"
+//    id("io.spring.dependency-management") version "1.1.4"
 }
 
 dependencies {
+//    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     implementation(project(":catsDao"))
     implementation(project(":catsCommon"))
     implementation(project(":catsServices"))

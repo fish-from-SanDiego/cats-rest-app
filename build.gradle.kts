@@ -63,8 +63,16 @@ subprojects {
         }
     }
 }
-
 tasks.bootJar {
+    enabled = false
+}
+tasks.bootRun {
+    enabled = false
+}
+tasks.bootTestRun {
+    enabled = false
+}
+tasks.jar {
     enabled = false
 }
 

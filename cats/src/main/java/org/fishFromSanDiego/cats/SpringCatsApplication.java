@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringCatsApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringCatsApplication.class);
+        SpringApplication.run(SpringCatsApplication.class, args);
     }
 }
 

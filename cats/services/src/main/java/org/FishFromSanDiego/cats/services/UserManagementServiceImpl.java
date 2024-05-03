@@ -3,7 +3,7 @@ package org.FishFromSanDiego.cats.services;
 import org.FishFromSanDiego.cats.dao.DaoContext;
 import org.FishFromSanDiego.cats.dto.UserDto;
 import org.FishFromSanDiego.cats.exceptions.DatabaseSideException;
-import org.FishFromSanDiego.cats.exceptions.NoUserWithSuchIdException;
+import org.FishFromSanDiego.cats.exceptions.UserNotFoundException;
 import org.FishFromSanDiego.cats.models.User;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     }
 
     @Override
-    public void removeUser(long userId) throws DatabaseSideException, NoUserWithSuchIdException {
+    public void removeUser(long userId) throws DatabaseSideException, UserNotFoundException {
         daoContext.getUserDao().removeUserById(userId);
     }
 }

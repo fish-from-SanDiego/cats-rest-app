@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface CatDao {
-    Cat addNewCat(CatDto cat, long ownerId) throws NoUserWithSuchIdException, DatabaseSideException;
+    Cat addNewCat(CatDto cat, long ownerId) throws UserNotFoundException, DatabaseSideException;
 
     Cat getCatById(long catId, long ownerId)
             throws DatabaseSideException, NoCatWithSuchIdException, CatBelongsToOtherUserException;

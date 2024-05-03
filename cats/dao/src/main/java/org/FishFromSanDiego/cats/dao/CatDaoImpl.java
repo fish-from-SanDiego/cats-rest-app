@@ -19,19 +19,19 @@ public class CatDaoImpl implements CatDao {
     }
 
     @Override
-    public Cat addNewCat(CatDto cat, long ownerId) throws NoUserWithSuchIdException, DatabaseSideException {
+    public Cat addNewCat(CatDto cat, long ownerId) throws UserNotFoundException, DatabaseSideException {
         var newCat = Cat.fromDto(cat);
         try {
             Helper.inTransaction(entityManagerFactory, em -> {
                 User owner = em.find(User.class, ownerId);
                 if (owner == null)
-                    throw new RuntimeException(new NoUserWithSuchIdException());
+                    throw new RuntimeException(new UserNotFoundException());
                 newCat.setOwner(owner);
                 em.persist(newCat);
             });
         } catch (Exception e) {
-            if (e.getCause() != null && e.getCause().getClass().equals(NoUserWithSuchIdException.class))
-                throw new NoUserWithSuchIdException();
+            if (e.getCause() != null && e.getCause().getClass().equals(UserNotFoundException.class))
+                throw new UserNotFoundException();
             else
                 throw new DatabaseSideException();
         }

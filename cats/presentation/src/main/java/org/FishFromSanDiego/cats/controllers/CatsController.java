@@ -5,17 +5,21 @@ import jakarta.validation.Valid;
 import org.FishFromSanDiego.cats.dto.CatDto;
 import org.FishFromSanDiego.cats.dto.CatFriendIdRequest;
 import org.FishFromSanDiego.cats.dto.CatView;
+import org.FishFromSanDiego.cats.models.Colour;
 import org.FishFromSanDiego.cats.models.FriendshipType;
 import org.FishFromSanDiego.cats.services.CatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.exact;
 
 @RestController
 @EnableAutoConfiguration
@@ -30,10 +34,23 @@ public class CatsController {
     }
 
     @GetMapping
-    public List<CatDto> showAllCats(@RequestParam(name = "ownerId", required = false) Optional<Long> ownerId) {
-        if (ownerId.isPresent())
-            return catsService.getCatsByOwnerId(ownerId.get());
-        return catsService.getAllCats();
+    public List<CatDto> showAllCats(
+            @RequestParam(name = "ownerId", required = false) Optional<Long> ownerId,
+            @RequestParam(name = "colour", required = false) Optional<Colour> colour) {
+        var catExample = new CatDto();
+        ExampleMatcher matcher = ExampleMatcher.matchingAll().withIgnoreNullValues().withIgnorePaths("id");
+        if (ownerId.isPresent()) {
+            catExample.setOwnerId(ownerId.get());
+            matcher.withMatcher("owner", exact());
+        } else {
+            matcher = matcher.withIgnorePaths("owner");
+        }
+        if (colour.isPresent()) {
+            catExample.setColour(colour.get());
+            matcher.withMatcher("colour", exact());
+        }
+
+        return catsService.getCatsByMatcher(matcher, catExample);
     }
 
     @GetMapping(path = "/{id}")

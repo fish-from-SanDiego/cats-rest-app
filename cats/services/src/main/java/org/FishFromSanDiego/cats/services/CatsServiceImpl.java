@@ -3,9 +3,12 @@ package org.FishFromSanDiego.cats.services;
 import org.FishFromSanDiego.cats.dto.CatDto;
 import org.FishFromSanDiego.cats.exceptions.*;
 import org.FishFromSanDiego.cats.models.Cat;
+import org.FishFromSanDiego.cats.models.User;
 import org.FishFromSanDiego.cats.repositories.CatsRepository;
 import org.FishFromSanDiego.cats.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -102,6 +105,15 @@ public class CatsServiceImpl implements CatsService {
     public List<CatDto> getCatsByOwnerId(long ownerId) {
         return catsRepository.findAllByOwnerId(ownerId).stream().map(Cat::getDto).toList();
     }
+
+    @Override
+    public List<CatDto> getCatsByMatcher(ExampleMatcher matcher, CatDto cat) {
+        Cat temp = Cat.fromDto(cat);
+        temp.setOwner(User.builder().id(cat.getOwnerId()).build());
+        var example = Example.of(temp, matcher);
+        return catsRepository.findAll(example).stream().map(Cat::getDto).toList();
+    }
+
 
     @Override
     public List<CatDto> getAllCats() {

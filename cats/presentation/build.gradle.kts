@@ -1,5 +1,4 @@
 dependencies {
-    implementation(project(":catsDao"))
     implementation(project(":catsCommon"))
     implementation(project(":catsServices"))
 

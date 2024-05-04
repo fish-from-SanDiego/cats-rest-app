@@ -1,12 +1,10 @@
 package org.FishFromSanDiego.cats.services;
 
 import org.FishFromSanDiego.cats.dto.CatDto;
-import org.FishFromSanDiego.cats.exceptions.CantFriendSelfException;
-import org.FishFromSanDiego.cats.exceptions.CatAlreadyFriendedException;
-import org.FishFromSanDiego.cats.exceptions.CatNotFoundException;
-import org.FishFromSanDiego.cats.exceptions.CatsAreNotFriendsException;
+import org.FishFromSanDiego.cats.exceptions.*;
 import org.FishFromSanDiego.cats.models.Cat;
 import org.FishFromSanDiego.cats.repositories.CatsRepository;
+import org.FishFromSanDiego.cats.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +17,12 @@ import java.util.List;
 @Transactional
 public class CatsServiceImpl implements CatsService {
     private final CatsRepository catsRepository;
+    private final UsersRepository usersRepository;
 
     @Autowired
-    public CatsServiceImpl(CatsRepository catsRepository) {
+    public CatsServiceImpl(CatsRepository catsRepository, UsersRepository usersRepository) {
         this.catsRepository = catsRepository;
+        this.usersRepository = usersRepository;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class CatsServiceImpl implements CatsService {
         if (requestingCatId == friendCatId)
             throw new CantFriendSelfException();
         Cat cat = catsRepository.findById(requestingCatId).orElseThrow(CatNotFoundException::new);
-        Cat friend = catsRepository.findById(requestingCatId).orElseThrow(CatNotFoundException::new);
+        Cat friend = catsRepository.findById(friendCatId).orElseThrow(CatNotFoundException::new);
         List<Cat> catfriends = cat.getFriends();
         if (catfriends.contains(friend))
             throw new CatAlreadyFriendedException();
@@ -60,7 +60,7 @@ public class CatsServiceImpl implements CatsService {
         if (requestingCatId == friendCatId)
             throw new CantFriendSelfException();
         Cat cat = catsRepository.findById(requestingCatId).orElseThrow(CatNotFoundException::new);
-        Cat friend = catsRepository.findById(requestingCatId).orElseThrow(CatNotFoundException::new);
+        Cat friend = catsRepository.findById(friendCatId).orElseThrow(CatNotFoundException::new);
         List<Cat> catfriends = cat.getFriends();
         if (!catfriends.contains(friend))
             throw new CatsAreNotFriendsException();
@@ -73,19 +73,18 @@ public class CatsServiceImpl implements CatsService {
 
     @Override
     public List<CatDto> getCatFriendsById(long id) {
-        return catsRepository.findById(id)
-                .orElseThrow(CatNotFoundException::new)
-                .getFriends()
-                .stream()
-                .map(Cat::getDto)
-                .toList();
+        Cat cat = catsRepository.findById(id).orElseThrow(CatNotFoundException::new);
+        List<Cat> friends = cat.getFriends();
+        var intersection = new HashSet<>(catsRepository.findAllCatsForWhomThisIsFriend(id));
+        intersection.retainAll(new HashSet<>(friends));
+        return intersection.stream().map(Cat::getDto).toList();
     }
 
     @Override
     public List<CatDto> getCatFriendIncomingInvitesById(long id) {
         Cat cat = catsRepository.findById(id).orElseThrow(CatNotFoundException::new);
         List<Cat> friends = cat.getFriends();
-        var difference = new HashSet<>(catsRepository.findAllCatsForWhomThisIsFriend(cat));
+        var difference = new HashSet<>(catsRepository.findAllCatsForWhomThisIsFriend(cat.getId()));
         difference.removeAll(new HashSet<>(friends));
         return difference.stream().map(Cat::getDto).toList();
     }
@@ -95,7 +94,7 @@ public class CatsServiceImpl implements CatsService {
         Cat cat = catsRepository.findById(id).orElseThrow(CatNotFoundException::new);
         List<Cat> friends = cat.getFriends();
         var difference = new HashSet<>(friends);
-        difference.removeAll(new HashSet<>(catsRepository.findAllCatsForWhomThisIsFriend(cat)));
+        difference.removeAll(new HashSet<>(catsRepository.findAllCatsForWhomThisIsFriend(cat.getId())));
         return difference.stream().map(Cat::getDto).toList();
     }
 
@@ -112,7 +111,11 @@ public class CatsServiceImpl implements CatsService {
     @Transactional(readOnly = false)
     @Override
     public CatDto registerNewCat(CatDto cat) {
-        return catsRepository.save(Cat.fromDto(cat)).getDto();
+        Cat registeredCat = Cat.fromDto(cat);
+        if (!usersRepository.existsById(cat.getOwnerId()))
+            throw new UserNotFoundException();
+        registeredCat.setOwner(usersRepository.getReferenceById(cat.getOwnerId()));
+        return catsRepository.save(registeredCat).getDto();
     }
 
     @Transactional(readOnly = false)

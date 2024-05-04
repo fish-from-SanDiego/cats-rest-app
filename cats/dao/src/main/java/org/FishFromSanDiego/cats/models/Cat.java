@@ -34,13 +34,13 @@ public class Cat {
     @Column(name = "breed", nullable = true)
     private String breed;
 
-    @Column(name = "colour")
+    @Column(name = "colour", nullable = true)
     private Colour colour;
 
     @ManyToOne(targetEntity = User.class, optional = false)
     @ToString.Exclude
     private User owner;
-    
+
     @ManyToMany(targetEntity = Cat.class, cascade = CascadeType.ALL)
     @JoinTable(name = "cats_catfriends", joinColumns = @JoinColumn(name = "cat_id"), inverseJoinColumns = @JoinColumn(name = "friend_id"))
     @Builder.Default
@@ -73,5 +73,9 @@ public class Cat {
                 .ownerId(owner.getId())
                 .id(id)
                 .build();
+    }
+
+    public static interface ProjectOwner {
+        User getOwner();
     }
 }

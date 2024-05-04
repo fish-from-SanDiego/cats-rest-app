@@ -3,17 +3,13 @@ plugins {
 }
 
 dependencies {
-//    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     implementation(project(":catsDao"))
     implementation(project(":catsCommon"))
     implementation(project(":catsServices"))
     implementation(project(":catsPresentation"))
 
-    // https://mvnrepository.com/artifact/jakarta.persistence/jakarta.persistence-api
-    // implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
-
-    implementation(platform("org.hibernate.orm:hibernate-platform:6.4.4.Final"))
-
+    runtimeOnly("com.h2database:h2")
+    runtimeOnly("org.postgresql:postgresql")
 }
 
 tasks.test {
@@ -24,19 +20,6 @@ tasks.withType<JavaExec> {
     if (this.name.equals("bootRun"))
         dockerCompose.isRequiredBy(this)
 }
-//
-//tasks.withType<Jar> {
-//    manifest {
-//        attributes["Main-Class"] = "org.fishFromSanDiego.cats.Main"
-//    }
-//}
-//
-//tasks.create<JavaExec>("run") {
-//    group = "build"
-//    standardInput = System.`in`
-//    mainClass.set("org.fishFromSanDiego.cats.Main")
-//    classpath = sourceSets["main"].runtimeClasspath
-//}
 
 dockerCompose {
     useComposeFiles.add("./docker-compose.yaml")

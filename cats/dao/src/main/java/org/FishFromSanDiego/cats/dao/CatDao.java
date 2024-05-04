@@ -1,8 +1,8 @@
 package org.FishFromSanDiego.cats.dao;
 
-import org.FishFromSanDiego.cats.models.Cat;
 import org.FishFromSanDiego.cats.dto.CatDto;
 import org.FishFromSanDiego.cats.exceptions.*;
+import org.FishFromSanDiego.cats.models.Cat;
 
 import java.util.List;
 

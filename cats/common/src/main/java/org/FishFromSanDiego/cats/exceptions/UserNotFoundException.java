@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class UserNotFoundException extends RuntimeException {
     @Override
     public String getMessage() {
-        return "Can't find a user with such Id";
+        return "can't find a user with such id";
     }
 }

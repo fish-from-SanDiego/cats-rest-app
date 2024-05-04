@@ -56,8 +56,6 @@ subprojects {
             implementation("org.springframework.boot:spring-boot-starter-validation")
             compileOnly("org.projectlombok:lombok")
             developmentOnly("org.springframework.boot:spring-boot-devtools")
-            runtimeOnly("com.h2database:h2")
-            runtimeOnly("org.postgresql:postgresql")
             annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
             annotationProcessor("org.projectlombok:lombok")
             testImplementation("org.springframework.boot:spring-boot-starter-test")

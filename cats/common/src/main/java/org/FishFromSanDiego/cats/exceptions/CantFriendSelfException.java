@@ -1,8 +1,8 @@
 package org.FishFromSanDiego.cats.exceptions;
 
-public class CantFriendSelfException extends Exception {
-    @Override
-    public String getMessage() {
-        return "Can't add cat itself as its friend ";
-    }
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "cat can't friend itself")
+public class CantFriendSelfException extends RuntimeException {
 }

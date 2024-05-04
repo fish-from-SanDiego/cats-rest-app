@@ -1,10 +1,7 @@
 package org.FishFromSanDiego.cats.services;
 
 import org.FishFromSanDiego.cats.dto.CatDto;
-import org.FishFromSanDiego.cats.exceptions.*;
-import org.FishFromSanDiego.cats.models.Colour;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface CatsService {
@@ -23,6 +20,8 @@ public interface CatsService {
     List<CatDto> getCatFriendOutgoingInvitesById(long id);
 
     List<CatDto> getCatsByOwnerId(long ownerId);
+
+    List<CatDto> getAllCats();
 
     CatDto registerNewCat(CatDto cat);
 

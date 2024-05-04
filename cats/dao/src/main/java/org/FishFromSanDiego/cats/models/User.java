@@ -42,10 +42,11 @@ public class User {
                 .build();
     }
 
-    public void copyFromDto(UserDto userDto) {
+    public User copyFromDto(UserDto userDto) {
         birthDate = userDto.getBirthDate();
         firstName = userDto.getFirstName();
         secondName = userDto.getSecondName();
+        return this;
     }
 
     public UserDto getDto() {

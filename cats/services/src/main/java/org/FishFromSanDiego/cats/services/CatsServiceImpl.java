@@ -1,103 +1,125 @@
 package org.FishFromSanDiego.cats.services;
 
-import org.FishFromSanDiego.cats.dao.DaoContext;
 import org.FishFromSanDiego.cats.dto.CatDto;
-import org.FishFromSanDiego.cats.exceptions.*;
+import org.FishFromSanDiego.cats.exceptions.CantFriendSelfException;
+import org.FishFromSanDiego.cats.exceptions.CatAlreadyFriendedException;
+import org.FishFromSanDiego.cats.exceptions.CatNotFoundException;
+import org.FishFromSanDiego.cats.exceptions.CatsAreNotFriendsException;
 import org.FishFromSanDiego.cats.models.Cat;
-import org.FishFromSanDiego.cats.models.Colour;
+import org.FishFromSanDiego.cats.repositories.CatsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+@Service
+@Transactional
 public class CatsServiceImpl implements CatsService {
-//    private final DaoContext daoContext;
-//    private final long catId;
-//    private final long ownerId;
-//
-//    public CatsServiceImpl(DaoContext daoContext, long catId, long ownerId) {
-//        this.daoContext = daoContext;
-//        this.catId = catId;
-//        this.ownerId = ownerId;
-//    }
-//
-//
-//    @Override
-//    public CatDto getCatInfo() throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException {
-//        return daoContext.getCatDao().getCatById(catId, ownerId).getDto();
-//    }
-//
-//    @Override
-//    public void setCatName(String newName)
-//            throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException {
-//        daoContext.getCatDao().updateCatName(newName, ownerId, catId);
-//    }
-//
-//    @Override
-//    public void setCatBirthDate(LocalDate birthDate)
-//            throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException {
-//        daoContext.getCatDao().updateCatBirthDate(birthDate, ownerId, catId);
-//
-//    }
-//
-//    @Override
-//    public void setCatBreed(String newBreed)
-//            throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException {
-//        daoContext.getCatDao().updateCatBreed(newBreed, ownerId, catId);
-//    }
-//
-//    @Override
-//    public void setCatColour(Colour newColour)
-//            throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException {
-//        daoContext.getCatDao().updateCatColour(newColour, ownerId, catId);
-//    }
-//
-//    @Override
-//    public void friendCat(long catId) throws
-//            NoCatFriendWithSuchIdException,
-//            DatabaseSideException,
-//            OtherCatIsAlreadyThisCatFriendException,
-//            CatBelongsToOtherUserException,
-//            NoCatWithSuchIdException,
-//            CantFriendSelfException {
-//        daoContext.getCatDao().friendOtherCat(this.catId, ownerId, catId);
-//    }
-//
-//    @Override
-//    public void unfriendCat(long catId) throws
-//            NoCatFriendWithSuchIdException,
-//            OtherCatIsNotThisCatFriendException,
-//            DatabaseSideException,
-//            CatBelongsToOtherUserException,
-//            NoCatWithSuchIdException {
-//        daoContext.getCatDao().unfriendOtherCat(this.catId, ownerId, catId);
-//
-//    }
-//
-//    @Override
-//    public List<CatDto> getCatFriends()
-//            throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException {
-//        var dao = daoContext.getCatDao();
-//        var intersection = new HashSet<>(dao.getCatsForWhomThisIsFriend(catId, ownerId));
-//        intersection.retainAll(new HashSet<>(dao.getCatById(catId, ownerId).getFriends()));
-//        return intersection.stream().map(Cat::getDto).toList();
-//    }
-//
-//    @Override
-//    public List<CatDto> getCatFriendIncomingInvites()
-//            throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException {
-//        var dao = daoContext.getCatDao();
-//        var difference = new HashSet<>(dao.getCatsForWhomThisIsFriend(catId, ownerId));
-//        difference.removeAll(new HashSet<>(dao.getCatById(catId, ownerId).getFriends()));
-//        return difference.stream().map(Cat::getDto).toList();
-//    }
-//
-//    @Override
-//    public List<CatDto> getCatFriendOutgoingInvites()
-//            throws DatabaseSideException, CatBelongsToOtherUserException, NoCatWithSuchIdException {
-//        var dao = daoContext.getCatDao();
-//        var difference = new HashSet<>(dao.getCatById(catId, ownerId).getFriends());
-//        difference.removeAll(new HashSet<>(dao.getCatsForWhomThisIsFriend(catId, ownerId)));
-//        return difference.stream().map(Cat::getDto).toList();
-//    }
+    private final CatsRepository catsRepository;
+
+    @Autowired
+    public CatsServiceImpl(CatsRepository catsRepository) {
+        this.catsRepository = catsRepository;
+    }
+
+    @Override
+    public CatDto getCatById(long id) {
+        return catsRepository.findById(id).orElseThrow(CatNotFoundException::new).getDto();
+    }
+
+    @Transactional(readOnly = false)
+    @Override
+    public void updateCat(CatDto updatedCat) {
+        Cat cat = catsRepository.findById(updatedCat.getId()).orElseThrow(CatNotFoundException::new);
+        catsRepository.save(cat.copyFromDto(updatedCat));
+    }
+
+    @Transactional(readOnly = false)
+    @Override
+    public void friendCat(long requestingCatId, long friendCatId) {
+        if (requestingCatId == friendCatId)
+            throw new CantFriendSelfException();
+        Cat cat = catsRepository.findById(requestingCatId).orElseThrow(CatNotFoundException::new);
+        Cat friend = catsRepository.findById(requestingCatId).orElseThrow(CatNotFoundException::new);
+        List<Cat> catfriends = cat.getFriends();
+        if (catfriends.contains(friend))
+            throw new CatAlreadyFriendedException();
+        catfriends.add(friend);
+        if (cat.getOwner().getId() == friend.getOwner().getId())
+            friend.getFriends().add(cat);
+        Cat[] cats = {cat, friend};
+        catsRepository.saveAll(Arrays.asList(cats));
+    }
+
+    @Transactional(readOnly = false)
+    @Override
+    public void unfriendCat(long requestingCatId, long friendCatId) {
+        if (requestingCatId == friendCatId)
+            throw new CantFriendSelfException();
+        Cat cat = catsRepository.findById(requestingCatId).orElseThrow(CatNotFoundException::new);
+        Cat friend = catsRepository.findById(requestingCatId).orElseThrow(CatNotFoundException::new);
+        List<Cat> catfriends = cat.getFriends();
+        if (!catfriends.contains(friend))
+            throw new CatsAreNotFriendsException();
+        catfriends.remove(friend);
+        if (cat.getOwner().getId() == friend.getOwner().getId())
+            friend.getFriends().remove(cat);
+        Cat[] cats = {cat, friend};
+        catsRepository.saveAll(Arrays.asList(cats));
+    }
+
+    @Override
+    public List<CatDto> getCatFriendsById(long id) {
+        return catsRepository.findById(id)
+                .orElseThrow(CatNotFoundException::new)
+                .getFriends()
+                .stream()
+                .map(Cat::getDto)
+                .toList();
+    }
+
+    @Override
+    public List<CatDto> getCatFriendIncomingInvitesById(long id) {
+        Cat cat = catsRepository.findById(id).orElseThrow(CatNotFoundException::new);
+        List<Cat> friends = cat.getFriends();
+        var difference = new HashSet<>(catsRepository.findAllCatsForWhomThisIsFriend(cat));
+        difference.removeAll(new HashSet<>(friends));
+        return difference.stream().map(Cat::getDto).toList();
+    }
+
+    @Override
+    public List<CatDto> getCatFriendOutgoingInvitesById(long id) {
+        Cat cat = catsRepository.findById(id).orElseThrow(CatNotFoundException::new);
+        List<Cat> friends = cat.getFriends();
+        var difference = new HashSet<>(friends);
+        difference.removeAll(new HashSet<>(catsRepository.findAllCatsForWhomThisIsFriend(cat)));
+        return difference.stream().map(Cat::getDto).toList();
+    }
+
+    @Override
+    public List<CatDto> getCatsByOwnerId(long ownerId) {
+        return catsRepository.findAllByOwnerId(ownerId).stream().map(Cat::getDto).toList();
+    }
+
+    @Override
+    public List<CatDto> getAllCats() {
+        return catsRepository.findAll().stream().map(Cat::getDto).toList();
+    }
+
+    @Transactional(readOnly = false)
+    @Override
+    public CatDto registerNewCat(CatDto cat) {
+        return catsRepository.save(Cat.fromDto(cat)).getDto();
+    }
+
+    @Transactional(readOnly = false)
+    @Override
+    public void removeCatById(long id) {
+        if (!catsRepository.existsById(id))
+            throw new CatNotFoundException();
+        catsRepository.deleteById(id);
+    }
 }

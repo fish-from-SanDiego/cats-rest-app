@@ -3,71 +3,66 @@ package org.FishFromSanDiego.cats.services;
 import org.FishFromSanDiego.cats.dto.UserDto;
 import org.FishFromSanDiego.cats.exceptions.UserNotFoundException;
 import org.FishFromSanDiego.cats.models.User;
-import org.FishFromSanDiego.cats.repositories.UserRepository;
+import org.FishFromSanDiego.cats.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Transactional
 @Service
 public class UsersServiceImpl implements UsersService {
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
 
     @Autowired
-    public UsersServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UsersServiceImpl(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
     }
 
     @Override
     public UserDto getUserById(long id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isEmpty())
-            throw new UserNotFoundException();
-        return user.get().getDto();
+        User user = usersRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        return user.getDto();
     }
 
     @Transactional(readOnly = false)
     @Override
     public UserDto registerNewUser(UserDto user) {
-        return userRepository.save(User.fromDto(user)).getDto();
+        return usersRepository.save(User.fromDto(user)).getDto();
     }
 
     @Transactional(readOnly = false)
     @Override
     public void updateUser(UserDto updatedUser) {
-        Optional<User> user = userRepository.findById(updatedUser.getId());
-        if (user.isEmpty())
-            throw new UserNotFoundException();
-        user.get().copyFromDto(updatedUser);
+        User user = usersRepository.findById(updatedUser.getId()).orElseThrow(UserNotFoundException::new);
+        usersRepository.save(user.copyFromDto(updatedUser));
     }
 
     @Override
     public List<UserDto> getAllUsers() {
-        return userRepository.findAll().stream().map(User::getDto).toList();
+        return usersRepository.findAll().stream().map(User::getDto).toList();
     }
 
     @Transactional(readOnly = false)
     @Override
     public void removeUserById(long id) {
-        if (!userRepository.existsById(id))
+        if (!usersRepository.existsById(id))
             throw new UserNotFoundException();
-        userRepository.deleteById(id);
+        usersRepository.deleteById(id);
     }
 }
 
 
 //
-//import org.FishFromSanDiego.cats.dao.DaoContext;
-//import org.FishFromSanDiego.cats.dto.CatDto;
-//import org.FishFromSanDiego.cats.dto.UserDto;
-//import org.FishFromSanDiego.cats.exceptions.CatBelongsToOtherUserException;
-//import org.FishFromSanDiego.cats.exceptions.DatabaseSideException;
-//import org.FishFromSanDiego.cats.exceptions.NoCatWithSuchIdException;
+//import dao.org.fishFromSanDiego.cats.DaoContext;
+//import dto.org.fishFromSanDiego.cats.CatDto;
+//import dto.org.fishFromSanDiego.cats.UserDto;
+//import exceptions.org.fishFromSanDiego.cats.CatBelongsToOtherUserException;
+//import exceptions.org.fishFromSanDiego.cats.DatabaseSideException;
+//import exceptions.org.fishFromSanDiego.cats.NoCatWithSuchIdException;
 //import org.FishFromSanDiego.cats.exceptions.NoUserWithSuchIdException;
-//import org.FishFromSanDiego.cats.models.Cat;
+//import models.org.fishFromSanDiego.cats.Cat;
 //
 //import java.time.LocalDate;
 //import java.util.List;

@@ -8,6 +8,7 @@ import org.FishFromSanDiego.cats.models.User;
 import java.time.LocalDate;
 import java.util.List;
 
+@Deprecated
 public interface UserDao {
     User addNewUser(UserDto user) throws DatabaseSideException;
 

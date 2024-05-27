@@ -2,7 +2,9 @@ package org.FishFromSanDiego.cats.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.Valid;
+import org.FishFromSanDiego.cats.dto.ApplicationUserDetails;
 import org.FishFromSanDiego.cats.dto.UserDto;
+import org.FishFromSanDiego.cats.dto.UserUpdateDto;
 import org.FishFromSanDiego.cats.dto.UserView;
 import org.FishFromSanDiego.cats.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,49 +12,68 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("/users")
-@ComponentScan({"org.FishFromSanDiego.cats.services", "org.FishFromSanDiego.cats.controllers"})
+@ComponentScan({"org.FishFromSanDiego.cats.services", "org.FishFromSanDiego.cats.controllers", "org.FishFromSanDiego.cats.security"})
 public class UsersController {
     private final UsersService usersService;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsersController(UsersService usersService) {
+    public UsersController(UsersService usersService, PasswordEncoder passwordEncoder) {
         this.usersService = usersService;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/users/{id}")
     @ResponseBody
-    public UserDto showUser(@PathVariable("id") long id) {
+    @JsonView(UserView.ForAdmin.class)
+    public UserDto showUserForAdmin(@PathVariable("id") long id) {
         return usersService.getUserById(id);
     }
 
-    @GetMapping
+    @GetMapping(path = "/user")
+    @ResponseBody
+    @JsonView(UserView.ForUser.class)
+    public UserDto showUser(@AuthenticationPrincipal ApplicationUserDetails userDetails) {
+        return usersService.getUserById(userDetails.getId());
+    }
+
+    @GetMapping("/users")
+    @JsonView(UserView.ForAdmin.class)
     public List<UserDto> showAllUsers() {
         return usersService.getAllUsers();
     }
 
-    @PostMapping
-    public UserDto registerNewUser(
-            @JsonView(UserView.Request.class) @RequestBody @Valid UserDto user) {
-        return usersService.registerNewUser(user);
-    }
-
-    @PutMapping(path = "/{id}")
-    public ResponseEntity<HttpStatus> updateUser(
-            @JsonView(UserView.Request.class) @RequestBody @Valid UserDto user, @PathVariable("id") long id) {
-        user.setId(id);
-        usersService.updateUser(user);
+    @PostMapping("/users")
+    public ResponseEntity<HttpStatus> registerNewUserAsAdmin(@JsonView(UserView.Register.class) @RequestBody @Valid UserDto user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        usersService.registerNewUser(user);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping(path = "/{id}")
-    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") long id) {
+    @PutMapping(path = "/users/{id}")
+    public ResponseEntity<HttpStatus> updateUserAsAdmin(
+            @RequestBody @Valid UserUpdateDto user, @PathVariable("id") long id) {
+        var userDto = UserDto.builder()
+                .id(id)
+                .birthDate(user.getBirthDate())
+                .firstName(user.getFirstName())
+                .secondName(user.getSecondName())
+                .build();
+        usersService.updateUser(userDto);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "users/{id}")
+    public ResponseEntity<HttpStatus> deleteUserAsAdmin(@PathVariable("id") long id) {
         usersService.removeUserById(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }

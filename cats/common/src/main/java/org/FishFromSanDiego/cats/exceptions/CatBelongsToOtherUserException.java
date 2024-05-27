@@ -1,9 +1,8 @@
 package org.FishFromSanDiego.cats.exceptions;
 
-@Deprecated
-public class CatBelongsToOtherUserException extends Exception {
-    @Override
-    public String getMessage() {
-        return "This cat belongs to other user";
-    }
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(code = HttpStatus.FORBIDDEN, reason = "this cat belongs to other user")
+public class CatBelongsToOtherUserException extends RuntimeException {
 }

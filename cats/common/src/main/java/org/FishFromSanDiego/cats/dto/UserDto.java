@@ -13,17 +13,26 @@ import java.time.LocalDate;
 @Builder
 @ToString
 public class UserDto {
+    @JsonView(UserView.ForAdmin.class)
     private long id;
 
+    @NotBlank(message = "username should not be blank (empty)")
+    @JsonView({UserView.ForUser.class, UserView.ForAdmin.class, UserView.Register.class})
+    private String username;
+
+    @NotBlank(message = "password should not be blank (empty)")
+    @JsonView(UserView.Register.class)
+    private String password;
+
     @NotBlank(message = "first name should not be blank (empty)")
-    @JsonView(UserView.Request.class)
+    @JsonView({UserView.ForUser.class, UserView.ForAdmin.class, UserView.Register.class})
     private String firstName;
 
     @NotBlank(message = "second name should not be blank (empty)")
-    @JsonView(UserView.Request.class)
+    @JsonView({UserView.ForUser.class, UserView.ForAdmin.class, UserView.Register.class})
     private String secondName;
 
-    @JsonView(UserView.Request.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonView({UserView.ForUser.class, UserView.ForAdmin.class, UserView.Register.class})
     private LocalDate birthDate;
 }

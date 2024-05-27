@@ -17,6 +17,10 @@ allprojects {
     tasks.withType<Javadoc> {
         options.encoding = "UTF-8"
     }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
 }
 
 subprojects {
@@ -54,11 +58,14 @@ subprojects {
             implementation("org.springframework.boot:spring-boot-starter-data-jpa")
             implementation("org.springframework.boot:spring-boot-starter-web")
             implementation("org.springframework.boot:spring-boot-starter-validation")
+            implementation("org.springframework.boot:spring-boot-starter-security")
             compileOnly("org.projectlombok:lombok")
             developmentOnly("org.springframework.boot:spring-boot-devtools")
             annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
             annotationProcessor("org.projectlombok:lombok")
             testImplementation("org.springframework.boot:spring-boot-starter-test")
+            testImplementation("org.springframework.security:spring-security-test")
+            testRuntimeOnly("org.junit.platform:junit-platform-launcher")
         }
     }
 }

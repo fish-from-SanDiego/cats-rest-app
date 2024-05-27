@@ -4,11 +4,13 @@ import org.FishFromSanDiego.cats.formatters.StringToColourConverter;
 import org.FishFromSanDiego.cats.formatters.StringToFriendshipTypeConverter;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+//        (exclude = {ErrorMvcAutoConfiguration.class})
 @EnableJpaRepositories("org.FishFromSanDiego.cats.repositories")
 @EntityScan("org.FishFromSanDiego.cats.models")
 @ComponentScan("org.FishFromSanDiego.cats")

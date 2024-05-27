@@ -35,6 +35,7 @@ public class Cat {
     private String breed;
 
     @Column(name = "colour", nullable = true)
+    @Enumerated(EnumType.STRING)
     private Colour colour;
 
     @ManyToOne(targetEntity = User.class, optional = false)

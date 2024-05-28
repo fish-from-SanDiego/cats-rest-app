@@ -2,6 +2,7 @@ package org.FishFromSanDiego.cats.services;
 
 import org.FishFromSanDiego.cats.dto.UserDto;
 import org.FishFromSanDiego.cats.exceptions.UserNotFoundException;
+import org.FishFromSanDiego.cats.exceptions.UserWithSuchUsernameAlreadyExistsException;
 import org.FishFromSanDiego.cats.models.ApplicationUser;
 import org.FishFromSanDiego.cats.models.User;
 import org.FishFromSanDiego.cats.repositories.ApplicationUsersRepository;
@@ -33,6 +34,8 @@ public class UsersServiceImpl implements UsersService {
     @Transactional(readOnly = false)
     @Override
     public UserDto registerNewUser(UserDto user) {
+        if (applicationUsersRepository.existsByUsername(user.getUsername()))
+            throw new UserWithSuchUsernameAlreadyExistsException();
         var userEntity = User.fromDto(user);
         var applicationUser = applicationUsersRepository.save(ApplicationUser.fromDto(user));
         userEntity.setApplicationUser(applicationUser);
@@ -58,5 +61,6 @@ public class UsersServiceImpl implements UsersService {
         if (!usersRepository.existsById(id))
             throw new UserNotFoundException();
         usersRepository.deleteById(id);
+        applicationUsersRepository.deleteById(id);
     }
 }

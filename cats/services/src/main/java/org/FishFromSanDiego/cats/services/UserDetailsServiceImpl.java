@@ -29,8 +29,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (applicationUsersRepository.count() == 0) {
             applicationUsersRepository.save(ApplicationUser
                     .builder()
-                    .password(passwordEncoder.encode(customAppProperties.getPassword()))
-                    .username(customAppProperties.getUsername())
+                    .password(passwordEncoder.encode(customAppProperties.getDefaultAdminPassword()))
+                    .username(customAppProperties.getDefaultAdminUsername())
                     .userRoleType(UserRoleType.ROLE_ADMIN)
                     .build());
         }

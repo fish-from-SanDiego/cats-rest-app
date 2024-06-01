@@ -18,7 +18,6 @@ import java.util.List;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private long id;
 
@@ -28,6 +27,10 @@ public class User {
     private String secondName;
     @Column(name = "birth_date")
     private LocalDate birthDate;
+
+    @OneToOne(targetEntity = ApplicationUser.class, optional = false)
+    @ToString.Exclude
+    private ApplicationUser applicationUser;
 
     @OneToMany(targetEntity = Cat.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
     @Builder.Default
@@ -42,6 +45,14 @@ public class User {
                 .build();
     }
 
+//    public static User fromUserRegisterDto(FullUserDto dto) {
+//        return User.builder()
+//                .birthDate(dto.getBirthDate())
+//                .firstName(dto.getFirstName())
+//                .secondName(dto.getSecondName())
+//                .build();
+//    }
+
     public User copyFromDto(UserDto userDto) {
         birthDate = userDto.getBirthDate();
         firstName = userDto.getFirstName();
@@ -50,6 +61,14 @@ public class User {
     }
 
     public UserDto getDto() {
-        return UserDto.builder().birthDate(birthDate).firstName(firstName).secondName(secondName).id(id).build();
+        var applicationUserEntity = this.getApplicationUser();
+        return UserDto.builder()
+                .birthDate(birthDate)
+                .firstName(firstName)
+                .secondName(secondName)
+                .id(id)
+                .password(applicationUserEntity.getPassword())
+                .username(applicationUserEntity.getUsername())
+                .build();
     }
 }

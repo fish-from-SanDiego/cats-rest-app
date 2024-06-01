@@ -1,6 +1,7 @@
 package org.FishFromSanDiego.cats.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;

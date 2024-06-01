@@ -1,5 +1,6 @@
 package org.FishFromSanDiego.cats.exceptions;
 
+@Deprecated
 public class NoCatWithSuchIdException extends Exception {
     @Override
     public String getMessage() {

@@ -3,6 +3,7 @@ package org.FishFromSanDiego.cats.dao;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 
+@Deprecated
 @Value
 @AllArgsConstructor
 public class DaoContext {

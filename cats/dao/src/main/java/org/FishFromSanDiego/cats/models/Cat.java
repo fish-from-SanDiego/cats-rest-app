@@ -1,6 +1,7 @@
 package org.FishFromSanDiego.cats.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.FishFromSanDiego.cats.dto.CatDto;
 
@@ -24,16 +25,22 @@ public class Cat {
     private long id;
 
     @Column(name = "name", nullable = false)
+    @NotBlank(message = "name should not be empty")
     private String name;
-    @Column(name = "birth_date")
+
+    @Column(name = "birth_date", nullable = true)
     private LocalDate birthDate;
-    @Column(name = "breed")
+
+    @Column(name = "breed", nullable = true)
     private String breed;
-    @Column(name = "colour")
+
+    @Column(name = "colour", nullable = true)
     private Colour colour;
+
     @ManyToOne(targetEntity = User.class, optional = false)
     @ToString.Exclude
     private User owner;
+
     @ManyToMany(targetEntity = Cat.class, cascade = CascadeType.ALL)
     @JoinTable(name = "cats_catfriends", joinColumns = @JoinColumn(name = "cat_id"), inverseJoinColumns = @JoinColumn(name = "friend_id"))
     @Builder.Default
@@ -49,11 +56,12 @@ public class Cat {
                 .build();
     }
 
-    public void copyFromDto(CatDto catDto) {
+    public Cat copyFromDto(CatDto catDto) {
         birthDate = catDto.getBirthDate();
         colour = catDto.getColour();
         name = catDto.getName();
         breed = catDto.getBreed();
+        return this;
     }
 
     public CatDto getDto() {
@@ -65,5 +73,9 @@ public class Cat {
                 .ownerId(owner.getId())
                 .id(id)
                 .build();
+    }
+
+    public static interface ProjectOwner {
+        User getOwner();
     }
 }

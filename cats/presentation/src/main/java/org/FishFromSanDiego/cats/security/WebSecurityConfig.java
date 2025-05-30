@@ -36,14 +36,14 @@ public class WebSecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((customizer) -> customizer
-                        .requestMatchers("/error")
-                        .permitAll()
                         .requestMatchers("/users/**")
                         .hasRole("ADMIN")
                         .requestMatchers("/user")
                         .hasRole("USER")
                         .requestMatchers("/cats/**")
-                        .hasAnyRole("ADMIN", "USER"))
+                        .hasAnyRole("ADMIN", "USER")
+                        .anyRequest()
+                        .permitAll())
                 .build();
     }
 

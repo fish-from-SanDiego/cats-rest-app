@@ -1,5 +1,4 @@
 rootProject.name = "tech-labs"
-include("lab-1")
 include("cats")
 include("catsCommon")
 include("catsServices")

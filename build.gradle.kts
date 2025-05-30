@@ -14,10 +14,6 @@ allprojects {
         options.encoding = "UTF-8"
     }
 
-    tasks.withType<Javadoc> {
-        options.encoding = "UTF-8"
-    }
-
     tasks.withType<Test> {
         useJUnitPlatform()
     }
@@ -27,10 +23,8 @@ subprojects {
     val currentProject = this
     apply {
         plugin("java")
-        if (currentProject.name != "lab-1") {
-            plugin("org.springframework.boot")
-            plugin("io.spring.dependency-management")
-        }
+        plugin("org.springframework.boot")
+        plugin("io.spring.dependency-management")
     }
     java {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -42,31 +36,29 @@ subprojects {
         }
     }
     dependencies {
-        if (currentProject.name != "lab-1") {
-            if (currentProject.name == "cats") {
-                currentProject.tasks.bootJar {
-                    enabled = true
-                }
-            } else {
-                currentProject.tasks.bootJar {
-                    enabled = false
-                }
-            }
-            currentProject.tasks.jar {
+        if (currentProject.name == "cats") {
+            currentProject.tasks.bootJar {
                 enabled = true
             }
-            implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-            implementation("org.springframework.boot:spring-boot-starter-web")
-            implementation("org.springframework.boot:spring-boot-starter-validation")
-            implementation("org.springframework.boot:spring-boot-starter-security")
-            compileOnly("org.projectlombok:lombok")
-            developmentOnly("org.springframework.boot:spring-boot-devtools")
-            annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-            annotationProcessor("org.projectlombok:lombok")
-            testImplementation("org.springframework.boot:spring-boot-starter-test")
-            testImplementation("org.springframework.security:spring-security-test")
-            testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+        } else {
+            currentProject.tasks.bootJar {
+                enabled = false
+            }
         }
+        currentProject.tasks.jar {
+            enabled = true
+        }
+        implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+        implementation("org.springframework.boot:spring-boot-starter-web")
+        implementation("org.springframework.boot:spring-boot-starter-validation")
+        implementation("org.springframework.boot:spring-boot-starter-security")
+        compileOnly("org.projectlombok:lombok")
+        developmentOnly("org.springframework.boot:spring-boot-devtools")
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+        annotationProcessor("org.projectlombok:lombok")
+        testImplementation("org.springframework.boot:spring-boot-starter-test")
+        testImplementation("org.springframework.security:spring-security-test")
+        testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     }
 }
 tasks.bootJar {

@@ -28,4 +28,5 @@ task bootRun (gradle wrapper есть в репозитории, также до
 все нужные значения уже есть в файлах .env и application.properties.
 <br>
 По дефолту сервер слушает порт 7070
+<br>
 ![](readme-pics/boot-run-task.png)

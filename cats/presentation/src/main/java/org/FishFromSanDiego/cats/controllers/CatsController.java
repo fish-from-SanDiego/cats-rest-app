@@ -6,7 +6,6 @@ import org.FishFromSanDiego.cats.dto.ApplicationUserDetails;
 import org.FishFromSanDiego.cats.dto.CatDto;
 import org.FishFromSanDiego.cats.dto.CatFriendIdRequest;
 import org.FishFromSanDiego.cats.dto.CatView;
-import org.FishFromSanDiego.cats.exceptions.CatBelongsToOtherUserException;
 import org.FishFromSanDiego.cats.models.Colour;
 import org.FishFromSanDiego.cats.models.FriendshipType;
 import org.FishFromSanDiego.cats.models.UserRoleType;
@@ -17,6 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,12 +61,9 @@ public class CatsController {
     }
 
     @GetMapping(path = "/{id}")
+    @PreAuthorize("@catsSecurityService.isAdminOrOwner(#userDetails, #id)")
     public CatDto showCat(@AuthenticationPrincipal ApplicationUserDetails userDetails, @PathVariable("id") long id) {
-        var cat = catsService.getCatById(id);
-        if (userDetails.getAuthorities().contains(UserRoleType.ROLE_ADMIN) || cat.getOwnerId() == userDetails.getId())
-            return cat;
-        else
-            throw new CatBelongsToOtherUserException();
+        return catsService.getCatById(id);
     }
 
     @PostMapping
@@ -79,79 +76,55 @@ public class CatsController {
     }
 
     @PutMapping(path = "/{id}")
+    @PreAuthorize("@catsSecurityService.isAdminOrOwner(#userDetails, #id)")
     public ResponseEntity<HttpStatus> updateCat(
             @AuthenticationPrincipal ApplicationUserDetails userDetails,
             @JsonView(CatView.PutRequest.class) @RequestBody @Valid CatDto cat,
             @PathVariable("id") long id) {
         cat.setId(id);
-        var realCat = catsService.getCatById(id);
-        if (userDetails
-                .getAuthorities()
-                .contains(UserRoleType.ROLE_ADMIN) || realCat.getOwnerId() == userDetails.getId())
-            catsService.updateCat(cat);
-        else
-            throw new CatBelongsToOtherUserException();
+        catsService.updateCat(cat);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")
+    @PreAuthorize("@catsSecurityService.isAdminOrOwner(#userDetails, #id)")
     public ResponseEntity<HttpStatus> removeCat(
-            @AuthenticationPrincipal ApplicationUserDetails userDetails, @PathVariable("id") long id) {
-        var realCat = catsService.getCatById(id);
-        if (userDetails
-                .getAuthorities()
-                .contains(UserRoleType.ROLE_ADMIN) || realCat.getOwnerId() == userDetails.getId())
-            catsService.removeCatById(id);
-        else
-            throw new CatBelongsToOtherUserException();
+            @AuthenticationPrincipal ApplicationUserDetails userDetails,
+            @PathVariable("id") long id) {
+        catsService.removeCatById(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @GetMapping("/{id}/friends")
+    @PreAuthorize("@catsSecurityService.isAdminOrOwner(#userDetails, #id)")
     public List<CatDto> showCatFriends(
             @AuthenticationPrincipal ApplicationUserDetails userDetails,
             @RequestParam(value = "friendshipType", required = false, defaultValue = "MUTUAL") FriendshipType friendshipType,
             @PathVariable("id") long id) {
-        var realCat = catsService.getCatById(id);
-        if (userDetails
-                .getAuthorities()
-                .contains(UserRoleType.ROLE_ADMIN) || realCat.getOwnerId() == userDetails.getId()) {
-            return switch (friendshipType) {
-                case MUTUAL -> catsService.getCatFriendsById(id);
-                case INCOMING -> catsService.getCatFriendIncomingInvitesById(id);
-                case OUTGOING -> catsService.getCatFriendOutgoingInvitesById(id);
-            };
-        } else
-            throw new CatBelongsToOtherUserException();
+        return switch (friendshipType) {
+            case MUTUAL -> catsService.getCatFriendsById(id);
+            case INCOMING -> catsService.getCatFriendIncomingInvitesById(id);
+            case OUTGOING -> catsService.getCatFriendOutgoingInvitesById(id);
+        };
     }
 
     @PostMapping("/{id}/friends")
+    @PreAuthorize("@catsSecurityService.isAdminOrOwner(#userDetails, #id)")
     public ResponseEntity<HttpStatus> friendCat(
             @AuthenticationPrincipal ApplicationUserDetails userDetails,
             @RequestBody CatFriendIdRequest requestBody,
             @PathVariable("id") long id) {
-        var realCat = catsService.getCatById(id);
-        if (userDetails
-                .getAuthorities()
-                .contains(UserRoleType.ROLE_ADMIN) || realCat.getOwnerId() == userDetails.getId())
-            catsService.friendCat(id, requestBody.getFriendId());
-        else
-            throw new CatBelongsToOtherUserException();
+        catsService.friendCat(id, requestBody.getFriendId());
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}/friends")
+    @PreAuthorize("@catsSecurityService.isAdminOrOwner(#userDetails, #id)")
     public ResponseEntity<HttpStatus> unfriendCat(
             @AuthenticationPrincipal ApplicationUserDetails userDetails,
             @RequestBody CatFriendIdRequest requestBody,
             @PathVariable("id") long id) {
-        var realCat = catsService.getCatById(id);
-        if (userDetails
-                .getAuthorities()
-                .contains(UserRoleType.ROLE_ADMIN) || realCat.getOwnerId() == userDetails.getId())
-            catsService.unfriendCat(id, requestBody.getFriendId());
-        else
-            throw new CatBelongsToOtherUserException();
+        catsService.unfriendCat(id, requestBody.getFriendId());
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

@@ -75,8 +75,4 @@ public class Cat {
                 .id(id)
                 .build();
     }
-
-    public static interface ProjectOwner {
-        User getOwner();
-    }
 }

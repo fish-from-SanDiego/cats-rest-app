@@ -3,7 +3,6 @@ package org.FishFromSanDiego.cats.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Value;
 import org.FishFromSanDiego.cats.models.UserRoleType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +20,7 @@ public class ApplicationUserDetails implements UserDetails {
     private final UserRoleType userRoleType;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<GrantedAuthority> getAuthorities() {
         return Collections.singletonList(userRoleType);
     }
 

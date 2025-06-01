@@ -78,7 +78,7 @@ public class CatsServiceImpl implements CatsService {
     public List<CatDto> getCatFriendsById(long id) {
         Cat cat = catsRepository.findById(id).orElseThrow(CatNotFoundException::new);
         List<Cat> friends = cat.getFriends();
-        var intersection = new HashSet<>(catsRepository.findAllCatsForWhomThisIsFriend(id));
+        var intersection = new HashSet<>(catsRepository.findAllByFriends_Id(id));
         intersection.retainAll(new HashSet<>(friends));
         return intersection.stream().map(Cat::getDto).toList();
     }
@@ -87,7 +87,7 @@ public class CatsServiceImpl implements CatsService {
     public List<CatDto> getCatFriendIncomingInvitesById(long id) {
         Cat cat = catsRepository.findById(id).orElseThrow(CatNotFoundException::new);
         List<Cat> friends = cat.getFriends();
-        var difference = new HashSet<>(catsRepository.findAllCatsForWhomThisIsFriend(cat.getId()));
+        var difference = new HashSet<>(catsRepository.findAllByFriends_Id(cat.getId()));
         difference.removeAll(new HashSet<>(friends));
         return difference.stream().map(Cat::getDto).toList();
     }
@@ -97,7 +97,7 @@ public class CatsServiceImpl implements CatsService {
         Cat cat = catsRepository.findById(id).orElseThrow(CatNotFoundException::new);
         List<Cat> friends = cat.getFriends();
         var difference = new HashSet<>(friends);
-        difference.removeAll(new HashSet<>(catsRepository.findAllCatsForWhomThisIsFriend(cat.getId())));
+        difference.removeAll(new HashSet<>(catsRepository.findAllByFriends_Id(cat.getId())));
         return difference.stream().map(Cat::getDto).toList();
     }
 

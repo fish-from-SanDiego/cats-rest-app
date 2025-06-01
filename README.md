@@ -25,7 +25,7 @@
 
 Для сборки и запуска приложения достаточно запустить с помощью gradle
 task bootRun (gradle wrapper есть в репозитории, также должны быть установлены Docker и JDK 17),
-все нужные значения уже есть в файлах .env и application.properties.
+все нужные значения уже есть в файлах .env (для docker-compose) и application.properties.
 <br>
 По дефолту сервер слушает порт 7070
 <br>
